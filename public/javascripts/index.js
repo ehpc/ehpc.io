@@ -25,7 +25,13 @@ var cityBuilder = cityBuilder || (function () {
 				return this.rightX - this.leftX;
 			}
 		},
-		city = []; // Collection of coordinates for all buildings in the city
+		city = [], // Collection of coordinates for all buildings in the city
+		cityColor = '#f2f2f2',
+		cityTopDeviation = 100,
+		cityBottomDeviation = 30,
+		animLastTimestamp = 0, // For controlling FPS
+		animDrawRate = 1000 / 25, // How often to animate
+		animPx = 10; // How many pixels to generate each frame
 
 	/**
 	 * Recalculates the viewport
@@ -33,7 +39,7 @@ var cityBuilder = cityBuilder || (function () {
 	function recalcViewport() {
 		canvas.width = window.innerWidth;
 		canvas.height = window.innerHeight;
-		viewport.middleY = canvas.height / 2;
+		viewport.middleY = canvas.height / 2 + cityTopDeviation / 2;
 		viewport.bottomY = canvas.height - 1;
 		viewport.rightX = canvas.width - 1;
 	}
@@ -47,6 +53,17 @@ var cityBuilder = cityBuilder || (function () {
 		recalcViewport();
 		city = generateCity(city, viewport.width());
 		drawCity(city);
+		mainLoop();
+	}
+
+	function mainLoop(timestamp) {
+		window.requestAnimationFrame(mainLoop);
+		if (timestamp - animLastTimestamp >= animDrawRate) {
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
+			city = generateCityMore(city, animPx);
+			drawCity(city);
+			animLastTimestamp = timestamp;
+		}
 	}
 
 	/**
@@ -55,6 +72,7 @@ var cityBuilder = cityBuilder || (function () {
 	 */
 	function drawCity(city) {
 		var i;
+		ctx.beginPath();
 		ctx.moveTo(city[0].x, city[0].y);
 		for (i = 1; i < city.length; i++) {
 			ctx.lineTo(city[i].x, city[i].y);
@@ -63,8 +81,8 @@ var cityBuilder = cityBuilder || (function () {
 		ctx.lineTo(viewport.leftX, viewport.bottomY);
 		ctx.closePath();
 		ctx.lineWidth = 1;
-		ctx.strokeStyle = '#333';
-		ctx.fillStyle = '#555'; //#ECECEC
+		ctx.strokeStyle = cityColor;
+		ctx.fillStyle = cityColor;
 		ctx.fill();
 		ctx.stroke();
 	}
@@ -78,6 +96,40 @@ var cityBuilder = cityBuilder || (function () {
 	function generateCity(city, requiredWidth) {
 		var buildings = build(city[city.length - 1], requiredWidth);
 		return city.concat(buildings);
+	}
+
+	/**
+	 * Generates some more buildings for a city and shifts coordinates
+	 * @param {array} city City to work on
+	 * @param {number} requiredWidth City width
+	 * @return {array} City coordinates
+	 */
+	function generateCityMore(city, requiredWidth) {
+		var buildings = build(city[city.length - 1], requiredWidth),
+			// Actual width generated
+			w = buildings[buildings.length - 1].x - buildings[0].x,
+			firstOut = false, // First one with out of bounds coordinates
+			i;
+		city = city.concat(buildings);
+		for (i = city.length - 1; i >= 0; i--) {
+			city[i].x -= w;
+			if (city[i].x < 0) {
+				if (!firstOut) {
+					// We trim coordinate so there is no gap from 0 to x(i + 1)
+					firstOut = true;
+					if (city[i + 1] && city[i + 1].x !== 0) {
+						city[i].x = 0;
+					}
+					else {
+						city.splice(i, 1);
+					}
+				}
+				else {
+					city.splice(i, 1);
+				}
+			}
+		}
+		return city;
 	}
 
 	/**
@@ -130,8 +182,8 @@ var cityBuilder = cityBuilder || (function () {
 			probability = Math.random(),
 			direction = 0, // 0 - right, 1 - up, 2 - down, 3 - stop and chill out
 			horizonY = viewport.middleY,
-			horizonBottomBoundary = horizonY + 30,
-			horizonTopBoundary = horizonY - 100,
+			horizonBottomBoundary = horizonY + cityBottomDeviation,
+			horizonTopBoundary = horizonY - cityTopDeviation,
 			x, y, length;
 		if (typeof previous === 'undefined') {
 			previous = {
