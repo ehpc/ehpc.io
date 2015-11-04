@@ -27,11 +27,13 @@ var cityBuilder = cityBuilder || (function () {
 		},
 		city = [], // Collection of coordinates for all buildings in the city
 		cityColor = '#f2f2f2',
-		cityTopDeviation = 100,
-		cityBottomDeviation = 30,
+		cityTopDeviation, // How long the buildings could be
+		cityBottomDeviation, // How grounded the buildings could be
+		cityLengthFactor, // Determines how wide the buildings could be
+		cityLengthDeviation, // Determines maximum building width
 		animLastTimestamp = 0, // For controlling FPS
 		animDrawRate = 1000 / 25, // How often to animate
-		animPx = 10; // How many pixels to generate each frame
+		animPx = 20; // How many pixels to generate each frame
 
 	/**
 	 * Recalculates the viewport
@@ -39,6 +41,10 @@ var cityBuilder = cityBuilder || (function () {
 	function recalcViewport() {
 		canvas.width = window.innerWidth;
 		canvas.height = window.innerHeight;
+		cityTopDeviation = canvas.height / 9;
+		cityBottomDeviation = canvas.height / 35;
+		cityLengthFactor = canvas.height / 100;
+		cityLengthDeviation = canvas.height / 18,
 		viewport.middleY = canvas.height / 2 + cityTopDeviation / 2;
 		viewport.bottomY = canvas.height - 1;
 		viewport.rightX = canvas.width - 1;
@@ -54,13 +60,25 @@ var cityBuilder = cityBuilder || (function () {
 		city = generateCity(city, viewport.width());
 		drawCity(city);
 		mainLoop();
+		window.addEventListener('resize', function () {
+			recalcViewport();
+		});
 	}
 
+	/**
+	 * Main animation loop
+	 * @param {number} timestamp Current timesptamp
+	 */
 	function mainLoop(timestamp) {
 		window.requestAnimationFrame(mainLoop);
 		if (timestamp - animLastTimestamp >= animDrawRate) {
 			ctx.clearRect(0, 0, canvas.width, canvas.height);
-			city = generateCityMore(city, animPx);
+			// Removing buildings from the left and shifting the city position
+			city = demolishBuildings(city, animPx);
+			// If there are no buildings left to show
+			if (city[city.length - 1].x <= viewport.rightX) {
+				city = generateCityMore(city, animPx);
+			}
 			drawCity(city);
 			animLastTimestamp = timestamp;
 		}
@@ -88,6 +106,37 @@ var cityBuilder = cityBuilder || (function () {
 	}
 
 	/**
+	 * Demolishes coordinates from the left side for the specified width
+	 * @param {Array} city City
+	 * @param {number} width Required width to demolist
+	 * @return {Array} New city
+	 */
+	function demolishBuildings(city, width) {
+		var availableWidth = width,
+			i, n = 0;
+		for (i = 0; i < city.length; i++) {
+			// Deleting coordinates
+			if (availableWidth > 0) {
+				// If we cannot delete the whole coordinate
+				if (city[i].x > availableWidth || city[i + 1].x - city[i].x > availableWidth) {
+					city[i].x = viewport.leftX;
+					availableWidth = 0;
+				}
+				else {
+					availableWidth -= city[i + 1].x - city[i].x;
+					n++;
+				}
+			}
+			// Moving remaining coordinates to the left
+			else {
+				city[i].x -= width;
+			}
+		}
+		city.splice(0, n);
+		return city;
+	}
+
+	/**
 	 * Generates a whole city
 	 * @param {array} city City to work on
 	 * @param {number} requiredWidth City width
@@ -111,7 +160,7 @@ var cityBuilder = cityBuilder || (function () {
 			firstOut = false, // First one with out of bounds coordinates
 			i;
 		city = city.concat(buildings);
-		for (i = city.length - 1; i >= 0; i--) {
+		/*TODOfor (i = city.length - 1; i >= 0; i--) {
 			city[i].x -= w;
 			if (city[i].x < 0) {
 				if (!firstOut) {
@@ -128,7 +177,7 @@ var cityBuilder = cityBuilder || (function () {
 					city.splice(i, 1);
 				}
 			}
-		}
+		}*/
 		return city;
 	}
 
@@ -194,7 +243,7 @@ var cityBuilder = cityBuilder || (function () {
 			firstRun = true;
 		}
 		// Calculate line length
-		length = Math.floor(probability * 10) * 2;
+		length = Math.floor(probability * cityLengthFactor) * 2;
 		// Calculate direction
 		if (length === 0) {
 			direction = 3;
@@ -253,6 +302,10 @@ var cityBuilder = cityBuilder || (function () {
 		}
 		else {
 			y = previous.y;
+		}
+		// Fixing too wide coordinates
+		if (previous.y > viewport.middleY && y > viewport.middleY && x - previous.x > cityLengthDeviation) {
+			direction = 2;
 		}
 		return {
 			x: x,

@@ -61,10 +61,11 @@
         "|", "^", "&&", "||", "===", "==", ">=",
         "<=", "<", ">", "!=", "!=="
     ],
-	"disallowOperatorBeforeLineBreak": true,
+	"disallowOperatorBeforeLineBreak": ["."],
     "requireSpacesInAnonymousFunctionExpression": {
         "beforeOpeningCurlyBrace": true,
-		"beforeOpeningRoundBrace": true
+		"beforeOpeningRoundBrace": true,
+		"allExcept": ["shorthand"]
     },
     "requireSpacesInNamedFunctionExpression": {
         "beforeOpeningCurlyBrace": true
