@@ -1,5 +1,5 @@
 /**
- * City builder
+ * City animation autogenerator
  * Eugene Maslovich
  * ehpc@ehpc.io
  *
@@ -26,23 +26,24 @@ var cityBuilder = cityBuilder || (function () {
 				return this.rightX - this.leftX;
 			}
 		},
+		animSpeedFactor = 100, // For controlling overall animation speed
+		animLastTimestamp = 0, // For controlling FPS
+		animDrawRate = 1000 / 25, // FPS
+		animPx = animSpeedFactor / 5, // How many pixels to generate each frame
 		city = [], // Collection of coordinates for all buildings in the city
 		cityColor = '#e2e2e2',
 		cityTopDeviation, // How long the buildings could be
 		cityBottomDeviation, // How grounded the buildings could be
 		cityLengthFactor, // Determines how wide the buildings could be
 		cityLengthDeviation, // Determines maximum building width
-		animLastTimestamp = 0, // For controlling FPS
-		animDrawRate = 1000 / 25, // How often to animate
-		animPx = 20, // How many pixels to generate each frame
-		sun = {
+		sun = { // Every city has a sun (except Zion)
 			x: 0,
 			y: 0,
 			size: 0,
 			width: 0,
 			height: 0,
 			angle: Math.PI - 0.2,
-			speed: 0.01,
+			speed: animSpeedFactor / 10000,
 			color: '#e9e9e9'
 		};
 
