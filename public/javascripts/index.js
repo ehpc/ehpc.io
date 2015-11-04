@@ -20,20 +20,31 @@ var cityBuilder = cityBuilder || (function () {
 			middleY: 0,
 			bottomY: 0,
 			leftX: 0,
+			middleX: 0,
 			rightX: 0,
 			width: function () {
 				return this.rightX - this.leftX;
 			}
 		},
 		city = [], // Collection of coordinates for all buildings in the city
-		cityColor = '#f2f2f2',
+		cityColor = '#e2e2e2',
 		cityTopDeviation, // How long the buildings could be
 		cityBottomDeviation, // How grounded the buildings could be
 		cityLengthFactor, // Determines how wide the buildings could be
 		cityLengthDeviation, // Determines maximum building width
 		animLastTimestamp = 0, // For controlling FPS
 		animDrawRate = 1000 / 25, // How often to animate
-		animPx = 20; // How many pixels to generate each frame
+		animPx = 20, // How many pixels to generate each frame
+		sun = {
+			x: 0,
+			y: 0,
+			size: 0,
+			width: 0,
+			height: 0,
+			angle: Math.PI - 0.2,
+			speed: 0.01,
+			color: '#e9e9e9'
+		};
 
 	/**
 	 * Recalculates the viewport
@@ -44,10 +55,14 @@ var cityBuilder = cityBuilder || (function () {
 		cityTopDeviation = canvas.height / 9;
 		cityBottomDeviation = canvas.height / 35;
 		cityLengthFactor = canvas.height / 100;
-		cityLengthDeviation = canvas.height / 18,
+		cityLengthDeviation = canvas.height / 18;
 		viewport.middleY = canvas.height / 2 + cityTopDeviation / 2;
-		viewport.bottomY = canvas.height - 1;
+		viewport.bottomY = canvas.height;
 		viewport.rightX = canvas.width - 1;
+		viewport.middleX = canvas.width / 2;
+		sun.size = canvas.height / 25;
+		sun.width = canvas.width - sun.size * 2;
+		sun.height = canvas.height - sun.size * 2;
 	}
 
 	/**
@@ -79,9 +94,21 @@ var cityBuilder = cityBuilder || (function () {
 			if (city[city.length - 1].x <= viewport.rightX) {
 				city = generateCityMore(city, animPx);
 			}
+			drawSun(sun);
 			drawCity(city);
 			animLastTimestamp = timestamp;
 		}
+	}
+
+	function drawSun(sun) {
+		sun.x = viewport.middleX + Math.cos(sun.angle) * sun.width * 0.5;
+		sun.y = viewport.middleY + Math.sin(sun.angle) * sun.height * 0.5;
+		sun.angle += sun.speed;
+		ctx.fillStyle = sun.color;
+		ctx.beginPath();
+		ctx.arc(sun.x, sun.y, sun.size, 0, Math.PI * 2);
+		ctx.closePath();
+		ctx.fill();
 	}
 
 	/**
@@ -154,30 +181,8 @@ var cityBuilder = cityBuilder || (function () {
 	 * @return {array} City coordinates
 	 */
 	function generateCityMore(city, requiredWidth) {
-		var buildings = build(city[city.length - 1], requiredWidth),
-			// Actual width generated
-			w = buildings[buildings.length - 1].x - buildings[0].x,
-			firstOut = false, // First one with out of bounds coordinates
-			i;
+		var buildings = build(city[city.length - 1], requiredWidth);
 		city = city.concat(buildings);
-		/*TODOfor (i = city.length - 1; i >= 0; i--) {
-			city[i].x -= w;
-			if (city[i].x < 0) {
-				if (!firstOut) {
-					// We trim coordinate so there is no gap from 0 to x(i + 1)
-					firstOut = true;
-					if (city[i + 1] && city[i + 1].x !== 0) {
-						city[i].x = 0;
-					}
-					else {
-						city.splice(i, 1);
-					}
-				}
-				else {
-					city.splice(i, 1);
-				}
-			}
-		}*/
 		return city;
 	}
 
