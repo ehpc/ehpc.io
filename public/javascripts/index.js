@@ -31,7 +31,8 @@ var cityBuilder = cityBuilder || (function () {
 		animDrawRate = 1000 / 25, // FPS
 		animPx = animSpeedFactor / 5, // How many pixels to generate each frame
 		city = [], // Collection of coordinates for all buildings in the city
-		cityColor = '#e2e2e2',
+		cityColor = '#e2e2e2', // Base color of the city
+		skyColor = '#999999', // Base color of the sky
 		cityTopDeviation, // How long the buildings could be
 		cityBottomDeviation, // How grounded the buildings could be
 		cityLengthFactor, // Determines how wide the buildings could be
@@ -44,7 +45,7 @@ var cityBuilder = cityBuilder || (function () {
 			height: 0,
 			angle: Math.PI - 0.2,
 			speed: animSpeedFactor / 10000,
-			color: '#e9e9e9'
+			color: '#e9e9e9' // Sun color
 		};
 
 	/**
@@ -95,16 +96,33 @@ var cityBuilder = cityBuilder || (function () {
 			if (city[city.length - 1].x <= viewport.rightX) {
 				city = generateCityMore(city, animPx);
 			}
+			moveSun(sun);
+			changeLight();
 			drawSun(sun);
 			drawCity(city);
 			animLastTimestamp = timestamp;
 		}
 	}
 
-	function drawSun(sun) {
+	function changeLight() {
+
+	}
+
+	/**
+	 * Propels the sun forward
+	 * @param {object} sun The sun
+	 */
+	function moveSun(sun) {
 		sun.x = viewport.middleX + Math.cos(sun.angle) * sun.width * 0.5;
 		sun.y = viewport.middleY + Math.sin(sun.angle) * sun.height * 0.5;
 		sun.angle += sun.speed;
+	}
+
+	/**
+	 * Draws the sun
+	 * @param {object} sun The sun :)
+	 */
+	function drawSun(sun) {
 		ctx.fillStyle = sun.color;
 		ctx.beginPath();
 		ctx.arc(sun.x, sun.y, sun.size, 0, Math.PI * 2);

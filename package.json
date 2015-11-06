@@ -13,7 +13,8 @@
     "express": "^4.13.3",
     "morgan": "~1.6.1",
     "normalize.css": "^3.0.3",
-    "serve-favicon": "~2.3.0"
+    "serve-favicon": "~2.3.0",
+    "tinycolor2": "^1.1.2"
   },
   "devDependencies": {
     "gulp": "^3.9.0",

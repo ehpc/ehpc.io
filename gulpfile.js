@@ -14,6 +14,13 @@ gulp.task('normalize', function () {
 		.pipe(gulp.dest('public/stylesheets/'));
 });
 
+// Make tinycolor available in public
+gulp.task('tinycolor', function () {
+	return gulp
+		.src('node_modules/tinycolor2/tinycolor.js')
+		.pipe(gulp.dest('public/javascripts/vendor/'));
+});
+
 // Compile less to css
 gulp.task('less', function () {
 	return gulp
@@ -30,4 +37,4 @@ gulp.task('watch', function () {
 });
 
 // All at once
-gulp.task('default', ['normalize', 'less']);
+gulp.task('default', ['normalize', 'tinycolor', 'less']);
