@@ -35,9 +35,10 @@ var cityBuilder = cityBuilder || (function () {
 		animPx = animSpeedFactor / 5, // How many pixels to generate each frame
 		city = [], // Collection of coordinates for all buildings in the city
 		colors = {
-			cityColor: '#555', // Base color of the city
-			skyColor: '#333', // Base color of the sky
-			sunColor: '#ffffff' // Sun color
+			cityColor: '#222222', // Base color of the city
+			skyColor: '#333333', // Base color of the sky
+			sunColor: '#ffffff', // Sun color
+			logoColor: '#ffffff' // Logo color
 		},
 		cityTopDeviation, // How long the buildings could be
 		cityBottomDeviation, // How grounded the buildings could be
@@ -109,31 +110,53 @@ var cityBuilder = cityBuilder || (function () {
 		}
 	}
 
+	/**
+	 * Calculate lighting shift in respect to the sun in percents
+	 * @return {number} Shift in percents
+	 */
+	function calcLightShift() {
+		var dPi, dLighten;
+		// Angle deviation
+		dPi = sun.angle - Math.PI;
+		if (dPi > Math.PI / 2) {
+			dPi = Math.PI - dPi;
+		}
+		// Lighten = angle * 100 / PI/2
+		dLighten = dPi * 200 / Math.PI;
+		if (dLighten < 0) {
+			dLighten = 0;
+		}
+		return dLighten;
+	}
+
+	/**
+	 * Draws light on the scene
+	 */
 	function setLight() {
-		var color, dPi, dLighten;
+		var color, dLighten;
 		// Lighting the sky
 		if (sun.angle > 0 && sun.angle < Math.PI) {
 			color = colors.skyColor;
+			colors.currentCityColor = colors.cityColor;
+			colors.currentLogoColor = colors.logoColor;
 		}
 		else {
-			// Angle deviation
-			dPi = sun.angle - Math.PI;
-			if (dPi > Math.PI / 2) {
-				dPi = Math.PI - dPi;
-			}
-			// Lighten = angle * 100 / PI/2
-			dLighten = dPi * 200 / Math.PI;
-			if (dLighten < 0) {
-				dLighten = 0;
-			}
+			dLighten = calcLightShift();
 			// If we are getting too bright (shouldn't be brighter than sun)
 			if (dLighten > 60) {
 				color = colors.previousSkyColor;
 			}
 			else {
-				color = tinycolor(colors.skyColor).lighten(dLighten).toHexString();
+				color = window.tinycolor(colors.skyColor).lighten(dLighten).toHexString();
 			}
 			colors.previousSkyColor = color;
+
+			// Calculate buildings color for later use
+			colors.currentCityColor = window.tinycolor(colors.cityColor).lighten(dLighten).toHexString();
+
+			// Set logo color
+			colors.currentLogoColor = window.tinycolor(colors.logoColor).darken(dLighten * 5).toHexString();
+			document.getElementById('logo').style.color = colors.currentLogoColor;
 		}
 		ctx.fillStyle = color;
 		ctx.fillRect(viewport.leftX, viewport.topY, viewport.width(), viewport.height());
@@ -171,7 +194,7 @@ var cityBuilder = cityBuilder || (function () {
 	 * @param {array} city Coordinates for a city
 	 */
 	function drawCity(city) {
-		var i;
+		var i, gradient;
 		ctx.beginPath();
 		ctx.moveTo(city[0].x, city[0].y);
 		for (i = 1; i < city.length; i++) {
@@ -181,8 +204,16 @@ var cityBuilder = cityBuilder || (function () {
 		ctx.lineTo(viewport.leftX, viewport.bottomY);
 		ctx.closePath();
 		ctx.lineWidth = 1;
-		ctx.strokeStyle = colors.cityColor;
-		ctx.fillStyle = colors.cityColor;
+
+		if (typeof colors.currentCityColor === 'undefined') {
+			colors.currentCityColor = colors.cityColor;
+		}
+		ctx.strokeStyle = 'rgba(1, 1, 1, 0)';
+		gradient = ctx.createLinearGradient(viewport.leftX, viewport.topY, viewport.leftX, viewport.bottomY);
+		gradient.addColorStop(0.35, colors.currentCityColor);
+		gradient.addColorStop(0.65, colors.cityColor);
+		ctx.fillStyle = gradient;
+
 		ctx.fill();
 		ctx.stroke();
 	}
