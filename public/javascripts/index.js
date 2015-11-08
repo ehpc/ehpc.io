@@ -29,7 +29,7 @@ var cityBuilder = cityBuilder || (function () {
 				return this.bottomY - this.topY;
 			}
 		},
-		animSpeedFactor = 100, // For controlling overall animation speed
+		animSpeedFactor = 300, // For controlling overall animation speed
 		animLastTimestamp = 0, // For controlling FPS
 		animDrawRate = 1000 / 25, // FPS
 		animPx = animSpeedFactor / 5, // How many pixels to generate each frame
@@ -51,8 +51,13 @@ var cityBuilder = cityBuilder || (function () {
 			width: 0,
 			height: 0,
 			angle: Math.PI - 0.2,
-			speed: animSpeedFactor / 10000
-		};
+			speed: animSpeedFactor / 10000,
+			revolutionCount: 0, // How many times the sun circled
+			previousRevolutionCount: -1,
+			invisible: true // If sun is behind horizon
+		},
+		maxStarsCount, // Maximum number of stars in the sky
+		stars = []; // Collection of stars
 
 	/**
 	 * Recalculates the viewport
@@ -71,6 +76,7 @@ var cityBuilder = cityBuilder || (function () {
 		sun.size = canvas.height / 25;
 		sun.width = canvas.width - sun.size * 2;
 		sun.height = canvas.height - sun.size * 2;
+		maxStarsCount = Math.ceil(viewport.width() * viewport.height() / 200);
 	}
 
 	/**
@@ -104,29 +110,99 @@ var cityBuilder = cityBuilder || (function () {
 				city = generateCityMore(city, animPx);
 			}
 			sun = moveSun(sun);
+			stars = generateStars(stars);
+			drawStars(stars);
 			drawSun(sun);
 			drawCity(city);
 			animLastTimestamp = timestamp;
 		}
 	}
 
+	function generateStars(stars) {
+		var count, i;
+		if (sun.previousRevolutionCount !== sun.revolutionCount) {
+			stars = [];
+			count = Math.ceil(Math.random() * maxStarsCount);
+			for (i = 0; i < count; i++) {
+				stars.push({
+					x: viewport.leftX + Math.random() * viewport.width(),
+					y: viewport.topY + Math.random() * viewport.height() * 0.7,
+					size: Math.random() * 1.5
+				});
+			}
+			sun.previousRevolutionCount = sun.revolutionCount;
+		}
+		if (sun.ivisible) {
+			return [];
+		}
+		return stars;
+	}
+
+	function drawStars(stars) {
+		var angle = Math.PI * 2,
+			i;
+		ctx.shadowColor = '#ffffff';
+		ctx.shadowBlur = Math.random() * 1.5;
+		ctx.fillStyle = colors.currentStarsColor;
+		for (i = 0; i < stars.length; i++) {
+			ctx.beginPath();
+			ctx.arc(stars[i].x, stars[i].y, stars[i].size, 0, angle);
+			ctx.closePath();
+			ctx.fill();
+		}
+		ctx.shadowBlur = 0;
+	}
+
 	/**
 	 * Calculate lighting shift in respect to the sun in percents
+	 * @param {boolean} dark Calculate for dark sky
 	 * @return {number} Shift in percents
 	 */
-	function calcLightShift() {
+	function calcLightShift(dark) {
 		var dPi, dLighten;
 		// Angle deviation
-		dPi = sun.angle - Math.PI;
+		dPi = dark ? sun.angle : sun.angle - Math.PI;
 		if (dPi > Math.PI / 2) {
 			dPi = Math.PI - dPi;
 		}
 		// Lighten = angle * 100 / PI/2
-		dLighten = dPi * 200 / Math.PI;
+		dLighten = dark ? dPi * 100 / Math.PI : dPi * 200 / Math.PI;
 		if (dLighten < 0) {
 			dLighten = 0;
 		}
 		return dLighten;
+	}
+
+	/**
+	 * Calculate lighting shift for stars
+	 * @return {number} Shift between 0 and 1
+	 */
+	function calcLightShiftForStars() {
+		var padding = 0.5,
+			leftAngle = Math.PI + padding,
+			rightAngle = Math.PI * 2 - padding,
+			angleRange = Math.PI + padding * 2,
+			halfAngleRange = angleRange / 2,
+			dLighten, normalizedAngle;
+		if (sun.angle >= leftAngle && sun.angle <= rightAngle) {
+			return 0;
+		}
+		else {
+			if (sun.angle > rightAngle) {
+				normalizedAngle = sun.angle - rightAngle;
+			}
+			else {
+				normalizedAngle = sun.angle + padding;
+			}
+			if (normalizedAngle > halfAngleRange) {
+				normalizedAngle = angleRange - normalizedAngle;
+			}
+			dLighten = normalizedAngle * 1 / (angleRange * 0.5);
+			if (dLighten < 0) {
+				dLighten = 0;
+			}
+			return dLighten;
+		}
 	}
 
 	/**
@@ -160,6 +236,10 @@ var cityBuilder = cityBuilder || (function () {
 		}
 		ctx.fillStyle = color;
 		ctx.fillRect(viewport.leftX, viewport.topY, viewport.width(), viewport.height());
+
+		// Lighting for stars
+		dLighten = calcLightShiftForStars();
+		colors.currentStarsColor = 'hsla(0, 100%, 100%, ' + dLighten + ')';
 	}
 
 	/**
@@ -167,13 +247,19 @@ var cityBuilder = cityBuilder || (function () {
 	 * @param {object} sun The sun
 	 */
 	function moveSun(sun) {
+		var noon = Math.PI * 3 / 2;
 		sun.x = viewport.middleX + Math.cos(sun.angle) * sun.width * 0.5;
 		sun.y = viewport.middleY + Math.sin(sun.angle) * sun.height * 0.5;
+		// Sun revolved one more time around the city
+		if (sun.angle < noon && sun.angle + sun.speed > noon) {
+			sun.revolutionCount++;
+		}
 		sun.angle += sun.speed;
 		// Normalizing PI
 		if (sun.angle >= 2 * Math.PI) {
-			sun.angle = 2 * Math.PI - sun.angle;
+			sun.angle = sun.angle - 2 * Math.PI;
 		}
+		sun.invisible = sun.angle < Math.PI;
 		return sun;
 	}
 
@@ -211,7 +297,7 @@ var cityBuilder = cityBuilder || (function () {
 		ctx.strokeStyle = 'rgba(1, 1, 1, 0)';
 		gradient = ctx.createLinearGradient(viewport.leftX, viewport.topY, viewport.leftX, viewport.bottomY);
 		gradient.addColorStop(0.35, colors.currentCityColor);
-		gradient.addColorStop(0.65, colors.cityColor);
+		gradient.addColorStop(0.6, colors.cityColor);
 		ctx.fillStyle = gradient;
 
 		ctx.fill();
