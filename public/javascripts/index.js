@@ -24,6 +24,9 @@ var cityBuilder = cityBuilder || (function () {
 			rightX: 0,
 			width: function () {
 				return this.rightX - this.leftX;
+			},
+			height: function () {
+				return this.bottomY - this.topY;
 			}
 		},
 		animSpeedFactor = 100, // For controlling overall animation speed
@@ -31,8 +34,11 @@ var cityBuilder = cityBuilder || (function () {
 		animDrawRate = 1000 / 25, // FPS
 		animPx = animSpeedFactor / 5, // How many pixels to generate each frame
 		city = [], // Collection of coordinates for all buildings in the city
-		cityColor = '#e2e2e2', // Base color of the city
-		skyColor = '#999999', // Base color of the sky
+		colors = {
+			cityColor: '#555', // Base color of the city
+			skyColor: '#333', // Base color of the sky
+			sunColor: '#ffffff' // Sun color
+		},
 		cityTopDeviation, // How long the buildings could be
 		cityBottomDeviation, // How grounded the buildings could be
 		cityLengthFactor, // Determines how wide the buildings could be
@@ -44,8 +50,7 @@ var cityBuilder = cityBuilder || (function () {
 			width: 0,
 			height: 0,
 			angle: Math.PI - 0.2,
-			speed: animSpeedFactor / 10000,
-			color: '#e9e9e9' // Sun color
+			speed: animSpeedFactor / 10000
 		};
 
 	/**
@@ -60,7 +65,7 @@ var cityBuilder = cityBuilder || (function () {
 		cityLengthDeviation = canvas.height / 18;
 		viewport.middleY = canvas.height / 2 + cityTopDeviation / 2;
 		viewport.bottomY = canvas.height;
-		viewport.rightX = canvas.width - 1;
+		viewport.rightX = canvas.width;
 		viewport.middleX = canvas.width / 2;
 		sun.size = canvas.height / 25;
 		sun.width = canvas.width - sun.size * 2;
@@ -90,22 +95,48 @@ var cityBuilder = cityBuilder || (function () {
 		window.requestAnimationFrame(mainLoop);
 		if (timestamp - animLastTimestamp >= animDrawRate) {
 			ctx.clearRect(0, 0, canvas.width, canvas.height);
+			setLight();
 			// Removing buildings from the left and shifting the city position
 			city = demolishBuildings(city, animPx);
 			// If there are no buildings left to show
 			if (city[city.length - 1].x <= viewport.rightX) {
 				city = generateCityMore(city, animPx);
 			}
-			moveSun(sun);
-			changeLight();
+			sun = moveSun(sun);
 			drawSun(sun);
 			drawCity(city);
 			animLastTimestamp = timestamp;
 		}
 	}
 
-	function changeLight() {
-
+	function setLight() {
+		var color, dPi, dLighten;
+		// Lighting the sky
+		if (sun.angle > 0 && sun.angle < Math.PI) {
+			color = colors.skyColor;
+		}
+		else {
+			// Angle deviation
+			dPi = sun.angle - Math.PI;
+			if (dPi > Math.PI / 2) {
+				dPi = Math.PI - dPi;
+			}
+			// Lighten = angle * 100 / PI/2
+			dLighten = dPi * 200 / Math.PI;
+			if (dLighten < 0) {
+				dLighten = 0;
+			}
+			// If we are getting too bright (shouldn't be brighter than sun)
+			if (dLighten > 60) {
+				color = colors.previousSkyColor;
+			}
+			else {
+				color = tinycolor(colors.skyColor).lighten(dLighten).toHexString();
+			}
+			colors.previousSkyColor = color;
+		}
+		ctx.fillStyle = color;
+		ctx.fillRect(viewport.leftX, viewport.topY, viewport.width(), viewport.height());
 	}
 
 	/**
@@ -116,6 +147,11 @@ var cityBuilder = cityBuilder || (function () {
 		sun.x = viewport.middleX + Math.cos(sun.angle) * sun.width * 0.5;
 		sun.y = viewport.middleY + Math.sin(sun.angle) * sun.height * 0.5;
 		sun.angle += sun.speed;
+		// Normalizing PI
+		if (sun.angle >= 2 * Math.PI) {
+			sun.angle = 2 * Math.PI - sun.angle;
+		}
+		return sun;
 	}
 
 	/**
@@ -123,7 +159,7 @@ var cityBuilder = cityBuilder || (function () {
 	 * @param {object} sun The sun :)
 	 */
 	function drawSun(sun) {
-		ctx.fillStyle = sun.color;
+		ctx.fillStyle = colors.sunColor;
 		ctx.beginPath();
 		ctx.arc(sun.x, sun.y, sun.size, 0, Math.PI * 2);
 		ctx.closePath();
@@ -145,8 +181,8 @@ var cityBuilder = cityBuilder || (function () {
 		ctx.lineTo(viewport.leftX, viewport.bottomY);
 		ctx.closePath();
 		ctx.lineWidth = 1;
-		ctx.strokeStyle = cityColor;
-		ctx.fillStyle = cityColor;
+		ctx.strokeStyle = colors.cityColor;
+		ctx.fillStyle = colors.cityColor;
 		ctx.fill();
 		ctx.stroke();
 	}
