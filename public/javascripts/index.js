@@ -29,7 +29,7 @@ var cityBuilder = cityBuilder || (function () {
 				return this.bottomY - this.topY;
 			}
 		},
-		animSpeedFactor = 300, // For controlling overall animation speed
+		animSpeedFactor = 100, // For controlling overall animation speed
 		animLastTimestamp = 0, // For controlling FPS
 		animDrawRate = 1000 / 25, // FPS
 		animPx = animSpeedFactor / 5, // How many pixels to generate each frame
@@ -118,6 +118,11 @@ var cityBuilder = cityBuilder || (function () {
 		}
 	}
 
+	/**
+	 * Generate some stars
+	 * @param {array} stars Stars
+	 * @return {array} Stars
+	 */
 	function generateStars(stars) {
 		var count, i;
 		if (sun.previousRevolutionCount !== sun.revolutionCount) {
@@ -138,6 +143,10 @@ var cityBuilder = cityBuilder || (function () {
 		return stars;
 	}
 
+	/**
+	 * Draw all stars
+	 * @param {array} stars Stars array
+	 */
 	function drawStars(stars) {
 		var angle = Math.PI * 2,
 			i;
@@ -219,7 +228,7 @@ var cityBuilder = cityBuilder || (function () {
 		else {
 			dLighten = calcLightShift();
 			// If we are getting too bright (shouldn't be brighter than sun)
-			if (dLighten > 60) {
+			if (dLighten > 70) {
 				color = colors.previousSkyColor;
 			}
 			else {
