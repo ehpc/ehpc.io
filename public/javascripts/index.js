@@ -50,7 +50,7 @@ var cityBuilder = cityBuilder || (function () {
 			size: 0,
 			width: 0,
 			height: 0,
-			angle: Math.PI - 0.2,
+			angle: Math.PI - 0.75,
 			speed: animSpeedFactor / 10000,
 			revolutionCount: 0, // How many times the sun circled
 			previousRevolutionCount: -1,
@@ -91,6 +91,13 @@ var cityBuilder = cityBuilder || (function () {
 		mainLoop();
 		window.addEventListener('resize', function () {
 			recalcViewport();
+			// Adding buildings fast so nobody will see a gap
+			if (city[city.length - 1].x <= viewport.rightX) {
+				city = generateCityMore(city, viewport.rightX - city[city.length - 1].x);
+			}
+			// We need new stars cause old ones covered less area than is available now
+			sun.previousRevolutionCount = sun.revolutionCount - 1;
+			stars = generateStars(stars);
 		});
 	}
 
@@ -128,11 +135,14 @@ var cityBuilder = cityBuilder || (function () {
 		if (sun.previousRevolutionCount !== sun.revolutionCount) {
 			stars = [];
 			count = Math.ceil(Math.random() * maxStarsCount);
+			if (count < maxStarsCount * 0.3) {
+				count = maxStarsCount * 0.3;
+			}
 			for (i = 0; i < count; i++) {
 				stars.push({
 					x: viewport.leftX + Math.random() * viewport.width(),
 					y: viewport.topY + Math.random() * viewport.height() * 0.7,
-					size: Math.random() * 1.5
+					size: Math.random() * 2
 				});
 			}
 			sun.previousRevolutionCount = sun.revolutionCount;
@@ -148,18 +158,13 @@ var cityBuilder = cityBuilder || (function () {
 	 * @param {array} stars Stars array
 	 */
 	function drawStars(stars) {
-		var angle = Math.PI * 2,
-			i;
-		ctx.shadowColor = '#ffffff';
-		ctx.shadowBlur = Math.random() * 1.5;
-		ctx.fillStyle = colors.currentStarsColor;
-		for (i = 0; i < stars.length; i++) {
-			ctx.beginPath();
-			ctx.arc(stars[i].x, stars[i].y, stars[i].size, 0, angle);
-			ctx.closePath();
-			ctx.fill();
+		var angle, i;
+		if (!colors.currentStarsColorInvisible) {
+			ctx.fillStyle = colors.currentStarsColor;
+			for (i = 0; i < stars.length; i++) {
+				ctx.fillRect(stars[i].x, stars[i].y, stars[i].size, stars[i].size);
+			}
 		}
-		ctx.shadowBlur = 0;
 	}
 
 	/**
@@ -249,6 +254,12 @@ var cityBuilder = cityBuilder || (function () {
 		// Lighting for stars
 		dLighten = calcLightShiftForStars();
 		colors.currentStarsColor = 'hsla(0, 100%, 100%, ' + dLighten + ')';
+		if (dLighten === 0) {
+			colors.currentStarsColorInvisible = true;
+		}
+		else {
+			colors.currentStarsColorInvisible = false;
+		}
 	}
 
 	/**

@@ -1,16 +1,23 @@
 body {
 	padding: 3vmin;
 	text-align: center;
+	font-family: 'futura-pt', Futura, Futura-Medium, "Futura Medium", "Century Gothic", CenturyGothic, "Apple Gothic", AppleGothic, "URW Gothic L", "Avant Garde", sans-serif;
+}
+
+.wf-loading {
+	h1, nav {
+		display: none;
+	}
 }
 
 h1 {
-	font-family: 'futura-pt', sans-serif;
 	font-size: 50vmin;
 	font-weight: 400;
 	margin: 0;
 	position: relative;
 	z-index: 1000;
 	color: #ffffff;
+	cursor: default;
 }
 
 canvas {
@@ -31,6 +38,12 @@ nav {
 	a {
 		color: #ffffff;
 		text-decoration: none;
+		&:visited {
+			color: #ffffff;
+		}
+		&:hover, &:active, &:focus {
+			color: #aaaaaa;
+		}
 	}
 	.mainNav {
 		margin-bottom: 4vmin;
@@ -56,6 +69,7 @@ nav {
 			}
 		}
 		@media (orientation: landscape) {
+			margin-bottom: 6vmin;
 			a {
 				font-size: 12vmin;
 			}
@@ -102,9 +116,12 @@ nav {
 					}
 				}
 			}
-			@media (orientation: landscape) {
+		}
+		@media (orientation: landscape) {
+			font-size: 4vmin;
+			margin-bottom: 4vmin;
+			.row {
 				display: inline;
-				font-size: 4vmin;
 				.col {
 					float: none;
 					display: inline;
