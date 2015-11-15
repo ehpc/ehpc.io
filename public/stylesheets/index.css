@@ -18,3 +18,117 @@ canvas {
   width: 100%;
   height: 100%;
 }
+nav {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  color: #ffffff;
+}
+nav a {
+  color: #ffffff;
+  text-decoration: none;
+}
+nav .mainNav {
+  margin-bottom: 4vmin;
+  text-align: center;
+}
+nav .mainNav a {
+  font-size: 8vmin;
+}
+@media (orientation: portrait) {
+  nav .mainNav a {
+    font-size: 10vmin;
+  }
+}
+@media (orientation: portrait) and (max-width: 830px) {
+  nav .mainNav {
+    margin-bottom: 5vmin;
+  }
+  nav .mainNav a {
+    font-size: 12vmin;
+  }
+}
+@media (orientation: portrait) and (max-width: 530px) {
+  nav .mainNav {
+    margin-bottom: 8vmin;
+  }
+  nav .mainNav a {
+    font-size: 16vmin;
+  }
+}
+@media (orientation: landscape) {
+  nav .mainNav a {
+    font-size: 12vmin;
+  }
+}
+nav .linkNav {
+  font-size: 2vmin;
+  margin-bottom: 2vmin;
+}
+nav .linkNav .row {
+  overflow: hidden;
+}
+nav .linkNav .row .col {
+  float: left;
+  padding-bottom: 1vmin;
+}
+nav .linkNav .row .col:first-child {
+  text-align: left;
+  padding-right: 2vmin;
+}
+nav .linkNav .row .col:last-child {
+  text-align: right;
+  padding-left: 2vmin;
+}
+nav .linkNav .row .col.single {
+  text-align: center;
+  float: none;
+}
+nav .linkNav .row .col.col2 {
+  float: right;
+}
+@media (orientation: portrait) {
+  nav .linkNav .row {
+    font-size: 3.5vmin;
+  }
+}
+@media (orientation: portrait) and (max-width: 830px) {
+  nav .linkNav .row {
+    font-size: 4vmin;
+    margin-bottom: 2vmin;
+  }
+  nav .linkNav .row .col {
+    padding-bottom: 1.5vmin;
+  }
+}
+@media (orientation: portrait) and (max-width: 530px) {
+  nav .linkNav .row {
+    font-size: 5vmin;
+    margin-bottom: 4vmin;
+  }
+  nav .linkNav .row .col {
+    padding-bottom: 1vmin;
+  }
+}
+@media (orientation: landscape) {
+  nav .linkNav .row {
+    display: inline;
+    font-size: 4vmin;
+  }
+  nav .linkNav .row .col {
+    float: none;
+    display: inline;
+    padding-left: 2vmin;
+    padding-right: 2vmin;
+  }
+  nav .linkNav .row .col.col2 {
+    float: none;
+  }
+}
+@media (orientation: landscape) {
+  nav {
+    width: 90%;
+  }
+}
