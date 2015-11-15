@@ -55,7 +55,7 @@ nav .mainNav a {
     font-size: 10vmin;
   }
 }
-@media (orientation: portrait) and (max-width: 830px) {
+@media (orientation: portrait) and (max-width: 700px) {
   nav .mainNav {
     margin-bottom: 5vmin;
   }
@@ -65,7 +65,7 @@ nav .mainNav a {
 }
 @media (orientation: portrait) and (max-width: 530px) {
   nav .mainNav {
-    margin-bottom: 8vmin;
+    margin-bottom: 6vmin;
   }
   nav .mainNav a {
     font-size: 16vmin;
@@ -110,7 +110,7 @@ nav .linkNav .row .col.col2 {
     font-size: 3.5vmin;
   }
 }
-@media (orientation: portrait) and (max-width: 830px) {
+@media (orientation: portrait) and (max-width: 700px) {
   nav .linkNav .row {
     font-size: 4vmin;
     margin-bottom: 2vmin;
@@ -125,7 +125,7 @@ nav .linkNav .row .col.col2 {
     margin-bottom: 4vmin;
   }
   nav .linkNav .row .col {
-    padding-bottom: 1vmin;
+    padding-bottom: 0;
   }
 }
 @media (orientation: landscape) {
