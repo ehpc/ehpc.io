@@ -441,6 +441,9 @@ var cityBuilder = cityBuilder || (function (window, document) {
 		}
 		// Calculate line length
 		length = Math.floor(probability * cityLengthFactor) * 2;
+		if (cityLengthFactor < 1 && length === 0) {
+			length = 1;
+		}
 		// Calculate direction
 		if (length === 0) {
 			direction = 3;

@@ -31,13 +31,12 @@ canvas {
 nav {
 	position: fixed;
 	bottom: 0;
-	left: 50%;
-	transform: translateX(-50%);
 	z-index: 100;
 	color: #ffffff;
 	a {
 		color: #ffffff;
 		text-decoration: none;
+		padding: 0 3vmin;
 		&:visited {
 			color: #ffffff;
 		}
@@ -80,6 +79,7 @@ nav {
 		margin-bottom: 2vmin;
 		.row {
 			overflow: hidden;
+			margin-top: 2vmin;
 			.col {
 				float: left;
 				padding-bottom: 1vmin;
@@ -119,9 +119,8 @@ nav {
 		}
 		@media (orientation: landscape) {
 			font-size: 4vmin;
-			margin-bottom: 4vmin;
+			margin-bottom: 2vmin;
 			.row {
-				display: inline;
 				.col {
 					float: none;
 					display: inline;
@@ -133,6 +132,15 @@ nav {
 				}
 			}
 		}
+	}
+	.fork {
+		position: fixed;
+		right: 0;
+		bottom: 18vmin;
+		font-size: 3vmin;
+		padding: 0.5vmin 0;
+		transform: rotate(-90deg);
+		transform-origin: right bottom 0;
 	}
 	@media (orientation: landscape) {
 		width: 90%;
