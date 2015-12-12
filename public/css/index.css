@@ -1,0 +1,155 @@
+body {
+  padding: 3vmin;
+  text-align: center;
+  font-family: 'futura-pt', Futura, Futura-Medium, "Futura Medium", "Century Gothic", CenturyGothic, "Apple Gothic", AppleGothic, "URW Gothic L", "Avant Garde", sans-serif;
+}
+.wf-loading h1,
+.wf-loading nav {
+  display: none;
+}
+h1 {
+  font-size: 50vmin;
+  font-weight: 400;
+  margin: 0;
+  position: relative;
+  z-index: 1000;
+  color: #ffffff;
+  cursor: default;
+}
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+nav {
+  position: fixed;
+  bottom: 0;
+  z-index: 100;
+  color: #ffffff;
+  width: 100%;
+}
+nav a {
+  color: #ffffff;
+  text-decoration: none;
+  padding: 0 3vmin;
+}
+nav a:visited {
+  color: #ffffff;
+}
+nav a:hover,
+nav a:active,
+nav a:focus {
+  color: #aaaaaa;
+}
+nav .mainNav {
+  margin-bottom: 4vmin;
+  text-align: center;
+}
+nav .mainNav a {
+  font-size: 8vmin;
+}
+@media (orientation: portrait) {
+  nav .mainNav a {
+    font-size: 10vmin;
+  }
+}
+@media (orientation: portrait) and (max-width: 700px) {
+  nav .mainNav {
+    margin-bottom: 5vmin;
+  }
+  nav .mainNav a {
+    font-size: 12vmin;
+  }
+}
+@media (orientation: portrait) and (max-width: 530px) {
+  nav .mainNav {
+    margin-bottom: 6vmin;
+  }
+  nav .mainNav a {
+    font-size: 16vmin;
+  }
+}
+@media (orientation: landscape) {
+  nav .mainNav {
+    margin-bottom: 6vmin;
+  }
+  nav .mainNav a {
+    font-size: 12vmin;
+  }
+}
+nav .linkNav {
+  font-size: 2vmin;
+  margin-bottom: 2vmin;
+}
+nav .linkNav .row {
+  overflow: hidden;
+  margin-top: 2vmin;
+}
+nav .linkNav .row .col {
+  float: left;
+  padding-bottom: 1vmin;
+}
+nav .linkNav .row .col:first-child {
+  text-align: left;
+  padding-right: 2vmin;
+}
+nav .linkNav .row .col:last-child {
+  text-align: right;
+  padding-left: 2vmin;
+}
+nav .linkNav .row .col.single {
+  text-align: center;
+  float: none;
+}
+nav .linkNav .row .col.col2 {
+  float: right;
+}
+@media (orientation: portrait) {
+  nav .linkNav .row {
+    font-size: 3.5vmin;
+  }
+}
+@media (orientation: portrait) and (max-width: 700px) {
+  nav .linkNav .row {
+    font-size: 4vmin;
+    margin-bottom: 2vmin;
+  }
+  nav .linkNav .row .col {
+    padding-bottom: 1.5vmin;
+  }
+}
+@media (orientation: portrait) and (max-width: 530px) {
+  nav .linkNav .row {
+    font-size: 5vmin;
+    margin-bottom: 4vmin;
+  }
+  nav .linkNav .row .col {
+    padding-bottom: 0;
+  }
+}
+@media (orientation: landscape) {
+  nav .linkNav {
+    font-size: 4vmin;
+    margin-bottom: 2vmin;
+  }
+  nav .linkNav .row .col {
+    float: none;
+    display: inline;
+    padding-left: 2vmin;
+    padding-right: 2vmin;
+  }
+  nav .linkNav .row .col.col2 {
+    float: none;
+  }
+}
+nav .fork {
+  position: fixed;
+  right: 0;
+  bottom: 18vmin;
+  font-size: 3vmin;
+  padding: 0.5vmin 0;
+  transform: rotate(-90deg);
+  transform-origin: right bottom 0;
+}
