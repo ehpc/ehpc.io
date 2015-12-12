@@ -11,7 +11,7 @@
  * 2. `drawCity` draws lines based on those coordinates
  */
 
-var cityBuilder = cityBuilder || (function () {
+var cityBuilder = cityBuilder || (function (window, document) {
 
 	var canvas, // Canvas element
 		ctx, // Canvas context
@@ -158,7 +158,7 @@ var cityBuilder = cityBuilder || (function () {
 	 * @param {array} stars Stars array
 	 */
 	function drawStars(stars) {
-		var angle, i;
+		var i;
 		if (!colors.currentStarsColorInvisible) {
 			ctx.fillStyle = colors.currentStarsColor;
 			for (i = 0; i < stars.length; i++) {
@@ -514,6 +514,6 @@ var cityBuilder = cityBuilder || (function () {
 	return {
 		init: init
 	};
-})();
+})(window, document);
 
 window.onload = cityBuilder.init;
