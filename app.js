@@ -3,7 +3,8 @@ var express = require('express'),
 	logger = require('morgan'),
 	cookieParser = require('cookie-parser'),
 	bodyParser = require('body-parser'),
-	routes = require('./routes/index'),
+	routesIndex = require('./routes/index'),
+	routesBlog = require('./routes/blog'),
 	app = express();
 // TODO var favicon = require('serve-favicon');
 
@@ -19,7 +20,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
+app.use('/', routesIndex);
+app.use('/blog', routesBlog);
 
 // Catch 404 and forward to error handler
 app.use(function (req, res, next) {
