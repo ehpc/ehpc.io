@@ -6,32 +6,33 @@ var gulp = require('gulp'),
 	batch = require('gulp-batch'),
 	concat = require('gulp-concat'),
 	uglify = require('gulp-uglify'),
-	del = require('del');
+	del = require('del'),
+	resourcesDir = 'resources';
 
 // Compile less to css
 gulp.task('less', function () {
 	return gulp
 		.src(['less/**/*.less'])
 		.pipe(less())
-		.pipe(gulp.dest('public/css/'));
+		.pipe(gulp.dest(resourcesDir + '/css/'));
 });
 
 // Compile all index styles into one
 gulp.task('compile-css-index', ['less'], function () {
 	return gulp
-		.src(['node_modules/normalize.css/normalize.css', 'public/css/index.css'])
+		.src(['node_modules/normalize.css/normalize.css', resourcesDir + '/css/index.css'])
 		.pipe(concat('index.min.css'))
 		.pipe(minifyCss())
-		.pipe(gulp.dest('public/css/'));
+		.pipe(gulp.dest(resourcesDir + '/css/'));
 });
 
 //  Compile all blog styles into one
 gulp.task('compile-css-blog', ['less'], function () {
 	return gulp
-		.src(['node_modules/normalize.css/normalize.css', 'public/css/blog.css'])
+		.src(['node_modules/normalize.css/normalize.css', resourcesDir + '/css/blog.css'])
 		.pipe(concat('blog.min.css'))
 		.pipe(minifyCss())
-		.pipe(gulp.dest('public/css/'));
+		.pipe(gulp.dest(resourcesDir + '/css/'));
 });
 
 // Compile all index-specific js
@@ -42,7 +43,7 @@ gulp.task('compile-js-index', function () {
 		.pipe(uglify({
 			mangle: true
 		}))
-		.pipe(gulp.dest('public/js/'));
+		.pipe(gulp.dest(resourcesDir + '/js/'));
 });
 
 // Compile all blog-specific js
@@ -53,14 +54,14 @@ gulp.task('compile-js-blog', function () {
 		.pipe(uglify({
 			mangle: true
 		}))
-		.pipe(gulp.dest('public/js/'));
+		.pipe(gulp.dest(resourcesDir + '/js/'));
 });
 
 // Remove all temporary files
 gulp.task('cleanup', ['compile-css-index', 'compile-js-index'], function () {
 	return del([
-		'public/css/index.css',
-		'public/css/blog.css'
+		resourcesDir + '/css/index.css',
+		resourcesDir + '/css/blog.css'
 	]);
 });
 
