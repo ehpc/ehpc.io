@@ -1,5 +1,33 @@
 <% include header.ejs %>
 
-BLOG
+<main class="article-list">
+
+    <% for (var i = 0; i < 10; i++) { %>
+
+    <article class="article-summary">
+        <section class="article-summary__info">
+            <h2 class="article-summary__title">Это заголовок какой-то статьи</h2>
+            <time class="article-summary__creation-date" title="Дата создания">
+                <i class="fa fa-calendar" aria-hidden="true"></i>
+                20 декабря 2020
+            </time>
+            <time class="article-summary__update-date" title="Дата обновления">
+                <i class="fa fa-arrow-circle-o-up" aria-hidden="true"></i>
+                30 декабря 2020
+            </time>
+        </section>
+        <section class="article-summary__lead">
+            Это краткое содержание статьи. Это краткое содержание статьи. Это краткое содержание статьи.
+            Это краткое содержание статьи. Это краткое содержание статьи. Это краткое содержание статьи.
+            Это краткое содержание статьи. Это краткое содержание статьи. Это краткое содержание статьи.
+            Это краткое содержание статьи. Это краткое содержание статьи. Это краткое содержание статьи.
+            Это краткое содержание статьи. Это краткое содержание статьи. Это краткое содержание статьи.
+            Это краткое содержание статьи. Это краткое содержание статьи. Это краткое содержание статьи.
+        </section>
+    </article>
+
+    <% } %>
+
+</main>
 
 <% include footer.ejs %>

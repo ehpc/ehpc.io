@@ -1,62 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-		<title>ehpc's home</title>
+        <title>ehpc's home</title>
 
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-		<link rel="stylesheet" type="text/css" href="css/index.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="css/index.min.css">
 
-		<script>
-			// Typekit
-			(function(d) {
-				var config = {
-					kitId: 'wmo8fym',
-					scriptTimeout: 3000,
-					async: true
-				},
-				h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
-			})(document);
-		</script>
-	</head>
-	<body>
+        <% include common/typekit.ejs %>
+        <% include common/google-analytics.ejs %>
+    </head>
+    <body>
 
-		<header>
-			<h1 id="logo">ehpc</h1>
-		</header>
+        <header>
+            <h1 id="logo">ehpc</h1>
+        </header>
 
-		<nav>
-			<div class="mainNav">
-				<a href="/blog">blog</a>
-			</div>
-			<div class="linkNav">
-				<div class="row">
-					<div class="col single">
-						<a href="mailto:ehpc@ehpc.io">ehpc@ehpc.io</a>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col single">
-						<a href="https://github.com/ehpc" title="Fork me"><i class="fa fa-github"></i></a>
-						<a href="skype:eugene42?chat" title="Call me"><i class="fa fa-skype"></i></a>
-						<a href="http://www.youtube.com/channel/UC7yRTJ8-6k7eZ36kaI4fTAw" title="Watch me"><i class="fa fa-youtube"></i></a>
-						<a href="http://vk.com/eugene42" title="Text me"><i class="fa fa-vk"></i></a>
-						<a href="https://www.facebook.com/ehpc42" title="Text me in english :)"><i class="fa fa-facebook-official"></i></a>
-						<a href="https://www.instagram.com/ehpc42/" title="Follow me"><i class="fa fa-instagram"></i></a>
-						<a href="https://www.linkedin.com/in/ehpc42" title="Hire me"><i class="fa fa-linkedin"></i></a>
-					</div>
-				</div>
-			</div>
-			<div class="fork">
-				<a href="https://github.com/ehpc/ehpc.io">Fork this site</a>
-			</div>
-		</nav>
+        <nav>
+            <div class="mainNav">
+                <a href="/blog">blog</a>
+            </div>
+            <div class="linkNav">
+                <div class="row">
+                    <div class="col single">
+                        <a href="mailto:ehpc@ehpc.io">ehpc@ehpc.io</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col single">
+                        <a href="https://github.com/ehpc" title="Fork me"><i class="fa fa-github"></i></a>
+                        <a href="skype:eugene42?chat" title="Call me"><i class="fa fa-skype"></i></a>
+                        <a href="http://www.youtube.com/channel/UC7yRTJ8-6k7eZ36kaI4fTAw" title="Watch me"><i class="fa fa-youtube"></i></a>
+                        <a href="http://vk.com/eugene42" title="Text me"><i class="fa fa-vk"></i></a>
+                        <a href="https://www.facebook.com/ehpc42" title="Text me in english :)"><i class="fa fa-facebook-official"></i></a>
+                        <a href="https://www.instagram.com/ehpc42/" title="Follow me"><i class="fa fa-instagram"></i></a>
+                        <a href="https://www.linkedin.com/in/ehpc42" title="Hire me"><i class="fa fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="fork">
+                <a href="https://github.com/ehpc/ehpc.io">Fork this site</a>
+            </div>
+        </nav>
 
-		<canvas id="canvas"></canvas>
+        <canvas id="canvas"></canvas>
 
-		<script src="js/index.min.js"></script>
-	</body>
+        <script src="js/index.min.js"></script>
+    </body>
 </html>

@@ -67,7 +67,7 @@ gulp.task('cleanup', ['compile-css-index', 'compile-js-index'], function () {
 
 // Automated builds
 gulp.task('watch', function () {
-	watch(['less/**/*.less', '**/*.js', '**/*.ejs'], batch(function (events, done) {
+	watch(['less/**/*.less', 'js/**/*.js'], batch(function (events, done) {
 		gulp.start('default', done);
 	}));
 });

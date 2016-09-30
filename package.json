@@ -4,7 +4,8 @@
 	"private": true,
 	"scripts": {
 		"start": "gulp && node ./bin/www",
-		"build": "gulp"
+		"build": "gulp",
+		"watch": "gulp watch"
 	},
 	"dependencies": {
 		"body-parser": "~1.13.2",

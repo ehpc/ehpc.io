@@ -1,146 +1,146 @@
 body {
-	padding: 3vmin;
-	text-align: center;
-	font-family: 'futura-pt', Futura, Futura-Medium, "Futura Medium", "Century Gothic", CenturyGothic, "Apple Gothic", AppleGothic, "URW Gothic L", "Avant Garde", sans-serif;
+  padding: 3vmin;
+  text-align: center;
+  font-family: 'futura-pt', Futura, Futura-Medium, "Futura Medium", "Century Gothic", CenturyGothic, "Apple Gothic", AppleGothic, "URW Gothic L", "Avant Garde", sans-serif;
 }
 
 .wf-loading {
-	h1, nav {
-		display: none;
-	}
+  h1, nav {
+    display: none;
+  }
 }
 
 h1 {
-	font-size: 50vmin;
-	font-weight: 400;
-	margin: 0;
-	position: relative;
-	z-index: 1000;
-	color: #ffffff;
-	cursor: default;
+  font-size: 50vmin;
+  font-weight: 400;
+  margin: 0;
+  position: relative;
+  z-index: 1000;
+  color: #ffffff;
+  cursor: default;
 }
 
 canvas {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 nav {
-	position: fixed;
-	bottom: 0;
-	z-index: 100;
-	color: #ffffff;
-	width: 100%;
-	a {
-		color: #ffffff;
-		text-decoration: none;
-		padding: 0 3vmin;
-		&:visited {
-			color: #ffffff;
-		}
-		&:hover, &:active, &:focus {
-			color: #aaaaaa;
-		}
-	}
-	.mainNav {
-		margin-bottom: 4vmin;
-		text-align: center;
-		a {
-			font-size: 8vmin;
-		}
-		@media (orientation: portrait) {
-			a {
-				font-size: 10vmin;
-			}
-			@media (max-width: 700px) {
-				margin-bottom: 5vmin;
-				a {
-					font-size: 12vmin;
-				}
-			}
-			@media (max-width: 530px) {
-				margin-bottom: 6vmin;
-				a {
-					font-size: 16vmin;
-				}
-			}
-		}
-		@media (orientation: landscape) {
-			margin-bottom: 6vmin;
-			a {
-				font-size: 12vmin;
-			}
-		}
-	}
-	.linkNav {
-		font-size: 2vmin;
-		margin-bottom: 2vmin;
-		.row {
-			overflow: hidden;
-			margin-top: 2vmin;
-			.col {
-				float: left;
-				padding-bottom: 1vmin;
-				&:first-child {
-					text-align: left;
-					padding-right: 2vmin;
-				}
-				&:last-child {
-					text-align: right;
-					padding-left: 2vmin;
-				}
-				&.single {
-					text-align: center;
-					float: none;
-				}
-				&.col2 {
-					float: right;
-				}
-			}
-			@media (orientation: portrait) {
-				font-size: 3.5vmin;
-				@media (max-width: 700px) {
-					font-size: 4vmin;
-					margin-bottom: 2vmin;
-					.col {
-						padding-bottom: 1.5vmin;
-					}
-				}
-				@media (max-width: 530px) {
-					font-size: 5vmin;
-					margin-bottom: 4vmin;
-					.col {
-						padding-bottom: 0;
-					}
-				}
-			}
-		}
-		@media (orientation: landscape) {
-			font-size: 4vmin;
-			margin-bottom: 2vmin;
-			.row {
-				.col {
-					float: none;
-					display: inline;
-					padding-left: 2vmin;
-					padding-right: 2vmin;
-					&.col2 {
-						float: none;
-					}
-				}
-			}
-		}
-	}
-	.fork {
-		position: fixed;
-		right: 0;
-		bottom: 18vmin;
-		font-size: 2.7vmin;
-		padding: 0.5vmin 0;
-		transform: rotate(-90deg);
-		transform-origin: right bottom 0;
-	}
+  position: fixed;
+  bottom: 0;
+  z-index: 100;
+  color: #ffffff;
+  width: 100%;
+  a {
+    color: #ffffff;
+    text-decoration: none;
+    padding: 0 3vmin;
+    &:visited {
+      color: #ffffff;
+    }
+    &:hover, &:active, &:focus {
+      color: #aaaaaa;
+    }
+  }
+  .mainNav {
+    margin-bottom: 4vmin;
+    text-align: center;
+    a {
+      font-size: 8vmin;
+    }
+    @media (orientation: portrait) {
+      a {
+        font-size: 10vmin;
+      }
+      @media (max-width: 700px) {
+        margin-bottom: 5vmin;
+        a {
+          font-size: 12vmin;
+        }
+      }
+      @media (max-width: 530px) {
+        margin-bottom: 6vmin;
+        a {
+          font-size: 16vmin;
+        }
+      }
+    }
+    @media (orientation: landscape) {
+      margin-bottom: 6vmin;
+      a {
+        font-size: 12vmin;
+      }
+    }
+  }
+  .linkNav {
+    font-size: 2vmin;
+    margin-bottom: 2vmin;
+    .row {
+      overflow: hidden;
+      margin-top: 2vmin;
+      .col {
+        float: left;
+        padding-bottom: 1vmin;
+        &:first-child {
+          text-align: left;
+          padding-right: 2vmin;
+        }
+        &:last-child {
+          text-align: right;
+          padding-left: 2vmin;
+        }
+        &.single {
+          text-align: center;
+          float: none;
+        }
+        &.col2 {
+          float: right;
+        }
+      }
+      @media (orientation: portrait) {
+        font-size: 3.5vmin;
+        @media (max-width: 700px) {
+          font-size: 4vmin;
+          margin-bottom: 2vmin;
+          .col {
+            padding-bottom: 1.5vmin;
+          }
+        }
+        @media (max-width: 530px) {
+          font-size: 5vmin;
+          margin-bottom: 4vmin;
+          .col {
+            padding-bottom: 0;
+          }
+        }
+      }
+    }
+    @media (orientation: landscape) {
+      font-size: 4vmin;
+      margin-bottom: 2vmin;
+      .row {
+        .col {
+          float: none;
+          display: inline;
+          padding-left: 2vmin;
+          padding-right: 2vmin;
+          &.col2 {
+            float: none;
+          }
+        }
+      }
+    }
+  }
+  .fork {
+    position: fixed;
+    right: 0;
+    bottom: 18vmin;
+    font-size: 2.7vmin;
+    padding: 0.5vmin 0;
+    transform: rotate(-90deg);
+    transform-origin: right bottom 0;
+  }
 }
