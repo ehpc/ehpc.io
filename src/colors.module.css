@@ -1,0 +1,8 @@
+:export {
+  wallColor: #050520;
+}
+
+:root {
+  --base-color: #000;
+  --wall-color: #050520;
+}

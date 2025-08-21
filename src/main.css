@@ -1,5 +1,8 @@
+@import url("./colors.module.css");
+
 html,
 body {
+  background-color: var(--base-color);
   height: 100%;
   margin: 0;
 }
