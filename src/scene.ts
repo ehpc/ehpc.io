@@ -1,13 +1,12 @@
+import { polygon } from "./primitives";
 import colors from "./styles/colors.module.css";
 import type { VirtualCanvasContext } from "./types";
-import { line, rect, polygon } from "./primitives";
-
 
 export function drawScene(
   ctx: VirtualCanvasContext,
 ) {
-  const width = ctx.canvas.width;
-  const height = ctx.canvas.height;
+  // const width = ctx.canvas.width;
+  // const height = ctx.canvas.height;
 
   polygon(ctx, [
     [83, 292],

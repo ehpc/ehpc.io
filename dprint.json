@@ -18,7 +18,9 @@
   },
   "excludes": [
     "**/node_modules",
-    "**/*-lock.json"
+    "**/*-lock.json",
+    "**/*-lock.yaml",
+    "**/*-workspace.yaml"
   ],
   "plugins": [
     "https://plugins.dprint.dev/typescript-0.95.10.wasm",
