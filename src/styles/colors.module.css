@@ -1,8 +1,9 @@
 :export {
   wallColor: #050520;
+  highlightColor: #ff8300;
 }
 
 :root {
-  --base-color: #000;
+  --base-color: #cccccc;
   --wall-color: #050520;
 }

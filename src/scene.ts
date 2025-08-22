@@ -1,12 +1,18 @@
-import colors from "./colors.module.css";
+import colors from "./styles/colors.module.css";
+import type { VirtualCanvasContext } from "./types";
+import { line, rect, polygon } from "./primitives";
+
 
 export function drawScene(
-  ctx: OffscreenCanvasRenderingContext2D | CanvasRenderingContext2D,
+  ctx: VirtualCanvasContext,
 ) {
   const width = ctx.canvas.width;
   const height = ctx.canvas.height;
 
-  ctx.clearRect(0, 0, width, height);
-  ctx.fillStyle = colors.wallColor;
-  ctx.fillRect(0, 0, width, height);
+  polygon(ctx, [
+    [83, 292],
+    [203, 285],
+    [236, 312],
+    [113, 323],
+  ], colors.highlightColor);
 }
