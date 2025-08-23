@@ -12,6 +12,7 @@ export function random(min: number, max: number): number {
 }
 
 export function reverse4Bits(bitmask: number): number {
+  bitmask &= 0b1111;
   return ((bitmask & 0b0001) << 3)
     | ((bitmask & 0b0010) << 1)
     | ((bitmask & 0b0100) >> 1)
