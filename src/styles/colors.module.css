@@ -1,6 +1,19 @@
 :export {
-  wallColor: #050520;
-  highlightColor: #ff8300;
+  wallColor: hsl(240, 73%, 7%);
+  highlightColor: hsl(30, 100%, 50%);
+  skyGradient1: hsl(339, 70%, 39%);
+  skyGradient2: hsl(8, 74%, 49%);
+  skyGradient3: hsl(21, 98%, 49%);
+  skyGradient4: hsl(25, 100%, 50%);
+  skyGradient5: hsl(30, 100%, 50%);
+  sunColor: hsl(31, 100%, 50%);
+  starColor1: hsl(11, 84%, 50%);
+  starColor2: hsl(11, 84%, 60%);
+  starColor3: hsl(11, 84%, 45%);
+  starColor4: hsl(11, 84%, 55%);
+  backgroundBuildingColor: hsl(11, 87%, 39%);
+  foregroundBuildingColor: hsl(317, 66%, 13%);
+  windowColor: hsl(27, 100%, 50%);
 }
 
 :root {

@@ -1,10 +1,7 @@
 import "./styles/main.css";
 import { createVirtualCanvas } from "./canvas.ts";
+import { VIRTUAL_CANVAS_HEIGHT, VIRTUAL_CANVAS_WIDTH } from "./constants.ts";
 import { renderLoop } from "./render-loop.ts";
-
-// Virtual canvas dimensions
-const VIRTUAL_CANVAS_WIDTH = 512;
-const VIRTUAL_CANVAS_HEIGHT = 341;
 
 // Set up main canvas
 const mainCanvas = document.getElementById("scene-canvas");

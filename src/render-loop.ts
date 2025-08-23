@@ -1,5 +1,6 @@
+import { generateAllEntities } from "./generators";
 import { drawScene } from "./scene";
-import type { VirtualCanvas, VirtualCanvasContext } from "./types";
+import type { GeneratedEntities, VirtualCanvas, VirtualCanvasContext } from "./types";
 
 function resizeCanvasToDisplaySize(canvas: HTMLCanvasElement): boolean {
   const dpr = Math.max(1, window.devicePixelRatio || 1);
@@ -19,11 +20,12 @@ function drawFrame(
   mainCtx: CanvasRenderingContext2D,
   virtualCanvas: VirtualCanvas,
   virtualCtx: VirtualCanvasContext,
+  generatedEntities: GeneratedEntities,
 ) {
   virtualCtx.imageSmoothingEnabled = false;
   mainCtx.imageSmoothingEnabled = false;
   // Draw the scene onto the virtual canvas
-  drawScene(virtualCtx);
+  drawScene(virtualCtx, generatedEntities);
 
   // Draw virtual canvas onto main canvas
   const width = mainCanvas.width;
@@ -56,6 +58,8 @@ export function renderLoop(
   resizeCanvasToDisplaySize(mainCanvas);
   window.addEventListener("resize", () => resizeCanvasToDisplaySize(mainCanvas));
 
+  const generatedEntities = generateAllEntities();
+
   const targetFPS = 24;
   const frameDuration = 1000 / targetFPS;
   let lastFrameTime = 0;
@@ -69,7 +73,7 @@ export function renderLoop(
       const frames = (deltaTime / frameDuration) >> 0;
       lastFrameTime += frames * frameDuration;
 
-      drawFrame(mainCanvas, mainCtx, virtualCanvas, virtualCtx);
+      drawFrame(mainCanvas, mainCtx, virtualCanvas, virtualCtx, generatedEntities);
     }
     requestAnimationFrame(loop);
   });

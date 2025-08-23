@@ -1,3 +1,4 @@
+export { circle } from "./circle";
 export { line } from "./line";
 export { pixel } from "./pixel";
 export { polygon } from "./polygon";
