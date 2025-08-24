@@ -192,10 +192,21 @@ describe("generators", () => {
 
     it("should generate antennas based on height difference and probability", () => {
       // Create a scenario that should generate antennas
-      // Need multiple buildings where second is lower than first
+      // We need to carefully mock the sequence of Math.random() calls
       const mockValues = [
-        0.99,
-        0.01,
+        // First building:
+        0.5, // buildingWidth calculation (width = 12)
+        0.9, // buildingY calculation (high Y = 45 + 50 = 95)
+        0.5, // windows check (< 0.8, so windows generated since width >= 10)
+        0.5, // windows bitmask generation (via random())
+
+        // Second building:
+        0.5, // buildingWidth calculation (width = 12)
+        0.1, // buildingY calculation (low Y = 5 + 50 = 55, creates height diff)
+        0.5, // windows check
+        0.5, // windows bitmask generation
+        0.05, // antenna probability check (buildingY < prevY, antennasGap = 1, so 0.05 < 1 * 0.1)
+        0.5, // antenna length generation (3 + 7 = 10)
       ];
       let callCount = 0;
       vi.mocked(Math.random).mockImplementation(() => {
@@ -205,19 +216,15 @@ describe("generators", () => {
       });
 
       const intervals: BuildingGenerationInterval[] = [
-        { x0: 0, x1: 300, minWidth: 5, maxWidth: 5, minY: 50, maxY: 100 },
+        { x0: 0, x1: 300, minWidth: 10, maxWidth: 15, minY: 50, maxY: 100 }, // Wide enough for windows
       ];
       const color = "red";
 
       const buildings = generateBuildings(intervals, color);
 
-      // With our mocked values, we should get at least one antenna
-      expect(buildings).toEqual(expect.arrayContaining([expect.objectContaining({
-        options: expect.objectContaining({
-          antennaLength: expect.any(Number),
-        }),
-      })]));
-      expect(buildings.some(building => (building.options.antennaLength ?? 0) >= 1)).toBe(true);
+      // With our carefully mocked sequence, the second building should have an antenna
+      // because: buildingY(55) < prevY(95) and Math.random()(0.05) < antennasGap(1) * 0.1
+      expect(buildings.some(building => (building.options.antennaLength ?? 0) >= 7)).toBe(true);
     });
 
     it("should handle empty intervals gracefully", () => {
@@ -237,6 +244,22 @@ describe("generators", () => {
       expect(buildings[0].y).toBe(40);
       expect(buildings[0].width).toBe(5);
       expect(buildings[0].color).toBe("white");
+    });
+
+    it("should handle minimum viable interval", () => {
+      const intervals: BuildingGenerationInterval[] = [
+        { x0: 0, x1: 1, minWidth: 1, maxWidth: 1, minY: 0, maxY: 0 },
+      ];
+      const color = "black";
+
+      const buildings = generateBuildings(intervals, color);
+
+      expect(buildings.length).toBeGreaterThan(0);
+      buildings.forEach(building => {
+        expect(building.width).toBe(1);
+        expect(building.y).toBe(0);
+        expect(building.color).toBe("black");
+      });
     });
   });
 
