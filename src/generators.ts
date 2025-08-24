@@ -7,6 +7,7 @@ export function generateBuildings(
   intervals: BuildingGenerationInterval[],
   color: string,
 ): Building[] {
+  if (!intervals.length) return [];
   const generatedBuildings: Building[] = [];
   // Pregenerate buildings to make them stable between frames
   const maxX = intervals[intervals.length - 1].x1;

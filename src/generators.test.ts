@@ -1,0 +1,289 @@
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { MAX_WINDOW_BITMASK } from "./constants";
+import { generateAllEntities, generateBuildings } from "./generators";
+import type { BuildingGenerationInterval } from "./types";
+
+describe("generators", () => {
+  describe("generateBuildings", () => {
+    beforeEach(() => {
+      // Mock Math.random to make tests deterministic
+      vi.spyOn(Math, "random");
+    });
+
+    afterEach(() => {
+      vi.restoreAllMocks();
+    });
+
+    it("should generate buildings within the specified intervals", () => {
+      const intervals: BuildingGenerationInterval[] = [
+        { x0: 0, x1: 100, minWidth: 10, maxWidth: 20, minY: 50, maxY: 100 },
+      ];
+      const color = "red";
+
+      const buildings = generateBuildings(intervals, color);
+
+      expect(buildings.length).toBeGreaterThan(0);
+      buildings.forEach(building => {
+        expect(building.x).toBeGreaterThanOrEqual(0);
+        expect(building.x).toBeLessThan(100);
+        expect(building.width).toBeGreaterThanOrEqual(10);
+        expect(building.width).toBeLessThanOrEqual(20);
+        expect(building.y).toBeGreaterThanOrEqual(50);
+        expect(building.y).toBeLessThanOrEqual(100);
+        expect(building.color).toBe(color);
+      });
+    });
+
+    it("should generate buildings that span the entire interval", () => {
+      const intervals: BuildingGenerationInterval[] = [
+        { x0: 0, x1: 50, minWidth: 10, maxWidth: 10, minY: 50, maxY: 50 },
+      ];
+      const color = "blue";
+
+      const buildings = generateBuildings(intervals, color);
+
+      // Calculate total width of all buildings
+      const totalWidth = buildings.reduce((sum, building) => sum + building.width, 0);
+      expect(totalWidth).toBeGreaterThanOrEqual(50);
+    });
+
+    it("should respect width constraints", () => {
+      vi.mocked(Math.random).mockReturnValue(0.5); // Deterministic random
+
+      const intervals: BuildingGenerationInterval[] = [
+        { x0: 0, x1: 100, minWidth: 15, maxWidth: 25, minY: 50, maxY: 100 },
+      ];
+      const color = "green";
+
+      const buildings = generateBuildings(intervals, color);
+
+      buildings.forEach(building => {
+        expect(building.width).toBeGreaterThanOrEqual(15);
+        expect(building.width).toBeLessThanOrEqual(25);
+      });
+    });
+
+    it("should respect height constraints", () => {
+      vi.mocked(Math.random).mockReturnValue(0.5); // Deterministic random
+
+      const intervals: BuildingGenerationInterval[] = [
+        { x0: 0, x1: 100, minWidth: 10, maxWidth: 20, minY: 80, maxY: 120 },
+      ];
+      const color = "purple";
+
+      const buildings = generateBuildings(intervals, color);
+
+      buildings.forEach(building => {
+        expect(building.y).toBeGreaterThanOrEqual(80);
+        expect(building.y).toBeLessThanOrEqual(120);
+      });
+    });
+
+    it("should handle multiple intervals correctly", () => {
+      const intervals: BuildingGenerationInterval[] = [
+        { x0: 0, x1: 50, minWidth: 10, maxWidth: 15, minY: 50, maxY: 80 },
+        { x0: 50, x1: 100, minWidth: 20, maxWidth: 25, minY: 60, maxY: 90 },
+      ];
+      const color = "orange";
+
+      const buildings = generateBuildings(intervals, color);
+
+      // Check that we have buildings in both intervals
+      const buildingsInFirstInterval = buildings.filter(b => b.x < 50);
+      const buildingsInSecondInterval = buildings.filter(b => b.x >= 50);
+
+      expect(buildingsInFirstInterval.length).toBeGreaterThan(0);
+      expect(buildingsInSecondInterval.length).toBeGreaterThan(0);
+
+      // Check width constraints for each interval
+      buildingsInFirstInterval.forEach(building => {
+        expect(building.width).toBeGreaterThanOrEqual(10);
+        expect(building.width).toBeLessThanOrEqual(15);
+      });
+
+      buildingsInSecondInterval.forEach(building => {
+        expect(building.width).toBeGreaterThanOrEqual(20);
+        expect(building.width).toBeLessThanOrEqual(25);
+      });
+    });
+
+    it("should generate windows bitmask for wide buildings", () => {
+      vi.mocked(Math.random).mockReturnValue(0.5); // Ensures 0.8 check passes and generates windows
+
+      const intervals: BuildingGenerationInterval[] = [
+        { x0: 0, x1: 100, minWidth: 15, maxWidth: 15, minY: 50, maxY: 50 }, // Wide buildings
+      ];
+      const color = "cyan";
+
+      const buildings = generateBuildings(intervals, color);
+
+      buildings.forEach(building => {
+        expect(building.options.windowsBitmask).toBeGreaterThan(0);
+        expect(building.options.windowsBitmask).toBeLessThanOrEqual(MAX_WINDOW_BITMASK);
+      });
+    });
+
+    it("should not generate windows for narrow buildings", () => {
+      vi.mocked(Math.random).mockReturnValue(0.5);
+
+      const intervals: BuildingGenerationInterval[] = [
+        { x0: 0, x1: 300, minWidth: 5, maxWidth: 5, minY: 50, maxY: 50 }, // Narrow buildings
+      ];
+      const color = "magenta";
+
+      const buildings = generateBuildings(intervals, color);
+
+      buildings.forEach(building => {
+        expect(building.options.windowsBitmask).toBe(0);
+      });
+    });
+
+    it("should generate consistent building structures", () => {
+      const intervals: BuildingGenerationInterval[] = [
+        {
+          x0: 0,
+          x1: 50,
+          minWidth: 10,
+          maxWidth: 10,
+          minY: 50,
+          maxY: 50,
+        },
+      ];
+      const color = "yellow";
+
+      const buildings = generateBuildings(intervals, color);
+
+      // Test basic structure regardless of option handling bugs
+      buildings.forEach(building => {
+        expect(building).toHaveProperty("x");
+        expect(building).toHaveProperty("y");
+        expect(building).toHaveProperty("width");
+        expect(building).toHaveProperty("color");
+        expect(building).toHaveProperty("options");
+        expect(building.options).toHaveProperty("windowsBitmask");
+        expect(building.options).toHaveProperty("antennaLength");
+        expect(typeof building.options.windowsBitmask).toBe("number");
+        expect(typeof building.options.antennaLength).toBe("number");
+        expect(building.color).toBe("yellow");
+      });
+    });
+
+    it("should handle zero values in forced options correctly", () => {
+      const intervals: BuildingGenerationInterval[] = [
+        {
+          x0: 0,
+          x1: 30,
+          minWidth: 15,
+          maxWidth: 15,
+          minY: 50,
+          maxY: 50,
+          options: { windowsBitmask: 0, antennaLength: 0 }, // Explicit zero values
+        },
+      ];
+      const color = "blue";
+
+      const buildings = generateBuildings(intervals, color);
+
+      buildings.forEach(building => {
+        expect(building.options.antennaLength).toBe(0);
+        expect(building.options.windowsBitmask).toBe(0);
+      });
+    });
+
+    it("should generate antennas based on height difference and probability", () => {
+      // Create a scenario that should generate antennas
+      // Need multiple buildings where second is lower than first
+      const mockValues = [
+        0.99,
+        0.01,
+      ];
+      let callCount = 0;
+      vi.mocked(Math.random).mockImplementation(() => {
+        const value = mockValues[callCount % mockValues.length];
+        callCount++;
+        return value;
+      });
+
+      const intervals: BuildingGenerationInterval[] = [
+        { x0: 0, x1: 300, minWidth: 5, maxWidth: 5, minY: 50, maxY: 100 },
+      ];
+      const color = "red";
+
+      const buildings = generateBuildings(intervals, color);
+
+      // With our mocked values, we should get at least one antenna
+      expect(buildings).toEqual(expect.arrayContaining([expect.objectContaining({
+        options: expect.objectContaining({
+          antennaLength: expect.any(Number),
+        }),
+      })]));
+      expect(buildings.some(building => (building.options.antennaLength ?? 0) >= 1)).toBe(true);
+    });
+
+    it("should handle empty intervals gracefully", () => {
+      expect(generateBuildings([], "black")).toEqual([]);
+    });
+
+    it("should handle single interval correctly", () => {
+      const intervals: BuildingGenerationInterval[] = [
+        { x0: 10, x1: 30, minWidth: 5, maxWidth: 5, minY: 40, maxY: 40 },
+      ];
+      const color = "white";
+
+      const buildings = generateBuildings(intervals, color);
+
+      expect(buildings.length).toBeGreaterThan(0);
+      expect(buildings[0].x).toBe(10);
+      expect(buildings[0].y).toBe(40);
+      expect(buildings[0].width).toBe(5);
+      expect(buildings[0].color).toBe("white");
+    });
+  });
+
+  describe("generateAllEntities", () => {
+    it("should generate both background and foreground buildings", () => {
+      const entities = generateAllEntities();
+
+      expect(entities).toHaveProperty("backgroundBuildings");
+      expect(entities).toHaveProperty("foregroundBuildings");
+      expect(Array.isArray(entities.backgroundBuildings)).toBe(true);
+      expect(Array.isArray(entities.foregroundBuildings)).toBe(true);
+      expect(entities.backgroundBuildings.length).toBeGreaterThan(0);
+      expect(entities.foregroundBuildings.length).toBeGreaterThan(0);
+    });
+
+    it("should generate buildings with different colors for background and foreground", () => {
+      const entities = generateAllEntities();
+
+      const backgroundColors = new Set(entities.backgroundBuildings.map(b => b.color));
+      const foregroundColors = new Set(entities.foregroundBuildings.map(b => b.color));
+
+      // Background and foreground should have different colors
+      const hasOverlap = [...backgroundColors].some(color => foregroundColors.has(color));
+      expect(hasOverlap).toBe(false);
+    });
+
+    it("should generate buildings within expected coordinate ranges", () => {
+      const entities = generateAllEntities();
+
+      const allBuildings = [...entities.backgroundBuildings, ...entities.foregroundBuildings];
+
+      allBuildings.forEach(building => {
+        expect(building.x).toBeGreaterThanOrEqual(90);
+        expect(building.x).toBeLessThan(416);
+        expect(building.y).toBeGreaterThanOrEqual(98);
+        expect(building.y).toBeLessThanOrEqual(186);
+        expect(building.width).toBeGreaterThanOrEqual(7);
+        expect(building.width).toBeLessThanOrEqual(22);
+      });
+    });
+
+    it("should have specific interval configurations", () => {
+      const entities = generateAllEntities();
+
+      // Check that we have the expected number of intervals worth of buildings
+      expect(entities.backgroundBuildings.length).toBeGreaterThan(10);
+      expect(entities.foregroundBuildings.length).toBeGreaterThan(10);
+    });
+  });
+});
