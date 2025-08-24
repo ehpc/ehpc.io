@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { random, reverse4Bits, shuffle } from "./utils";
+import { random, reverse4Bits, reverse4BitsHacky, shuffle } from "./utils";
 
 describe("utils", () => {
   describe("shuffle", () => {
@@ -151,6 +151,79 @@ describe("utils", () => {
         const reversed = reverse4Bits(i);
         const doubleReversed = reverse4Bits(reversed);
         expect(doubleReversed).toBe(i);
+      }
+    });
+  });
+
+  describe("reverse4BitsHacky", () => {
+    it("should reverse 4-bit patterns correctly", () => {
+      // 0b0000 -> 0b0000
+      expect(reverse4BitsHacky(0b0000)).toBe(0b0000);
+
+      // 0b0001 -> 0b1000
+      expect(reverse4BitsHacky(0b0001)).toBe(0b1000);
+
+      // 0b0010 -> 0b0100
+      expect(reverse4BitsHacky(0b0010)).toBe(0b0100);
+
+      // 0b0011 -> 0b1100
+      expect(reverse4BitsHacky(0b0011)).toBe(0b1100);
+
+      // 0b0100 -> 0b0010
+      expect(reverse4BitsHacky(0b0100)).toBe(0b0010);
+
+      // 0b0101 -> 0b1010
+      expect(reverse4BitsHacky(0b0101)).toBe(0b1010);
+
+      // 0b0110 -> 0b0110 (palindrome)
+      expect(reverse4BitsHacky(0b0110)).toBe(0b0110);
+
+      // 0b0111 -> 0b1110
+      expect(reverse4BitsHacky(0b0111)).toBe(0b1110);
+
+      // 0b1000 -> 0b0001
+      expect(reverse4BitsHacky(0b1000)).toBe(0b0001);
+
+      // 0b1001 -> 0b1001 (palindrome)
+      expect(reverse4BitsHacky(0b1001)).toBe(0b1001);
+
+      // 0b1010 -> 0b0101
+      expect(reverse4BitsHacky(0b1010)).toBe(0b0101);
+
+      // 0b1011 -> 0b1101
+      expect(reverse4BitsHacky(0b1011)).toBe(0b1101);
+
+      // 0b1100 -> 0b0011
+      expect(reverse4BitsHacky(0b1100)).toBe(0b0011);
+
+      // 0b1101 -> 0b1011
+      expect(reverse4BitsHacky(0b1101)).toBe(0b1011);
+
+      // 0b1110 -> 0b0111
+      expect(reverse4BitsHacky(0b1110)).toBe(0b0111);
+
+      // 0b1111 -> 0b1111 (palindrome)
+      expect(reverse4BitsHacky(0b1111)).toBe(0b1111);
+    });
+
+    it("should only consider the lower 4 bits", () => {
+      // Testing with numbers that have bits set beyond the 4th bit
+      expect(reverse4BitsHacky(0b10001)).toBe(0b1000); // Should ignore the 5th bit
+      expect(reverse4BitsHacky(0b11110)).toBe(0b0111); // Should only reverse lower 4 bits
+    });
+
+    it("should be its own inverse for all 4-bit values", () => {
+      for (let i = 0; i < 16; i++) {
+        const reversed = reverse4BitsHacky(i);
+        const doubleReversed = reverse4BitsHacky(reversed);
+        expect(doubleReversed).toBe(i);
+      }
+    });
+
+    it("should produce the same results as reverse4Bits", () => {
+      // Both functions should be equivalent
+      for (let i = 0; i < 16; i++) {
+        expect(reverse4BitsHacky(i)).toBe(reverse4Bits(i));
       }
     });
   });

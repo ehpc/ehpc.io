@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "pnpm fmt && pnpm lint && tsc && vite build",
     "preview": "vite preview",
-    "lint": "stylelint --fix 'src/**/*.css'",
+    "lint": "pnpm lint:css && pnpm lint:ts",
+    "lint:ts": "oxlint --fix 'src/**/*.ts'",
+    "lint:css": "stylelint --fix 'src/**/*.css'",
     "fmt": "dprint fmt",
     "test": "vitest run",
     "coverage": "vitest run --coverage"
@@ -16,6 +18,7 @@
     "@vitest/coverage-v8": "3.2.4",
     "autoprefixer": "^10.4.21",
     "dprint": "^0.50.1",
+    "oxlint": "^1.12.0",
     "postcss": "^8.5.6",
     "postcss-preset-env": "^10.2.4",
     "stylelint": "^16.23.1",
