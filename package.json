@@ -8,7 +8,7 @@
     "build": "pnpm fmt && pnpm lint && tsc && vite build",
     "preview": "vite preview",
     "lint": "pnpm lint:css && pnpm lint:ts",
-    "lint:ts": "oxlint --fix 'src/**/*.ts'",
+    "lint:ts": "oxlint --fix",
     "lint:css": "stylelint --fix 'src/**/*.css'",
     "fmt": "dprint fmt",
     "test": "vitest run",
