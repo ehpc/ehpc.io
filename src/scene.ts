@@ -1,5 +1,5 @@
 import { MAX_WINDOW_BITMASK } from "./constants";
-import { circle, pixel, polygon, rect } from "./primitives";
+import { circle, rect } from "./primitives";
 import colors from "./styles/colors.module.css";
 import type { Building, BuildingOptions, GeneratedEntities, VirtualCanvasContext } from "./types";
 import { reverse4Bits } from "./utils";
