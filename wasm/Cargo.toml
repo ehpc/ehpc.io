@@ -1,0 +1,19 @@
+[package]
+name = "ehpc-io-wasm"
+version = "0.1.0"
+edition = "2024"
+description = "Utility library for ehpc.io website"
+
+[features]
+default = ["reverse4bits", "dummy"]
+reverse4bits = []
+dummy = []
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+wasm-bindgen = "0.2"
+
+[profile.release]
+lto = true

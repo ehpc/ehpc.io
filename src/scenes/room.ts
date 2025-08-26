@@ -1,4 +1,4 @@
-import { rightTriangle, reverseRect, rect, line, polygon } from "../primitives";
+import { line, polygon, rect, reverseRect, rightTriangle } from "../primitives";
 import colors from "../styles/colors.module.css";
 import type { VirtualCanvasContext } from "../types";
 
@@ -14,11 +14,11 @@ function drawBackground(ctx: VirtualCanvasContext) {
 
 function drawWindowFrame(ctx: VirtualCanvasContext) {
   // Inner corners
-  rightTriangle(ctx, 131, 59, 5, 5, colors.windowFrameColor, 'NW');
-  rightTriangle(ctx, 131, 196, 5, 5, colors.windowFrameColor, 'SW');
-  rightTriangle(ctx, 377, 196, 5, 5, colors.windowFrameColor, 'SE');
-  rightTriangle(ctx, 377, 59, 5, 5, colors.windowFrameColor, 'NE');
-  
+  rightTriangle(ctx, 131, 59, 5, 5, colors.windowFrameColor, "NW");
+  rightTriangle(ctx, 131, 196, 5, 5, colors.windowFrameColor, "SW");
+  rightTriangle(ctx, 377, 196, 5, 5, colors.windowFrameColor, "SE");
+  rightTriangle(ctx, 377, 59, 5, 5, colors.windowFrameColor, "NE");
+
   // Frame
   const thickness = 12;
   rect(ctx, 131 - thickness - 1, 59, 130, 195, colors.windowFrameColor);
@@ -27,10 +27,10 @@ function drawWindowFrame(ctx: VirtualCanvasContext) {
   rect(ctx, 131 - thickness - 1, 196, 377 + thickness, 196 + thickness - 2, colors.windowFrameColor);
 
   // Outer corners
-  rightTriangle(ctx, 131 - thickness - 1, 59 - thickness + 1, 10, 10, colors.wallColor, 'NW');
-  rightTriangle(ctx, 131 - thickness - 1, 196 + thickness - 1, 10, 10, colors.wallColor, 'SW');
-  rightTriangle(ctx, 377 + thickness + 1, 196 + thickness - 1, 10, 10, colors.wallColor, 'SE');
-  rightTriangle(ctx, 377 + thickness + 1, 59 - thickness + 1, 10, 10, colors.wallColor, 'NE');
+  rightTriangle(ctx, 131 - thickness - 1, 59 - thickness + 1, 10, 10, colors.wallColor, "NW");
+  rightTriangle(ctx, 131 - thickness - 1, 196 + thickness - 1, 10, 10, colors.wallColor, "SW");
+  rightTriangle(ctx, 377 + thickness + 1, 196 + thickness - 1, 10, 10, colors.wallColor, "SE");
+  rightTriangle(ctx, 377 + thickness + 1, 59 - thickness + 1, 10, 10, colors.wallColor, "NE");
 
   // Draw inner outline
   line(ctx, 136, 58, 371, 58, colors.windowFrameOutlineHighlightedColor);

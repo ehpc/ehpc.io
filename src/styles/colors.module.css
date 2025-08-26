@@ -1,9 +1,8 @@
 :export {
-  wallColor: hsl(238, 74%, 7%);
-  windowFrameColor: hsl(288, 66%, 9%);
-  windowFrameOutlineHighlightedColor: hsla(286, 68%, 6%, 0.2);
-  ceilingColor: hsl(275, 100%, 7%);
-
+  wallColor: hsl(238deg 74% 7%);
+  windowFrameColor: hsl(288deg 66% 9%);
+  windowFrameOutlineHighlightedColor: hsl(286deg 68% 6% / 20%);
+  ceilingColor: hsl(275deg 100% 7%);
   highlightColor: hsl(30deg 100% 50%);
   skyGradient1: hsl(339deg 70% 39%);
   skyGradient2: hsl(8deg 74% 49%);

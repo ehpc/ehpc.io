@@ -11,7 +11,7 @@ export function random(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-export function reverse4Bits(bitmask: number): number {
+export function reverse4BitsSimple(bitmask: number): number {
   bitmask &= 0b1111;
   return ((bitmask & 0b0001) << 3)
     | ((bitmask & 0b0010) << 1)
@@ -20,9 +20,9 @@ export function reverse4Bits(bitmask: number): number {
 }
 
 /**
- * This one is funny :) And generates less asm instructions.
+ * This one is funny :)
  */
-export function reverse4BitsHacky(bitmask: number): number {
+export function reverse4BitsCompressedTable(bitmask: number): number {
   bitmask &= 0b1111;
   /*
     It works by storing lookup table inside a 64-bit int
