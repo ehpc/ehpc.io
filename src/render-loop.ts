@@ -1,5 +1,5 @@
 import { generateAllEntities } from "./generators";
-import { drawScene } from "./scene";
+import { drawMainScene } from "./scenes";
 import type { GeneratedEntities, VirtualCanvas, VirtualCanvasContext } from "./types";
 
 function resizeCanvasToDisplaySize(canvas: HTMLCanvasElement): boolean {
@@ -24,8 +24,8 @@ function drawFrame(
 ) {
   virtualCtx.imageSmoothingEnabled = false;
   mainCtx.imageSmoothingEnabled = false;
-  // Draw the scene onto the virtual canvas
-  drawScene(virtualCtx, generatedEntities);
+  // Draw the main scene onto the virtual canvas
+  drawMainScene(virtualCtx, generatedEntities);
 
   // Draw virtual canvas onto main canvas
   const width = mainCanvas.width;

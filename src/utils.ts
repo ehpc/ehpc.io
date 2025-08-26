@@ -20,7 +20,7 @@ export function reverse4Bits(bitmask: number): number {
 }
 
 /**
- * This one is just for fun :)
+ * This one is funny :) And generates less asm instructions.
  */
 export function reverse4BitsHacky(bitmask: number): number {
   bitmask &= 0b1111;

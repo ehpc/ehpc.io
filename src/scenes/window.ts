@@ -1,8 +1,8 @@
-import { MAX_WINDOW_BITMASK } from "./constants";
-import { circle, rect } from "./primitives";
-import colors from "./styles/colors.module.css";
-import type { Building, BuildingOptions, GeneratedEntities, VirtualCanvasContext } from "./types";
-import { reverse4Bits } from "./utils";
+import { MAX_WINDOW_BITMASK } from "../constants";
+import { circle, rect } from "../primitives";
+import type { Building, BuildingOptions, GeneratedEntities, VirtualCanvasContext } from "../types";
+import { reverse4BitsHacky } from "../utils";
+import colors from "../styles/colors.module.css";
 
 function drawSky(ctx: VirtualCanvasContext) {
   rect(ctx, 0, 0, ctx.canvas.width, 74, colors.skyGradient1);
@@ -49,7 +49,7 @@ function drawBuilding(
     let windowBitmask = options.windowsBitmask;
     if ((windowBitmask & 0b11) === 0) {
       // Flip bitmask so that there are no big gaps at the top
-      windowBitmask = reverse4Bits(windowBitmask);
+      windowBitmask = reverse4BitsHacky(windowBitmask);
     }
     if (width <= 14) {
       const windowX = Math.floor(x + width / 2 - 1.5);
@@ -81,32 +81,10 @@ function drawBuildings(ctx: VirtualCanvasContext, buildings: Building[]) {
   }
 }
 
-function drawWindowScene(ctx: VirtualCanvasContext, generatedEntities: GeneratedEntities) {
+export function drawWindowScene(ctx: VirtualCanvasContext, generatedEntities: GeneratedEntities) {
   drawSky(ctx);
   drawStars(ctx);
   drawSun(ctx);
   drawBuildings(ctx, generatedEntities.backgroundBuildings);
   drawBuildings(ctx, generatedEntities.foregroundBuildings);
-}
-
-export function drawScene(
-  ctx: VirtualCanvasContext,
-  generatedEntities: GeneratedEntities,
-) {
-  // const width = ctx.canvas.width;
-  // const height = ctx.canvas.height;
-
-  drawWindowScene(ctx, generatedEntities);
-  // Draw general background
-  // Draw wall artefacts
-  // Draw god-rays
-  // Draw window frame
-
-  // Draw server boxes
-  // Draw lamp
-
-  // Draw table
-  // Draw PC box
-  // Draw monitor
-  // Draw keyboard
 }
