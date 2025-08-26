@@ -5,3 +5,4 @@ export { polygon } from "./polygon";
 export { rect } from "./rect";
 export { reverseRect } from "./reverse-rect";
 export { rightTriangle } from "./right-triangle";
+export * from "./transform";

@@ -1,6 +1,17 @@
-import { line, polygon, rect, reverseRect, rightTriangle } from "../primitives";
+import {
+  embedRectInsideRect,
+  getShearRectRightSideVerticalParams,
+  line,
+  polygon,
+  rect,
+  rectPoints,
+  reverseRect,
+  rightTriangle,
+  scaleRectPoints,
+  shearRectRightSideVertical,
+} from "../primitives";
 import colors from "../styles/colors.module.css";
-import type { VirtualCanvasContext } from "../types";
+import type { Rect, VirtualCanvasContext } from "../types";
 
 function drawBackground(ctx: VirtualCanvasContext) {
   reverseRect(ctx, 131, 59, 377, 196, colors.wallColor);
@@ -39,13 +50,29 @@ function drawWindowFrame(ctx: VirtualCanvasContext) {
   line(ctx, 377, 64, 377, 190, colors.windowFrameOutlineHighlightedColor);
 }
 
+function drawServerBoxWithTwoSquares(ctx: VirtualCanvasContext, baseRect: Rect) {
+  const shearParams = getShearRectRightSideVerticalParams(baseRect, 15);
+  const shearedRect = shearRectRightSideVertical(baseRect, shearParams);
+  polygon(ctx, shearedRect, colors.serverBoxShadowColor);
+  const innerRect = scaleRectPoints(baseRect, 0.6);
+  const innerRectSheared = shearRectRightSideVertical(innerRect, shearParams);
+  polygon(ctx, innerRectSheared, colors.wallColor);
+  const leftInnerRect = shearRectRightSideVertical(embedRectInsideRect(innerRect, [5, 12, 5, 4]), shearParams);
+  polygon(ctx, leftInnerRect, colors.serverBoxShadowColor);
+  const rightInnerRect = shearRectRightSideVertical(embedRectInsideRect(innerRect, [5, 4, 5, 12]), shearParams);
+  polygon(ctx, rightInnerRect, colors.serverBoxShadowColor);
+}
+
+function drawServerBoxes(ctx: VirtualCanvasContext) {
+  drawServerBoxWithTwoSquares(ctx, rectPoints(428, 52, 35, 28));
+}
+
 export function drawRoomScene(ctx: VirtualCanvasContext) {
-  // Draw general background
   drawBackground(ctx);
   // Draw wall artefacts
   // Draw god-rays
-  // Draw window frame
   drawWindowFrame(ctx);
   // Draw server boxes
+  drawServerBoxes(ctx);
   // Draw lamp
 }

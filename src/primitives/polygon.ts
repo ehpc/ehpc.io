@@ -1,11 +1,11 @@
-import type { VirtualCanvasContext } from "../types";
+import type { VirtualCanvasContext, Point } from "../types";
 
 /**
  * Scanline polygon fill
  */
 export function polygon(
   ctx: VirtualCanvasContext,
-  points: [number, number][],
+  points: Point[],
   fillColor: string,
 ) {
   if (points.length < 3) return;

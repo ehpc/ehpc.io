@@ -2,7 +2,7 @@
   wallColor: hsl(238deg 74% 7%);
   windowFrameColor: hsl(288deg 66% 9%);
   windowFrameOutlineHighlightedColor: hsl(286deg 68% 6% / 20%);
-  ceilingColor: hsl(275deg 100% 7%);
+  ceilingColor: hsl(275deg 100% 8%);
   highlightColor: hsl(30deg 100% 50%);
   skyGradient1: hsl(339deg 70% 39%);
   skyGradient2: hsl(8deg 74% 49%);
@@ -17,9 +17,10 @@
   backgroundBuildingColor: hsl(11deg 87% 39%);
   foregroundBuildingColor: hsl(317deg 66% 13%);
   windowColor: hsl(27deg 100% 50%);
+  serverBoxShadowColor: hsl(296, 70%, 9%);
 }
 
 :root {
   --base-color: #ccc;
-  --wall-color: #050520;
+  --wall-color: hsl(238deg 74% 7%);
 }
