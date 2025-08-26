@@ -2,7 +2,7 @@
   wallColor: hsl(238deg 74% 7%);
   windowFrameColor: hsl(288deg 66% 9%);
   windowFrameOutlineHighlightedColor: hsl(286deg 68% 6% / 20%);
-  ceilingColor: hsl(275deg 100% 8%);
+  ceilingColor: hsl(277, 100%, 6%);
   highlightColor: hsl(30deg 100% 50%);
   skyGradient1: hsl(339deg 70% 39%);
   skyGradient2: hsl(8deg 74% 49%);
@@ -18,6 +18,10 @@
   foregroundBuildingColor: hsl(317deg 66% 13%);
   windowColor: hsl(27deg 100% 50%);
   serverBoxShadowColor: hsl(296, 70%, 9%);
+  serverBoxDeepShadowColor: hsl(238, 78%, 8%);
+  serverBoxHighlightedColor: hsl(15, 100%, 40%);
+  serverBoxDetail1Color: hsl(2, 79%, 28%);
+  serverBoxDetail2Color: hsl(311, 68%, 11%);
 }
 
 :root {
