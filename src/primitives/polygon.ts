@@ -1,4 +1,4 @@
-import type { VirtualCanvasContext, Point } from "../types";
+import type { Point, VirtualCanvasContext } from "../types";
 
 /**
  * Scanline polygon fill

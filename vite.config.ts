@@ -5,9 +5,4 @@ export default defineConfig({
   plugins: [
     wasm(),
   ],
-  build: {
-    modulePreload: {
-      polyfill: false,
-    },
-  },
 });

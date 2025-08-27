@@ -1,4 +1,4 @@
-import type { VirtualCanvasContext, Rect } from "../types";
+import type { Rect, VirtualCanvasContext } from "../types";
 
 export function rect(
   ctx: VirtualCanvasContext,
@@ -38,7 +38,7 @@ export function rectRect(ctx: VirtualCanvasContext, r: Rect, fillColor: string) 
  * @returns The height of the rectangle.
  */
 export function getRectHeight(rect: Rect): number {
-  const [tl,, br] = rect;
+  const [tl, , br] = rect;
   return Math.abs(br[1] - tl[1]);
 }
 
@@ -48,6 +48,6 @@ export function getRectHeight(rect: Rect): number {
  * @returns The width of the rectangle.
  */
 export function getRectWidth(rect: Rect): number {
-  const [tl,tr] = rect;
+  const [tl, tr] = rect;
   return Math.abs(tr[0] - tl[0]);
 }
