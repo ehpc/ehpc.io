@@ -40,6 +40,3 @@ export type Point = [number, number];
 
 // Rectangle defined by its corner points.
 export type Rect = [Point, Point, Point, Point]; // [TL, TR, BR, BL]
-
-// Rectangle defined by its top-left corner, width, and height.
-export type RectWH = [Point, number, number]; // [TL, width, height]

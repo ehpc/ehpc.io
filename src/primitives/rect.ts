@@ -1,5 +1,14 @@
 import type { Rect, VirtualCanvasContext } from "../types";
 
+/**
+ * Draws a filled rectangle on the canvas.
+ * @param ctx The canvas rendering context.
+ * @param x0 The x-coordinate of the top-left corner.
+ * @param y0 The y-coordinate of the top-left corner.
+ * @param x1 The x-coordinate of the bottom-right corner.
+ * @param y1 The y-coordinate of the bottom-right corner.
+ * @param fillColor The color to fill the rectangle with.
+ */
 export function rect(
   ctx: VirtualCanvasContext,
   x0: number,
@@ -24,6 +33,12 @@ export function rect(
   ctx.fillRect(left, top, w, h);
 }
 
+/**
+ * Draws a filled rectangle on the canvas.
+ * @param ctx The canvas rendering context.
+ * @param r The rectangle to draw.
+ * @param fillColor The color to fill the rectangle with.
+ */
 export function rectRect(ctx: VirtualCanvasContext, r: Rect, fillColor: string) {
   const x0 = r[0][0] | 0;
   const y0 = r[0][1] | 0;

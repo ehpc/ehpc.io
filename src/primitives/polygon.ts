@@ -1,7 +1,11 @@
 import type { Point, VirtualCanvasContext } from "../types";
 
 /**
- * Scanline polygon fill
+ * Draws a filled polygon using the scanline polygon fill algorithm.
+ * @param ctx The canvas rendering context.
+ * @param points The points of the polygon.
+ * @param fillColor The color to fill the polygon with.
+ * @returns 
  */
 export function polygon(
   ctx: VirtualCanvasContext,

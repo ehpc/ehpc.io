@@ -1,8 +1,11 @@
 :export {
-  wallColor: hsl(238deg 74% 7%);
-  windowFrameColor: hsl(288deg 66% 9%);
-  windowFrameOutlineHighlightedColor: hsl(286deg 68% 6% / 20%);
+  wallColor: hsl(289, 81%, 8%);
+  wallLeftColor: hsl(290, 84%, 10%);
+  wallRightColor: hsl(277deg 100% 7%);
   ceilingColor: hsl(277deg 100% 6%);
+  floorColor: hsl(290, 84%, 9%);
+  windowFrameColor: hsl(288, 71%, 11%);
+  windowFrameOutlineHighlightedColor: hsl(286deg 68% 6% / 20%);
   highlightColor: hsl(30deg 100% 50%);
   skyGradient1: hsl(339deg 70% 39%);
   skyGradient2: hsl(8deg 74% 49%);
@@ -22,9 +25,24 @@
   serverBoxHighlightedColor: hsl(15deg 100% 40%);
   serverBoxDetail1Color: hsl(2deg 79% 28%);
   serverBoxDetail2Color: hsl(311deg 68% 11%);
+  tableTopColor: hsl(3, 82%, 31%);
+  tableTopShadowColor: hsl(296deg 70% 7%);
+  tableTopShadowColor2: hsl(296deg 70% 5%);
+  tableBottomColor: hsl(296deg 70% 3%);
+  pcBoxColorLeft: hsl(268, 73%, 9%);
+  pcBoxColorFront: hsl(238, 78%, 7%);
+  pcBoxColorTop: hsl(314, 67%, 12%);
+  displayFrameColor: #F48803;
+  displayShadowColor: hsl(314, 67%, 12%);
+  displayGlassColor: #050520;
+  displayReflectionColor: hsl(268, 80%, 10%);
+  displayButtonColor: hsl(296deg 70% 3%);
+  keyboardFrontColor: hsl(8, 85%, 39%);
+  keyboardLeftColor: #340A28;
+  keyboardTopColor: #FE8500;
+  keyboardKeypadColor: hsl(8, 83%, 33%);
 }
 
 :root {
-  --base-color: #ccc;
-  --wall-color: hsl(238deg 74% 7%);
+  --base-color: hsl(238deg 74% 7%);
 }

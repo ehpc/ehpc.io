@@ -20,12 +20,38 @@ type ServerBoxType = "buttonned" | "slotted";
 
 function drawBackground(ctx: VirtualCanvasContext) {
   reverseRect(ctx, 131, 59, 377, 196, colors.wallColor);
+  // Ceiling
   polygon(ctx, [
-    [65, 0],
-    [450, 0],
-    [414, 25],
-    [94, 25],
+    [57, 0],
+    [452, 0],
+    [413, 24],
+    [95, 24],
   ], colors.ceilingColor);
+  // Left wall
+  polygon(ctx, [
+    [57, 0],
+    [95, 24],
+    [95, 269],
+    [43, 317],
+    [0, 317],
+    [0, 0],
+  ], colors.wallLeftColor);
+  // Right wall
+    polygon(ctx, [
+    [413, 24],
+    [452, 0],
+    [543, 0],
+    [543, 317],
+    [465, 317],
+    [413, 269],
+  ], colors.wallRightColor);
+  // Floor
+  polygon(ctx, [
+    [95, 269],
+    [413, 269],
+    [465, 317],
+    [43, 317],
+  ], colors.floorColor);
 }
 
 function drawWindowFrame(ctx: VirtualCanvasContext) {
@@ -164,13 +190,11 @@ function drawStraightServerBox(
 }
 
 function drawServerBoxes(ctx: VirtualCanvasContext) {
-  drawSkewedServerBoxWithTwoSquares(ctx, rectPoints(428, 52, 35, 28));
-  drawSkewedServerBoxWithTwoLines(ctx, rectPoints(415, 107, 36, 38));
-  rect(ctx, 360, 169, 430, 250, colors.serverBoxDeepShadowColor);
-  drawStraightServerBox(ctx, rectPoints(397, 151, 45, 54), "buttonned", 0.55, 6, 7, colors.serverBoxDetail1Color);
-  drawStraightServerBox(ctx, rectPoints(381, 207, 46, 92), "slotted", 0.65, 7, 6, colors.serverBoxDetail2Color);
-  drawStraightServerBox(ctx, rectPoints(340, 187, 33, 24), "buttonned", 0.5, 5, 4, colors.serverBoxDetail1Color);
-  drawStraightServerBox(ctx, rectPoints(315, 213, 44, 86), "slotted", 0.4, 7, 6, colors.serverBoxDetail2Color);
+  // rect(ctx, 360, 169, 430, 250, colors.serverBoxDeepShadowColor);
+  // drawStraightServerBox(ctx, rectPoints(397, 151, 45, 54), "buttonned", 0.55, 6, 7, colors.serverBoxDetail1Color);
+  // drawStraightServerBox(ctx, rectPoints(381, 207, 46, 92), "slotted", 0.65, 7, 6, colors.serverBoxDetail2Color);
+  // drawStraightServerBox(ctx, rectPoints(340, 187, 33, 24), "buttonned", 0.5, 5, 4, colors.serverBoxDetail1Color);
+  // drawStraightServerBox(ctx, rectPoints(315, 213, 44, 86), "slotted", 0.4, 7, 6, colors.serverBoxDetail2Color);
 }
 
 export function drawRoomScene(ctx: VirtualCanvasContext) {
