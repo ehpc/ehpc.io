@@ -3,6 +3,7 @@ const config = {
   plugins: {
     "autoprefixer": {},
     "postcss-preset-env": {},
+    "cssnano": {},
   },
 };
 

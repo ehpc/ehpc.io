@@ -1,5 +1,5 @@
 // Virtual canvas dimensions
-export const VIRTUAL_CANVAS_WIDTH = 542;
+export const VIRTUAL_CANVAS_WIDTH = 508;
 export const VIRTUAL_CANVAS_HEIGHT = 316;
 
 // Maximum bitmask value for building windows

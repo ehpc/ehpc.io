@@ -1,22 +1,6 @@
-import {
-  embedRectInsideRect,
-  getRectHeight,
-  getRectWidth,
-  getShearRectRightSideVerticalParams,
-  line,
-  polygon,
-  rect,
-  rectPoints,
-  rectRect,
-  reverseRect,
-  rightTriangle,
-  scaleRectPoints,
-  shearRectRightSideVertical,
-} from "../primitives";
+import { line, polygon, rect, reverseRect, rightTriangle } from "../primitives";
 import colors from "../styles/colors.module.css";
-import type { Rect, VirtualCanvasContext } from "../types";
-
-type ServerBoxType = "buttonned" | "slotted";
+import type { VirtualCanvasContext } from "../types";
 
 function drawBackground(ctx: VirtualCanvasContext) {
   reverseRect(ctx, 131, 59, 377, 196, colors.wallColor);
@@ -37,11 +21,11 @@ function drawBackground(ctx: VirtualCanvasContext) {
     [0, 0],
   ], colors.wallLeftColor);
   // Right wall
-    polygon(ctx, [
+  polygon(ctx, [
     [413, 24],
     [452, 0],
-    [543, 0],
-    [543, 317],
+    [509, 0],
+    [509, 317],
     [465, 317],
     [413, 269],
   ], colors.wallRightColor);
@@ -81,128 +65,10 @@ function drawWindowFrame(ctx: VirtualCanvasContext) {
   line(ctx, 377, 64, 377, 190, colors.windowFrameOutlineHighlightedColor);
 }
 
-function drawSkewedServerBoxWithTwoSquares(ctx: VirtualCanvasContext, baseRect: Rect) {
-  const shearParams = getShearRectRightSideVerticalParams(baseRect, 10);
-  const shearedRect = shearRectRightSideVertical(baseRect, shearParams);
-  polygon(ctx, shearedRect, colors.serverBoxShadowColor);
-  const innerRect = scaleRectPoints(baseRect, 0.6);
-  const innerRectSheared = shearRectRightSideVertical(innerRect, shearParams);
-  polygon(ctx, innerRectSheared, colors.wallColor);
-  const leftInnerRect = shearRectRightSideVertical(embedRectInsideRect(innerRect, [5, 12, 5, 4]), shearParams);
-  polygon(ctx, leftInnerRect, colors.serverBoxShadowColor);
-  const rightInnerRect = shearRectRightSideVertical(embedRectInsideRect(innerRect, [5, 4, 5, 12]), shearParams);
-  polygon(ctx, rightInnerRect, colors.serverBoxShadowColor);
-}
-
-function drawSkewedServerBoxWithTwoLines(ctx: VirtualCanvasContext, baseRect: Rect) {
-  const shearParams = getShearRectRightSideVerticalParams(baseRect, 10);
-  const shearedRect = shearRectRightSideVertical(baseRect, shearParams);
-  polygon(ctx, shearedRect, colors.serverBoxShadowColor);
-  const innerRect = scaleRectPoints(baseRect, 0.6, 0.7);
-  const innerRectSheared = shearRectRightSideVertical(innerRect, shearParams);
-  polygon(ctx, innerRectSheared, colors.wallColor);
-  const topInnerRect = shearRectRightSideVertical(embedRectInsideRect(innerRect, [5, 5, 16, 5]), shearParams);
-  polygon(ctx, topInnerRect, colors.serverBoxShadowColor);
-  const bottomInnerRect = shearRectRightSideVertical(embedRectInsideRect(innerRect, [16, 5, 5, 5]), shearParams);
-  polygon(ctx, bottomInnerRect, colors.serverBoxShadowColor);
-}
-
-function drawStraightServerBox(
-  ctx: VirtualCanvasContext,
-  rect: Rect,
-  type: ServerBoxType,
-  halfingCoeff: number,
-  borderWidth: number,
-  innerPadding: number,
-  detailColor: string,
-) {
-  rectRect(ctx, rect, colors.serverBoxHighlightedColor);
-  const innerRect = embedRectInsideRect(rect, [borderWidth, borderWidth, borderWidth, borderWidth]);
-  const innerRectHeight = getRectHeight(innerRect);
-  const halvedInnerRectHeight = innerRectHeight * halfingCoeff;
-  const topInnerRectHeight = innerRectHeight - halvedInnerRectHeight;
-  innerRect[2][1] -= halvedInnerRectHeight;
-  innerRect[3][1] -= halvedInnerRectHeight;
-  rectRect(ctx, innerRect, colors.wallColor);
-  const topInnerRect = embedRectInsideRect(rect, [borderWidth, borderWidth, borderWidth, borderWidth]);
-  topInnerRect[0][1] += topInnerRectHeight;
-  topInnerRect[1][1] += topInnerRectHeight;
-  rectRect(ctx, topInnerRect, detailColor);
-
-  if (type === "buttonned") {
-    const innerRectWidth = getRectWidth(innerRect);
-    const halvedInnerRectWidth = (innerRectWidth / 2) | 0;
-    const topLeftDetail = embedRectInsideRect(innerRect, [
-      innerPadding,
-      halvedInnerRectWidth + 3,
-      innerPadding,
-      innerPadding,
-    ]);
-    rectRect(ctx, topLeftDetail, detailColor);
-    const topRightDetail = embedRectInsideRect(innerRect, [
-      innerPadding,
-      innerPadding,
-      innerPadding,
-      halvedInnerRectWidth + 3,
-    ]);
-    rectRect(ctx, topRightDetail, detailColor);
-    const bottomLeftDetail = embedRectInsideRect(topInnerRect, [
-      innerPadding,
-      halvedInnerRectWidth + 3,
-      innerPadding,
-      innerPadding,
-    ]);
-    rectRect(ctx, bottomLeftDetail, colors.wallColor);
-    const bottomRightDetail = embedRectInsideRect(topInnerRect, [
-      innerPadding,
-      innerPadding,
-      innerPadding,
-      halvedInnerRectWidth + 3,
-    ]);
-    rectRect(ctx, bottomRightDetail, colors.wallColor);
-  } else if (type === "slotted") {
-    const extraDetails = halfingCoeff < 0.5;
-    const halvedTopInnerRectHeight = (topInnerRectHeight / (extraDetails ? 1.5 : 2)) | 0;
-    const detail1 = embedRectInsideRect(innerRect, [
-      innerPadding,
-      innerPadding,
-      halvedTopInnerRectHeight + 4,
-      innerPadding,
-    ]);
-    rectRect(ctx, detail1, detailColor);
-    const detail2 = embedRectInsideRect(innerRect, [
-      halvedTopInnerRectHeight + 2,
-      innerPadding,
-      innerPadding,
-      innerPadding,
-    ]);
-    rectRect(ctx, detail2, detailColor);
-    if (halfingCoeff < 0.5) {
-      const detail3 = embedRectInsideRect(innerRect, [
-        halvedTopInnerRectHeight - 3,
-        innerPadding,
-        halvedTopInnerRectHeight - 3,
-        innerPadding,
-      ]);
-      rectRect(ctx, detail3, detailColor);
-    }
-  }
-}
-
-function drawServerBoxes(ctx: VirtualCanvasContext) {
-  // rect(ctx, 360, 169, 430, 250, colors.serverBoxDeepShadowColor);
-  // drawStraightServerBox(ctx, rectPoints(397, 151, 45, 54), "buttonned", 0.55, 6, 7, colors.serverBoxDetail1Color);
-  // drawStraightServerBox(ctx, rectPoints(381, 207, 46, 92), "slotted", 0.65, 7, 6, colors.serverBoxDetail2Color);
-  // drawStraightServerBox(ctx, rectPoints(340, 187, 33, 24), "buttonned", 0.5, 5, 4, colors.serverBoxDetail1Color);
-  // drawStraightServerBox(ctx, rectPoints(315, 213, 44, 86), "slotted", 0.4, 7, 6, colors.serverBoxDetail2Color);
-}
-
 export function drawRoomScene(ctx: VirtualCanvasContext) {
   drawBackground(ctx);
   // Draw wall artefacts
   // Draw god-rays
   drawWindowFrame(ctx);
-  // Draw server boxes
-  drawServerBoxes(ctx);
   // Draw lamp
 }

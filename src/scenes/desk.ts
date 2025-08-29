@@ -1,4 +1,3 @@
-import type { V } from "vitest/dist/chunks/environment.d.cL3nLXbE.js";
 import { polygon, rect } from "../primitives";
 import colors from "../styles/colors.module.css";
 import type { VirtualCanvasContext } from "../types";

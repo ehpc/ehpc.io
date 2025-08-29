@@ -34,7 +34,6 @@ function drawFrame(
   const maxWidth = virtualCanvas.width * scale;
   const x = (width - maxWidth) / 2;
 
-  mainCtx.clearRect(0, 0, width, height);
   mainCtx.drawImage(
     virtualCanvas,
     0,
@@ -56,7 +55,10 @@ export function renderLoop(
 ) {
   // Resize main canvas to fit the display size
   resizeCanvasToDisplaySize(mainCanvas);
-  window.addEventListener("resize", () => resizeCanvasToDisplaySize(mainCanvas));
+  window.addEventListener("resize", () => {
+    resizeCanvasToDisplaySize(mainCanvas);
+    drawFrame(mainCanvas, mainCtx, virtualCanvas, virtualCtx, generatedEntities);
+  });
 
   const generatedEntities = generateAllEntities();
 
