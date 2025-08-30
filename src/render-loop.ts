@@ -1,6 +1,8 @@
-import { generateAllEntities } from "./generators";
+import { MAX_STARS, RESIZE_DELAY } from "./constants";
+import { generateAllEntities, generateStars } from "./generators";
 import { drawMainScene } from "./scenes";
 import type { GeneratedEntities, VirtualCanvas, VirtualCanvasContext } from "./types";
+import { debounce } from "./utils";
 
 function resizeCanvasToDisplaySize(canvas: HTMLCanvasElement): boolean {
   const dpr = Math.max(1, window.devicePixelRatio || 1);
@@ -55,10 +57,13 @@ export function renderLoop(
 ) {
   // Resize main canvas to fit the display size
   resizeCanvasToDisplaySize(mainCanvas);
-  window.addEventListener("resize", () => {
-    resizeCanvasToDisplaySize(mainCanvas);
-    drawFrame(mainCanvas, mainCtx, virtualCanvas, virtualCtx, generatedEntities);
-  });
+  window.addEventListener(
+    "resize",
+    debounce(() => {
+      resizeCanvasToDisplaySize(mainCanvas);
+      drawFrame(mainCanvas, mainCtx, virtualCanvas, virtualCtx, generatedEntities);
+    }, RESIZE_DELAY),
+  );
 
   const generatedEntities = generateAllEntities();
 
@@ -73,8 +78,10 @@ export function renderLoop(
     if (deltaTime >= frameDuration) {
       // Keep stable draw cadence
       const frames = (deltaTime / frameDuration) >> 0;
-      lastFrameTime += frames * frameDuration;
+      const elapsedStable = frames * frameDuration;
+      lastFrameTime += elapsedStable;
 
+      generatedEntities.stars = generateStars(generatedEntities.stars, MAX_STARS, elapsedStable);
       drawFrame(mainCanvas, mainCtx, virtualCanvas, virtualCtx, generatedEntities);
     }
     requestAnimationFrame(loop);

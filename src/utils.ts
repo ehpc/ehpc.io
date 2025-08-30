@@ -66,3 +66,44 @@ export function reverse4BitsCompressedTable(bitmask: number): number {
   */
   return Number((0xf7b3d591e6a2c480n >> BigInt(bitmask * 4)) & 0b1111n);
 }
+
+/**
+ * Throttles a function by limiting the rate at which it can be called.
+ * @param func The function to throttle.
+ * @param delay The delay in milliseconds.
+ * @returns A throttled version of the function.
+ */
+export function throttle<T extends (...args: any[]) => any>(
+  func: T,
+  delay: number,
+): (...args: Parameters<T>) => void {
+  let lastCallTime = 0;
+  return function(...args: Parameters<T>) {
+    const now = Date.now();
+    if (now - lastCallTime >= delay) {
+      lastCallTime = now;
+      func(...args);
+    }
+  };
+}
+
+/**
+ * Debounces a function by delaying its execution.
+ * @param func The function to debounce.
+ * @param delay The delay in milliseconds.
+ * @returns A debounced version of the function.
+ */
+export function debounce<T extends (...args: any[]) => any>(
+  func: T,
+  delay: number,
+): (...args: Parameters<T>) => void {
+  let timeoutId: ReturnType<typeof setTimeout> | null = null;
+  return function(...args: Parameters<T>) {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+    timeoutId = setTimeout(() => {
+      func(...args);
+    }, delay);
+  };
+}

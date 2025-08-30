@@ -29,10 +29,22 @@ export interface BuildingGenerationInterval {
   options?: BuildingOptions;
 }
 
+// Star in the virtual world.
+export interface Star {
+  x: number;
+  y: number;
+  color: string;
+  // Star opacity (0-50-100), two phases, 50 fully visible, 0 and 100 - invisible
+  opacity: number;
+  // How fast it lights up from 0 to 50 in ms
+  glowingSpeed: number;
+}
+
 // Generated entities in the virtual world.
 export interface GeneratedEntities {
   backgroundBuildings: Building[];
   foregroundBuildings: Building[];
+  stars: Star[];
 }
 
 // Simple point on 2D space.

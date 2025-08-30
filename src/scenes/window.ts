@@ -2,7 +2,7 @@ import { reverse4bits } from "../../wasm/pkg/";
 import { MAX_WINDOW_BITMASK } from "../constants";
 import { circle, rect } from "../primitives";
 import colors from "../styles/colors.module.css";
-import type { Building, BuildingOptions, GeneratedEntities, VirtualCanvasContext } from "../types";
+import type { Building, BuildingOptions, GeneratedEntities, VirtualCanvasContext, Star } from "../types";
 
 function drawSky(ctx: VirtualCanvasContext) {
   rect(ctx, 0, 0, ctx.canvas.width, 74, colors.skyGradient1);
@@ -12,11 +12,10 @@ function drawSky(ctx: VirtualCanvasContext) {
   rect(ctx, 0, 126, ctx.canvas.width, ctx.canvas.height, colors.skyGradient5);
 }
 
-function drawStars(ctx: VirtualCanvasContext) {
-  const stars = [[151, 70], [171, 81], [191, 66], [232, 80], [256, 65], [304, 64]];
-  const starColors = [colors.starColor1, colors.starColor2, colors.starColor3, colors.starColor4];
-  stars.forEach(([x, y], i) => {
-    rect(ctx, x, y, x + 1, y + 1, starColors[i % starColors.length]);
+function drawStars(ctx: VirtualCanvasContext, stars: Star[]) {
+  stars.forEach((star) => {
+    const realOpacity = (star.opacity <= 50 ? star.opacity * 2 : (100 - star.opacity) * 2) * 0.01;
+    rect(ctx, star.x, star.y, star.x + 1, star.y + 1, star.color.replace(')', `, ${realOpacity})`));
   });
 }
 
@@ -83,7 +82,7 @@ function drawBuildings(ctx: VirtualCanvasContext, buildings: Building[]) {
 
 export function drawWindowScene(ctx: VirtualCanvasContext, generatedEntities: GeneratedEntities) {
   drawSky(ctx);
-  drawStars(ctx);
+  drawStars(ctx, generatedEntities.stars);
   drawSun(ctx);
   drawBuildings(ctx, generatedEntities.backgroundBuildings);
   drawBuildings(ctx, generatedEntities.foregroundBuildings);

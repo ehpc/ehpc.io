@@ -1,10 +1,10 @@
 :export {
-  wallColor: hsl(289deg 81% 8%);
-  wallLeftColor: hsl(290deg 84% 10%);
-  wallRightColor: hsl(277deg 100% 7%);
-  ceilingColor: hsl(277deg 100% 6%);
-  floorColor: hsl(290deg 84% 9%);
-  windowFrameColor: hsl(288deg 71% 11%);
+  wallColor: #33073d;
+  wallLeftColor: #41084e;
+  wallRightColor: #3c0848;
+  ceilingColor: #280530;
+  floorColor: #280530;
+  windowFrameColor: #4a1e54;
   windowFrameOutlineHighlightedColor: hsl(286deg 68% 6% / 20%);
   highlightColor: hsl(30deg 100% 50%);
   skyGradient1: hsl(339deg 70% 39%);
@@ -13,10 +13,6 @@
   skyGradient4: hsl(25deg 100% 50%);
   skyGradient5: hsl(30deg 100% 50%);
   sunColor: hsl(31deg 100% 50%);
-  starColor1: hsl(11deg 84% 50%);
-  starColor2: hsl(11deg 84% 60%);
-  starColor3: hsl(11deg 84% 45%);
-  starColor4: hsl(11deg 84% 55%);
   backgroundBuildingColor: hsl(11deg 87% 39%);
   foregroundBuildingColor: hsl(317deg 66% 13%);
   windowColor: hsl(27deg 100% 50%);
@@ -25,15 +21,15 @@
   serverBoxHighlightedColor: hsl(15deg 100% 40%);
   serverBoxDetail1Color: hsl(2deg 79% 28%);
   serverBoxDetail2Color: hsl(311deg 68% 11%);
-  tableTopColor: hsl(3deg 82% 31%);
-  tableTopShadowColor: hsl(296deg 70% 7%);
-  tableTopShadowColor2: hsl(296deg 70% 5%);
+  tableTopColor: #90150e;
+  tableTopShadowColor: #330705;
+  tableTopShadowColor2: #200403;
   tableBottomColor: hsl(296deg 70% 3%);
   pcBoxColorLeft: hsl(268deg 73% 9%);
   pcBoxColorFront: hsl(238deg 78% 7%);
-  pcBoxColorTop: hsl(314deg 67% 12%);
+  pcBoxColorTop: #400c35;
   displayFrameColor: #f48803;
-  displayShadowColor: hsl(314deg 67% 12%);
+  displayShadowColor: #894c02;
   displayGlassColor: #050520;
   displayReflectionColor: hsl(268deg 80% 10%);
   displayButtonColor: hsl(296deg 70% 3%);

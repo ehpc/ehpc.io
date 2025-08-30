@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { random, reverse4BitsCompressedTable, reverse4BitsSimple, shuffle } from "./utils";
+import { debounce, random, reverse4BitsCompressedTable, reverse4BitsSimple, shuffle, throttle } from "./utils";
 
 describe("utils", () => {
   describe("shuffle", () => {
@@ -225,6 +225,158 @@ describe("utils", () => {
       for (let i = 0; i < 16; i++) {
         expect(reverse4BitsCompressedTable(i)).toBe(reverse4BitsSimple(i));
       }
+    });
+  });
+
+  describe("throttle", () => {
+    it("should execute function immediately on first call", () => {
+      let callCount = 0;
+      const fn = () => callCount++;
+      const throttled = throttle(fn, 100);
+
+      throttled();
+      expect(callCount).toBe(1);
+    });
+
+    it("should ignore subsequent calls within timeout period", () => {
+      let callCount = 0;
+      const fn = () => callCount++;
+      const throttled = throttle(fn, 100);
+
+      throttled();
+      throttled();
+      throttled();
+      expect(callCount).toBe(1);
+    });
+
+    it("should allow execution after timeout period", async () => {
+      let callCount = 0;
+      const fn = () => callCount++;
+      const throttled = throttle(fn, 50);
+
+      throttled();
+      expect(callCount).toBe(1);
+
+      await new Promise(resolve => setTimeout(resolve, 60));
+
+      throttled();
+      expect(callCount).toBe(2);
+    });
+
+    it("should pass arguments to the original function", () => {
+      let receivedArgs: any[] = [];
+      const fn = (...args: any[]) => receivedArgs.push(...args);
+      const throttled = throttle(fn, 100);
+
+      throttled("a", "b", "c");
+      expect(receivedArgs).toEqual(["a", "b", "c"]);
+    });
+
+    it("should use arguments from the first call during throttle period", () => {
+      let receivedArgs: any[] = [];
+      const fn = (...args: any[]) => receivedArgs.push(...args);
+      const throttled = throttle(fn, 100);
+
+      throttled("first");
+      throttled("second"); // should be ignored
+      throttled("third"); // should be ignored
+
+      expect(receivedArgs).toEqual(["first"]);
+    });
+
+    it("should work with functions that throw errors", () => {
+      const fn = () => {
+        throw new Error("test error");
+      };
+      const throttled = throttle(fn, 100);
+
+      expect(() => throttled()).toThrow("test error");
+      expect(() => throttled()).not.toThrow(); // second call ignored
+    });
+
+    it("should reset after timeout and allow new calls", async () => {
+      let callCount = 0;
+      const fn = () => callCount++;
+      const throttled = throttle(fn, 30);
+
+      // First batch
+      throttled();
+      throttled();
+      expect(callCount).toBe(1);
+
+      // Wait for timeout
+      await new Promise(resolve => setTimeout(resolve, 40));
+
+      // Second batch
+      throttled();
+      throttled();
+      expect(callCount).toBe(2);
+    });
+  });
+
+  describe("debounce", () => {
+    it("should not execute function immediately", () => {
+      let callCount = 0;
+      const fn = () => callCount++;
+      const debounced = debounce(fn, 100);
+
+      debounced();
+      expect(callCount).toBe(0);
+    });
+
+    it("should execute function after delay when no more calls", async () => {
+      let callCount = 0;
+      const fn = () => callCount++;
+      const debounced = debounce(fn, 50);
+
+      debounced();
+      expect(callCount).toBe(0);
+
+      await new Promise(resolve => setTimeout(resolve, 60));
+      expect(callCount).toBe(1);
+    });
+
+    it("should cancel previous timer when called again", async () => {
+      let callCount = 0;
+      const fn = () => callCount++;
+      const debounced = debounce(fn, 50);
+
+      debounced();
+      await new Promise(resolve => setTimeout(resolve, 25)); // Half delay
+      debounced(); // Should cancel previous timer
+      await new Promise(resolve => setTimeout(resolve, 25)); // Total 50ms from first call
+      expect(callCount).toBe(0); // Should still be 0
+
+      await new Promise(resolve => setTimeout(resolve, 30)); // Additional 30ms (total 55ms from second call)
+      expect(callCount).toBe(1); // Now should execute
+    });
+
+    it("should use arguments from the last call", async () => {
+      let receivedArgs: any[] = [];
+      const fn = (...args: any[]) => receivedArgs.push(...args);
+      const debounced = debounce(fn, 50);
+
+      debounced("first");
+      debounced("second");
+      debounced("third");
+
+      await new Promise(resolve => setTimeout(resolve, 60));
+      expect(receivedArgs).toEqual(["third"]);
+    });
+
+    it("should handle multiple argument sets correctly", async () => {
+      let receivedArgs: any[][] = [];
+      const fn = (...args: any[]) => receivedArgs.push(args);
+      const debounced = debounce(fn, 30);
+
+      debounced("a", 1);
+      await new Promise(resolve => setTimeout(resolve, 10));
+      debounced("b", 2);
+      await new Promise(resolve => setTimeout(resolve, 10));
+      debounced("c", 3);
+
+      await new Promise(resolve => setTimeout(resolve, 40));
+      expect(receivedArgs).toEqual([["c", 3]]);
     });
   });
 });
