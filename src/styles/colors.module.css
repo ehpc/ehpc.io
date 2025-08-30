@@ -40,9 +40,8 @@
 }
 
 :root {
-  --base-color: hsl(238deg 74% 7%);
-  --wall-color: hsl(289deg 81% 8%);
-  --wall-left-color: hsl(290deg 84% 10%);
-  --wall-right-color: hsl(277deg 100% 7%);
+  --wall-color: #33073d;
+  --wall-left-color: #41084e;
+  --wall-right-color: #3c0848;
   --background-gradient: linear-gradient(to right, var(--wall-left-color) 50%, var(--wall-right-color) 50%);
 }

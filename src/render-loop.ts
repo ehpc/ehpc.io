@@ -1,6 +1,6 @@
 import { MAX_STARS, RESIZE_DELAY } from "./constants";
 import { generateAllEntities, generateStars } from "./generators";
-import { drawMainScene } from "./scenes";
+import { drawEdges, drawMainScene } from "./scenes";
 import type { GeneratedEntities, VirtualCanvas, VirtualCanvasContext } from "./types";
 import { debounce } from "./utils";
 
@@ -31,20 +31,42 @@ function drawFrame(
 
   // Draw virtual canvas onto main canvas
   const width = mainCanvas.width;
-  const height = mainCanvas.height;
-  const scale = height / virtualCanvas.height;
-  const maxWidth = virtualCanvas.width * scale;
-  const x = (width - maxWidth) / 2;
+  let height = mainCanvas.height;
+  const scaleY = height / virtualCanvas.height;
+  let realWidth = virtualCanvas.width * scaleY;
+  let virtualX = 0;
+  let virtualWidth = virtualCanvas.width;
 
+  // Maintain most of the scene visible by squishing it vertically
+  if (realWidth > width) {
+    const dX = (realWidth - width) / 2;
+    virtualX = dX / scaleY;
+    if (virtualX > 57) {
+      virtualX = 57;
+    }
+    virtualWidth = virtualCanvas.width - virtualX * 2;
+    if (virtualX >= 57) {
+      const scaleX = width / virtualWidth;
+      height = virtualCanvas.height * scaleX;
+    }
+    realWidth = width;
+  }
+  const x = (width - realWidth) / 2;
+  const y = mainCanvas.height - height;
+
+  // Fill empty space around main scene
+  drawEdges(mainCtx, x, y);
+
+  // Draw the virtual canvas onto the main canvas
   mainCtx.drawImage(
     virtualCanvas,
+    virtualX,
     0,
-    0,
-    virtualCanvas.width,
+    virtualWidth,
     virtualCanvas.height,
     x,
-    0,
-    maxWidth,
+    y,
+    realWidth,
     height,
   );
 }

@@ -2,7 +2,7 @@
 
 html,
 body {
-  background: var(--background-gradient);
+  /* background: var(--background-gradient); */
   height: 100%;
   margin: 0;
 }
