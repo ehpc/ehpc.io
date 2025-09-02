@@ -1,5 +1,5 @@
 import { MAX_STARS, RESIZE_DELAY } from "./constants";
-import { generateAllEntities, generateStars } from "./generators";
+import { generateAllEntities, generateServerBoxes, generateStars } from "./generators";
 import { drawEdges, drawMainScene } from "./scenes";
 import type { GeneratedEntities, VirtualCanvas, VirtualCanvasContext } from "./types";
 import { debounce } from "./utils";
@@ -104,6 +104,7 @@ export function renderLoop(
       lastFrameTime += elapsedStable;
 
       generatedEntities.stars = generateStars(generatedEntities.stars, MAX_STARS, elapsedStable);
+      generatedEntities.serverBoxes = generateServerBoxes(generatedEntities.serverBoxes, elapsedStable);
       drawFrame(mainCanvas, mainCtx, virtualCanvas, virtualCtx, generatedEntities);
     }
     requestAnimationFrame(loop);

@@ -1,7 +1,20 @@
 import { MAX_STARS, MAX_WINDOW_BITMASK } from "./constants";
 import colors from "./styles/colors.module.css";
-import type { Building, BuildingGenerationInterval, GeneratedEntities, Star } from "./types";
-import { random } from "./utils";
+import type { Building, BuildingGenerationInterval, GeneratedEntities, Point, ServerBox, Star } from "./types";
+import { random, sampleOne } from "./utils";
+
+const INDICATOR_COLORS = [
+  colors.skyGradient1,
+  colors.skyGradient2,
+  colors.skyGradient3,
+  colors.skyGradient4,
+  colors.skyGradient5,
+  colors.transparentColor,
+  colors.transparentColor,
+  colors.transparentColor,
+] as const;
+
+const INDICATOR_MAX_LITUP_TIME = 500;
 
 export function generateBuildings(
   intervals: BuildingGenerationInterval[],
@@ -59,33 +72,6 @@ export function generateBuildings(
   return generatedBuildings;
 }
 
-export function generateAllEntities(): GeneratedEntities {
-  const backgroundBuildings = generateBuildings([
-    { x0: 90, x1: 190, minWidth: 7, maxWidth: 10, minY: 135, maxY: 160 },
-    { x0: 190, x1: 268, minWidth: 7, maxWidth: 10, minY: 154, maxY: 178 },
-    { x0: 268, x1: 416, minWidth: 10, maxWidth: 18, minY: 120, maxY: 164 },
-  ], colors.backgroundBuildingColor);
-  const foregroundBuildings = generateBuildings([
-    { x0: 90, x1: 174, minWidth: 9, maxWidth: 17, minY: 114, maxY: 145 },
-    {
-      x0: 174,
-      x1: 264,
-      minWidth: 10,
-      maxWidth: 20,
-      minY: 173,
-      maxY: 186,
-      options: { antennaLength: 0, windowsBitmask: 0 },
-    },
-    { x0: 264, x1: 340, minWidth: 8, maxWidth: 17, minY: 155, maxY: 175 },
-    { x0: 340, x1: 416, minWidth: 12, maxWidth: 22, minY: 98, maxY: 148 },
-  ], colors.foregroundBuildingColor);
-  return {
-    backgroundBuildings,
-    foregroundBuildings,
-    stars: generateStars([], MAX_STARS),
-  };
-}
-
 export function generateStars(
   oldStars: Star[],
   maxStars: number,
@@ -114,4 +100,110 @@ export function generateStars(
     });
   }
   return stars;
+}
+
+function createServerBoxWithDisplay(tl: Point, br: Point, depth: number): ServerBox {
+  const box: ServerBox = {
+    tl,
+    br,
+    depth,
+  };
+  // Display
+  const paddingTop = 0.15 * (br[1] - tl[1]);
+  const paddingLeft = 0.15 * (br[0] - tl[0]);
+  box.display = {
+    tl: [tl[0] + paddingLeft, tl[1] + paddingTop],
+    br: [br[0] - paddingLeft, br[1] - paddingTop],
+  };
+  return box;
+}
+
+function createSmartServerBox(tl: Point, br: Point, depth: number): ServerBox {
+  const box: ServerBox = {
+    tl,
+    br,
+    depth,
+    indicators: [],
+  };
+  // Display
+  const padding = 0.15 * (br[0] - tl[0]);
+  const displaySize = br[0] - tl[0] - 2 * padding - 1;
+  box.display = {
+    tl: [tl[0] + padding, tl[1] + padding],
+    br: [tl[0] + padding + displaySize, tl[1] + padding + displaySize],
+  };
+  // Indicators
+  const freeSpace = br[1] - (tl[1] + 3 * padding + displaySize);
+  const indicatorSize = 3;
+  const indicatorRowsCount = Math.floor(freeSpace / (2 * indicatorSize));
+  const indicatorsCount = Math.ceil(Math.floor(displaySize / indicatorSize) / 2);
+  const indicatorsGap = (displaySize - indicatorsCount * indicatorSize) / (indicatorsCount - 1);
+  const firstIndicatorPoint = [tl[0] + padding, tl[1] + 2 * padding + displaySize];
+  for (let row = 0; row < indicatorRowsCount; row++) {
+    for (let i = 0; i < indicatorsCount; i++) {
+      box.indicators!.push({
+        tl: [
+          firstIndicatorPoint[0] + i * (indicatorSize + indicatorsGap),
+          firstIndicatorPoint[1] + row * indicatorSize * 2,
+        ],
+        br: [
+          firstIndicatorPoint[0] + i * (indicatorSize + indicatorsGap) + indicatorSize - 1,
+          firstIndicatorPoint[1] + row * indicatorSize * 2 + indicatorSize - 1,
+        ],
+        color: sampleOne(INDICATOR_COLORS),
+        litUpTime: 0,
+        maxLitUpTime: random(0, INDICATOR_MAX_LITUP_TIME),
+      });
+    }
+  }
+  return box;
+}
+
+export function generateServerBoxes(oldServerBoxes?: ServerBox[], deltaTime: number = 0): ServerBox[] {
+  if (oldServerBoxes) {
+    for (const box of oldServerBoxes) {
+      if (box.indicators) {
+        for (const indicator of box.indicators) {
+          indicator.litUpTime += deltaTime;
+          if (indicator.litUpTime >= indicator.maxLitUpTime) {
+            indicator.litUpTime = 0;
+            indicator.maxLitUpTime = random(0, INDICATOR_MAX_LITUP_TIME);
+            indicator.color = sampleOne(INDICATOR_COLORS);
+          }
+        }
+      }
+    }
+    return oldServerBoxes;
+  }
+  const bigBox = createServerBoxWithDisplay([353, 226], [418, 284], 13);
+  const smartBox = createSmartServerBox([357, 148], [397, 223], 6);
+  return [bigBox, smartBox];
+}
+
+export function generateAllEntities(): GeneratedEntities {
+  const backgroundBuildings = generateBuildings([
+    { x0: 90, x1: 190, minWidth: 7, maxWidth: 10, minY: 135, maxY: 160 },
+    { x0: 190, x1: 268, minWidth: 7, maxWidth: 10, minY: 154, maxY: 178 },
+    { x0: 268, x1: 416, minWidth: 10, maxWidth: 18, minY: 120, maxY: 164 },
+  ], colors.backgroundBuildingColor);
+  const foregroundBuildings = generateBuildings([
+    { x0: 90, x1: 174, minWidth: 9, maxWidth: 17, minY: 114, maxY: 145 },
+    {
+      x0: 174,
+      x1: 264,
+      minWidth: 10,
+      maxWidth: 20,
+      minY: 173,
+      maxY: 186,
+      options: { antennaLength: 0, windowsBitmask: 0 },
+    },
+    { x0: 264, x1: 340, minWidth: 8, maxWidth: 17, minY: 155, maxY: 175 },
+    { x0: 340, x1: 416, minWidth: 12, maxWidth: 22, minY: 98, maxY: 148 },
+  ], colors.foregroundBuildingColor);
+  return {
+    backgroundBuildings,
+    foregroundBuildings,
+    stars: generateStars([], MAX_STARS),
+    serverBoxes: generateServerBoxes(),
+  };
 }

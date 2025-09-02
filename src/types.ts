@@ -40,11 +40,36 @@ export interface Star {
   glowingSpeed: number;
 }
 
+// Signaling light on a server box
+export interface Indicator {
+  tl: Point;
+  br: Point;
+  color: string;
+  litUpTime: number;
+  maxLitUpTime: number;
+}
+
+// Server box display
+export interface ServerBoxDisplay {
+  tl: Point;
+  br: Point;
+}
+
+// Server box entity
+export interface ServerBox {
+  tl: Point;
+  br: Point;
+  depth: number;
+  display?: ServerBoxDisplay;
+  indicators?: Indicator[];
+}
+
 // Generated entities in the virtual world.
 export interface GeneratedEntities {
   backgroundBuildings: Building[];
   foregroundBuildings: Building[];
   stars: Star[];
+  serverBoxes: ServerBox[];
 }
 
 // Simple point on 2D space.

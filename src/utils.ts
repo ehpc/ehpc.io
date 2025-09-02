@@ -13,6 +13,19 @@ export function shuffle<T = any>(arr: T[]): T[] {
 }
 
 /**
+ * Returns a random element from an array.
+ * @param arr The array to sample from.
+ * @returns A random element from the array or undefined if the array is empty.
+ */
+export function sampleOne<T = any, F extends readonly [T, ...T[]] = [T]>(arr: F): F[number];
+export function sampleOne<T>(arr: readonly T[]): T | undefined;
+export function sampleOne<T = any>(arr: readonly T[]): T | undefined {
+  if (!arr || arr.length === 0) return undefined;
+  const randomIndex = Math.floor(Math.random() * arr.length);
+  return arr[randomIndex];
+}
+
+/**
  * Returns a random integer between min and max (inclusive).
  * @param min The minimum value (inclusive).
  * @param max The maximum value (inclusive).

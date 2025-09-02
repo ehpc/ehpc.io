@@ -9,6 +9,19 @@ interface ShearParams {
 }
 
 /**
+ * Linearly interpolates a point towards a perspective point.
+ * @param p The original point.
+ * @param perspective The perspective point to interpolate towards.
+ * @param t The interpolation factor (0 to 1).
+ * @returns The interpolated point.
+ */
+export function lerpPointToPerspective(p: Point, perspective: Point, t: number): Point {
+  const dx = perspective[0] - p[0];
+  const dy = perspective[1] - p[1];
+  return [p[0] + dx * t, p[1] + dy * t];
+}
+
+/**
  * Scales the points of a rectangle preserving center pivot.
  * @param points The points of the rectangle on 2D space [TL, TR, BR, BL].
  * @param scaleX The scale factor in the X direction.

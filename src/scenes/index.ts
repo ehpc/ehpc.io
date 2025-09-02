@@ -1,3 +1,4 @@
+export { drawServerBoxesScene } from "./server-boxes";
 export { drawDeskScene } from "./desk";
 export { drawEdges } from "./edges";
 export { drawMainScene } from "./main";

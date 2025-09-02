@@ -37,6 +37,10 @@
   keyboardLeftColor: #340a28;
   keyboardTopColor: #fe8500;
   keyboardKeypadColor: hsl(8deg 83% 33%);
+  boxFrontColor: #400c35;
+  boxSideColor: #631253;
+  boxTopColor: #931c7b;
+  transparentColor: rgba(255, 255, 255, 0);
 }
 
 :root {

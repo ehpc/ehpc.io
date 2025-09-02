@@ -1,5 +1,13 @@
 import { describe, expect, it } from "vitest";
-import { debounce, random, reverse4BitsCompressedTable, reverse4BitsSimple, shuffle, throttle } from "./utils";
+import {
+  debounce,
+  random,
+  reverse4BitsCompressedTable,
+  reverse4BitsSimple,
+  sampleOne,
+  shuffle,
+  throttle,
+} from "./utils";
 
 describe("utils", () => {
   describe("shuffle", () => {
@@ -46,6 +54,56 @@ describe("utils", () => {
       const result2 = shuffle(input);
       // Very unlikely to be identical for a 10-element array
       expect(result1).not.toEqual(result2);
+    });
+  });
+
+  describe("sampleOne", () => {
+    it("should return undefined for empty array", () => {
+      const result = sampleOne([]);
+      expect(result).toBeUndefined();
+    });
+
+    it("should return undefined for null/undefined input", () => {
+      expect(sampleOne(null as any)).toBeUndefined();
+      expect(sampleOne(undefined as any)).toBeUndefined();
+    });
+
+    it("should return the only element from single-element array", () => {
+      const input = [42];
+      const result = sampleOne(input);
+      expect(result).toBe(42);
+    });
+
+    it("should return one of the elements from the array", () => {
+      const input = [1, 2, 3, 4, 5];
+      const result = sampleOne(input);
+      expect(input).toContain(result);
+    });
+
+    it("should not modify the original array", () => {
+      const input = [1, 2, 3, 4, 5];
+      const original = [...input];
+      sampleOne(input);
+      expect(input).toEqual(original);
+    });
+
+    it("should produce varied results over multiple calls (statistically)", () => {
+      const input = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+      const results = new Set();
+
+      // Sample many times to get different results
+      for (let i = 0; i < 100; i++) {
+        results.add(sampleOne(input));
+      }
+
+      // Should get more than one unique result with high probability
+      expect(results.size).toBeGreaterThan(1);
+    });
+
+    it("should handle arrays with duplicate values", () => {
+      const input = [1, 1, 2, 2, 3];
+      const result = sampleOne(input);
+      expect([1, 2, 3]).toContain(result);
     });
   });
 
