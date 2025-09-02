@@ -2,7 +2,7 @@ import { reverse4bits } from "../../wasm/pkg/";
 import { MAX_WINDOW_BITMASK } from "../constants";
 import { circle, rect } from "../primitives";
 import colors from "../styles/colors.module.css";
-import type { Building, BuildingOptions, GeneratedEntities, VirtualCanvasContext, Star } from "../types";
+import type { Building, BuildingOptions, GeneratedEntities, Star, VirtualCanvasContext } from "../types";
 
 function drawSky(ctx: VirtualCanvasContext) {
   rect(ctx, 0, 0, ctx.canvas.width, 74, colors.skyGradient1);
@@ -15,7 +15,7 @@ function drawSky(ctx: VirtualCanvasContext) {
 function drawStars(ctx: VirtualCanvasContext, stars: Star[]) {
   stars.forEach((star) => {
     const realOpacity = (star.opacity <= 50 ? star.opacity * 2 : (100 - star.opacity) * 2) * 0.01;
-    rect(ctx, star.x, star.y, star.x + 1, star.y + 1, star.color.replace(')', `, ${realOpacity})`));
+    rect(ctx, star.x, star.y, star.x + 1, star.y + 1, star.color.replace(")", `, ${realOpacity})`));
   });
 }
 

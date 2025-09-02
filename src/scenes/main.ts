@@ -1,5 +1,5 @@
 import type { GeneratedEntities, VirtualCanvasContext } from "../types";
-import { drawDeskScene, drawRoomScene, drawWindowScene, drawServerBoxesScene } from ".";
+import { drawDeskScene, drawRoomScene, drawServerBoxesScene, drawWindowScene } from ".";
 
 export function drawMainScene(
   ctx: VirtualCanvasContext,

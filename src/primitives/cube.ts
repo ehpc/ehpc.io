@@ -1,6 +1,6 @@
 import type { Point, VirtualCanvasContext } from "../types";
+import { polygon } from "./";
 import { lerpPointToPerspective } from "./transform";
-import { polygon } from './';
 
 /**
  * Draws a cube in 1-point perspective
