@@ -120,7 +120,13 @@ function createServerBoxWithDisplay(tl: Point, br: Point, depth: number): Server
   return box;
 }
 
-function createSmartServerBox(tl: Point, br: Point, depth: number, indicatorSize: number = INDICATOR_SIZE): ServerBox {
+function createSmartServerBox(
+  tl: Point,
+  br: Point,
+  depth: number,
+  indicatorSize: number = INDICATOR_SIZE,
+  rowGap: number = indicatorSize,
+): ServerBox {
   const box: ServerBox = {
     tl,
     br,
@@ -150,11 +156,11 @@ function createSmartServerBox(tl: Point, br: Point, depth: number, indicatorSize
       box.indicators!.push({
         tl: [
           firstIndicatorPoint[0] + i * (indicatorSize + indicatorsGap),
-          firstIndicatorPoint[1] + row * indicatorSize * 2,
+          firstIndicatorPoint[1] + row * (indicatorSize + rowGap),
         ],
         br: [
           firstIndicatorPoint[0] + i * (indicatorSize + indicatorsGap) + indicatorSize - 1,
-          firstIndicatorPoint[1] + row * indicatorSize * 2 + indicatorSize - 1,
+          firstIndicatorPoint[1] + row * (indicatorSize + rowGap) + indicatorSize - 1,
         ],
         color: sampleOne(INDICATOR_COLORS),
         litUpTime: 0,
@@ -183,8 +189,8 @@ export function generateServerBoxes(oldServerBoxes?: ServerBox[], deltaTime: num
   }
   const bigBox = createServerBoxWithDisplay([353, 226], [418, 284], 13);
   const smartBox = createSmartServerBox([357, 148], [397, 223], 6);
-  const smallBox = createServerBoxWithDisplay([318, 252], [347, 281], 9);
-  const smallSmartBox = createSmartServerBox([310, 234], [337, 248], 5, 2);
+  const smallBox = createServerBoxWithDisplay([306, 252], [335, 281], 9);
+  const smallSmartBox = createSmartServerBox([313, 234], [340, 248], 5, 2, 3);
   return [bigBox, smartBox, smallBox, smallSmartBox];
 }
 
