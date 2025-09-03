@@ -4,7 +4,12 @@
   wallRightColor: #3c0848;
   ceilingColor: #280530;
   floorColor: #280530;
-  windowFrameColor: #4a1e54;
+  windowFrameColor: #3D0C4D;
+  windowFrameTopOutlineColor: #1C002E;
+  windowFrameSideOutlineColor: #2D003A;
+  windowFrameBottomOutlineColor: #3A0056;
+  windowFrameBottomHighlightColor: #561D66;
+  windowFrameShadowColor: #19002C;
   windowFrameOutlineHighlightedColor: hsl(286deg 68% 6% / 20%);
   highlightColor: hsl(30deg 100% 50%);
   skyGradient1: hsl(339deg 70% 39%);

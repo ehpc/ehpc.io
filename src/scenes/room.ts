@@ -59,7 +59,7 @@ function drawWindowFrame(ctx: VirtualCanvasContext) {
   rightTriangle(ctx, 377 + thickness + 1, 59 - thickness + 1, 10, 10, colors.wallColor, "NE");
 
   // Draw inner outline
-  line(ctx, 136, 58, 371, 58, colors.windowFrameOutlineHighlightedColor);
+  line(ctx, 136, 58, 371, 58, colors.windowFrameTopOutlineColor);
   line(ctx, 136, 196, 371, 196, colors.windowFrameOutlineHighlightedColor);
   line(ctx, 130, 64, 130, 190, colors.windowFrameOutlineHighlightedColor);
   line(ctx, 377, 64, 377, 190, colors.windowFrameOutlineHighlightedColor);
