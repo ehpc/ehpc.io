@@ -64,12 +64,38 @@ export interface ServerBox {
   indicators?: Indicator[];
 }
 
+// Display rolling scanline
+export interface RollingScanline {
+  tl: Point;
+  boxWidth: number;
+  boxHeight: number;
+  thickness: number;
+  speed: number;
+  currentPosition: number;
+}
+
+// Text displayed on a server box
+export interface ServerBoxText {
+  text: string;
+  x: number;
+  y: number;
+  size: number;
+  elapsed: number;
+  shiftFrequency: number;
+  shiftX: number;
+  shiftSpeed: number;
+  currentShift: number;
+}
+
 // Generated entities in the virtual world.
 export interface GeneratedEntities {
   backgroundBuildings: Building[];
   foregroundBuildings: Building[];
   stars: Star[];
   serverBoxes: ServerBox[];
+  rollingScanlines: RollingScanline[];
+  serverBoxTextes: ServerBoxText[];
+  cursorPosition: Point;
 }
 
 // Simple point on 2D space.

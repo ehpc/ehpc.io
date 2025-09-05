@@ -39,12 +39,6 @@ function drawBackground(ctx: VirtualCanvasContext) {
 }
 
 function drawWindowFrame(ctx: VirtualCanvasContext) {
-  // Inner corners
-  rightTriangle(ctx, 131, 59, 5, 5, colors.windowFrameColor, "NW");
-  rightTriangle(ctx, 131, 196, 5, 5, colors.windowFrameColor, "SW");
-  rightTriangle(ctx, 377, 196, 5, 5, colors.windowFrameColor, "SE");
-  rightTriangle(ctx, 377, 59, 5, 5, colors.windowFrameColor, "NE");
-
   // Frame
   const thickness = 12;
   rect(ctx, 131 - thickness - 1, 59, 130, 195, colors.windowFrameColor);
@@ -59,10 +53,16 @@ function drawWindowFrame(ctx: VirtualCanvasContext) {
   rightTriangle(ctx, 377 + thickness + 1, 59 - thickness + 1, 10, 10, colors.wallColor, "NE");
 
   // Draw inner outline
-  line(ctx, 136, 58, 371, 58, colors.windowFrameTopOutlineColor);
-  line(ctx, 136, 196, 371, 196, colors.windowFrameOutlineHighlightedColor);
-  line(ctx, 130, 64, 130, 190, colors.windowFrameOutlineHighlightedColor);
-  line(ctx, 377, 64, 377, 190, colors.windowFrameOutlineHighlightedColor);
+  rect(ctx, 136, 55, 371, 58, colors.windowFrameTopOutlineColor);
+  rect(ctx, 136, 196, 371, 199, colors.windowFrameBottomOutlineColor);
+  rect(ctx, 130, 64, 127, 190, colors.windowFrameSideOutlineColor);
+  rect(ctx, 377, 64, 380, 190, colors.windowFrameSideOutlineColor);
+  polygon(ctx, [[136, 55], [136, 58], [130, 64], [127, 64]], colors.windowFrameTopOutlineColor);
+  polygon(ctx, [[372, 55], [372, 58], [378, 64], [381, 64]], colors.windowFrameTopOutlineColor);
+  polygon(ctx, [[127, 191], [130, 191], [136, 197], [136, 201]], colors.windowFrameSideOutlineColor);
+  polygon(ctx, [[372, 196], [372, 200], [382, 191], [378, 191]], colors.windowFrameSideOutlineColor);
+  rect(ctx, 136, 200, 371, 200, colors.windowFrameBottomHighlightColor);
+  rect(ctx, 130, 207, 378, 208, colors.windowFrameShadowColor);
 }
 
 export function drawRoomScene(ctx: VirtualCanvasContext) {

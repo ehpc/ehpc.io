@@ -1,13 +1,13 @@
 import { rect } from "../primitives";
 import colors from "../styles/colors.module.css";
-import type { VirtualCanvasContext } from "../types";
 
-export function drawEdges(ctx: VirtualCanvasContext, x: number, y: number) {
+export function drawEdges(ctx: CanvasRenderingContext2D, x: number, y: number) {
+  const { width, height } = ctx.canvas.getBoundingClientRect();
   if (x > 0) {
-    rect(ctx, 0, 0, x, ctx.canvas.height, colors.wallLeftColor);
-    rect(ctx, ctx.canvas.width - x, 0, ctx.canvas.width, ctx.canvas.height, colors.wallRightColor);
+    rect(ctx, 0, 0, x, height, colors.wallLeftColor);
+    rect(ctx, width - x, 0, width, height, colors.wallRightColor);
   }
   if (y > 0) {
-    rect(ctx, 0, 0, ctx.canvas.width, y, colors.ceilingColor);
+    rect(ctx, 0, 0, width, y, colors.ceilingColor);
   }
 }

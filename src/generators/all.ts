@@ -2,8 +2,10 @@ import { MAX_STARS } from "../constants";
 import colors from "../styles/colors.module.css";
 import type { GeneratedEntities } from "../types";
 import { generateBuildings } from "./buildings";
+import { generateRollingScanlines } from "./rolling-scanlines";
 import { generateServerBoxes } from "./server-boxes";
 import { generateStars } from "./stars";
+import { generateServerBoxTexts } from "./text";
 
 export function generateAllEntities(): GeneratedEntities {
   const backgroundBuildings = generateBuildings([
@@ -30,5 +32,8 @@ export function generateAllEntities(): GeneratedEntities {
     foregroundBuildings,
     stars: generateStars([], MAX_STARS),
     serverBoxes: generateServerBoxes(),
+    rollingScanlines: generateRollingScanlines(),
+    serverBoxTextes: generateServerBoxTexts(),
+    cursorPosition: [0, 0],
   };
 }

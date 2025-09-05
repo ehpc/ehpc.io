@@ -1,8 +1,16 @@
 @import url("./colors.module.css");
 
+@font-face {
+  font-family: "NES";
+  src:
+    url("../fonts/nes.woff2") format("woff2"),
+    url("../fonts/nes.woff") format("woff"),
+    url("../fonts/nes.ttf") format("truetype");
+}
+
 html,
 body {
-  /* background: var(--background-gradient); */
+  font-family: "NES", monospace;
   height: 100%;
   margin: 0;
 }
@@ -11,4 +19,17 @@ body {
   display: block;
   width: 100vw;
   height: 100vh;
+}
+
+body::before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: radial-gradient(transparent, 95%, rgba(0, 0, 0, 0.5));
+  z-index: 2;
+  pointer-events: none;
 }

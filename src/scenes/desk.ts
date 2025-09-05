@@ -1,3 +1,4 @@
+import { DESK_OFFSET_X_THRESHOLD } from "../constants";
 import { polygon, rect } from "../primitives";
 import colors from "../styles/colors.module.css";
 import type { VirtualCanvasContext } from "../types";
@@ -59,7 +60,10 @@ function drawKeyboard(ctx: VirtualCanvasContext) {
   polygon(ctx, [[221, 257], [225, 257], [232, 265], [231, 265]], colors.keyboardKeypadColor);
 }
 
-export function drawDeskScene(ctx: VirtualCanvasContext) {
+export function drawDeskScene(ctx: VirtualCanvasContext, offsetX: number) {
+  const deskOffset = Math.max(0, offsetX - DESK_OFFSET_X_THRESHOLD);
+  ctx.translate(deskOffset, 0);
+
   // Draw table
   drawTable(ctx);
   // Draw PC box
@@ -68,4 +72,6 @@ export function drawDeskScene(ctx: VirtualCanvasContext) {
   drawDisplay(ctx);
   // Draw keyboard
   drawKeyboard(ctx);
+
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
 }
