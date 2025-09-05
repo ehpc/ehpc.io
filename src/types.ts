@@ -72,6 +72,9 @@ export interface RollingScanline {
   thickness: number;
   speed: number;
   currentPosition: number;
+  interval: number;
+  elapsed: number;
+  distortX?: number;
 }
 
 // Text displayed on a server box
@@ -80,11 +83,13 @@ export interface ServerBoxText {
   x: number;
   y: number;
   size: number;
-  elapsed: number;
-  shiftFrequency: number;
-  shiftX: number;
-  shiftSpeed: number;
-  currentShift: number;
+  shift?: {
+    elapsed: number;
+    frequency: number;
+    x: number;
+    speed: number;
+    currentShift: number;
+  };
 }
 
 // Generated entities in the virtual world.

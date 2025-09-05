@@ -4,7 +4,29 @@ import colors from "../styles/colors.module.css";
 import type { GeneratedEntities, Point, VirtualCanvasContext } from "../types";
 
 function drawScanlines(ctx: VirtualCanvasContext, generatedEntities: GeneratedEntities) {
-  for (const { tl, boxWidth, thickness, currentPosition } of generatedEntities.rollingScanlines) {
+  for (
+    const { tl, boxWidth, thickness, currentPosition, elapsed, interval, distortX } of generatedEntities
+      .rollingScanlines
+  ) {
+    if (interval && elapsed < interval) {
+      continue;
+    }
+    if (distortX) {
+      // Shift pixels under scanline
+      for (let y = 0; y < thickness; y++) {
+        ctx.drawImage(
+          ctx.canvas,
+          tl[0],
+          tl[1] + currentPosition + y,
+          boxWidth,
+          1,
+          tl[0] + distortX,
+          tl[1] + currentPosition + y,
+          boxWidth - distortX,
+          1,
+        );
+      }
+    }
     rect(
       ctx,
       tl[0],
@@ -18,9 +40,9 @@ function drawScanlines(ctx: VirtualCanvasContext, generatedEntities: GeneratedEn
 
 function drawServerBoxesText(ctx: VirtualCanvasContext, generatedEntities: GeneratedEntities) {
   ctx.fillStyle = colors.textColor;
-  for (const { text, x, y, size, currentShift } of generatedEntities.serverBoxTextes) {
+  for (const { text, x, y, size, shift } of generatedEntities.serverBoxTextes) {
     ctx.font = `${size}px NES`;
-    ctx.fillText(text, x + currentShift, y);
+    ctx.fillText(text, x + (shift?.currentShift || 0), y);
   }
 }
 

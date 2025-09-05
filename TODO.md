@@ -1,3 +1,3 @@
-* Add windows animation
-* Add main text
-* Add hover on links
+- Add windows animation
+- Add main text
+- Add hover on links
