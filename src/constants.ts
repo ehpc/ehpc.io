@@ -19,3 +19,29 @@ export const RESIZE_DELAY = 10;
 
 // Maximum effective distance for the cursor to have any effect on an entity (in virtual px)
 export const MAX_CURSOR_DISTANCE = 100;
+
+// Text displayed on the PC
+export const PC_TEXT = `
+        
+Touch me
+(^_^)
+
+Welcome
+to my
+personal
+website!
+
+Everything
+here is
+in 2D
+(^_^)
+`;
+
+// Typing speed for the PC text (chars per second)
+export const PC_TEXT_TYPING_SPEED = 15;
+
+// Text displayed on the bottom server box
+export const BOTTOM_SERVER_BOX_TEXT = "CV";
+
+// Text displayed on the top server box
+export const TOP_SERVER_BOX_TEXT = ["git", "hub"];

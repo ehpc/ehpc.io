@@ -9,6 +9,6 @@ export function drawMainScene(
   drawWindowScene(ctx, generatedEntities);
   drawRoomScene(ctx);
   drawServerBoxesScene(ctx, generatedEntities, drawingCoordinates);
-  drawDeskScene(ctx, drawingCoordinates);
+  drawDeskScene(ctx, generatedEntities, drawingCoordinates);
   drawTextScene(ctx, generatedEntities, drawingCoordinates);
 }

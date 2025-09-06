@@ -93,6 +93,18 @@ export interface ServerBoxText {
   };
 }
 
+// Text displayed on a PC
+export interface PCText {
+  text: string;
+  // Currently printed symbol index
+  currentSymbolIndex: number;
+  // Currently printed row index
+  currentRow: number;
+  // Typing speed in characters per second
+  typingSpeed: number;
+  elapsed: number;
+}
+
 // Generated entities in the virtual world.
 export interface GeneratedEntities {
   backgroundBuildings: Building[];
@@ -101,6 +113,7 @@ export interface GeneratedEntities {
   serverBoxes: ServerBox[];
   rollingScanlines: RollingScanline[];
   serverBoxTextes: ServerBoxText[];
+  pcText: PCText;
   cursorVirtualPosition: Point;
 }
 

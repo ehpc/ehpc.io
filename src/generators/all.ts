@@ -5,7 +5,7 @@ import { generateBuildings } from "./buildings";
 import { generateRollingScanlines } from "./rolling-scanlines";
 import { generateServerBoxes } from "./server-boxes";
 import { generateStars } from "./stars";
-import { generateServerBoxTexts } from "./text";
+import { generatePCText, generateServerBoxTexts } from "./text";
 
 export function generateAllEntities(): GeneratedEntities {
   const backgroundBuildings = generateBuildings([
@@ -34,6 +34,7 @@ export function generateAllEntities(): GeneratedEntities {
     serverBoxes: generateServerBoxes(),
     rollingScanlines: generateRollingScanlines(),
     serverBoxTextes: generateServerBoxTexts(),
+    pcText: generatePCText(),
     cursorVirtualPosition: [0, 0],
   };
 }

@@ -3,3 +3,4 @@
 - Add airplanes
 - Add wall decorations
 - Add booting up animation
+- Make PC text touchable

@@ -1,7 +1,7 @@
 import { DESK_OFFSET_X_THRESHOLD } from "../constants";
 import { polygon, rect } from "../primitives";
 import colors from "../styles/colors.module.css";
-import type { DrawingCoordinates, VirtualCanvasContext } from "../types";
+import type { DrawingCoordinates, GeneratedEntities, PCText, VirtualCanvasContext } from "../types";
 
 function drawTable(ctx: VirtualCanvasContext) {
   // Bottom front legs
@@ -31,12 +31,15 @@ function drawDisplay(ctx: VirtualCanvasContext) {
   polygon(ctx, [[124, 158], [124, 231], [121, 227], [121, 161]], colors.displayShadowColor);
   // Front
   polygon(ctx, [[124, 158], [124, 231], [206, 228], [206, 161]], colors.displayFrameColor);
+  // Button
+  rect(ctx, 186, 222, 195, 225, colors.displayButtonColor);
+}
+
+function drawDisplayGlass(ctx: VirtualCanvasContext) {
   // Glass
   polygon(ctx, [[134, 169], [134, 218], [197, 217], [197, 170]], colors.displayGlassColor);
   // Reflection
   rect(ctx, 180, 176, 190, 181, colors.displayReflectionColor);
-  // Button
-  rect(ctx, 186, 222, 195, 225, colors.displayButtonColor);
 }
 
 function drawKeyboard(ctx: VirtualCanvasContext) {
@@ -60,17 +63,67 @@ function drawKeyboard(ctx: VirtualCanvasContext) {
   polygon(ctx, [[221, 257], [225, 257], [232, 265], [231, 265]], colors.keyboardKeypadColor);
 }
 
-export function drawDeskScene(ctx: VirtualCanvasContext, drawingCoordinates: DrawingCoordinates) {
+function drawText(ctx: VirtualCanvasContext, pcText: PCText) {
+  const x = 139;
+  const y = 211;
+  const { text, currentSymbolIndex } = pcText;
+  ctx.fillStyle = colors.textColor;
+  ctx.font = "11px NES";
+  // Draw previous rows
+  let row = 0;
+  let index = 0;
+  let lastNewLineIndex = 0;
+  let str = "";
+  const rows: string[] = [];
+  while (index < currentSymbolIndex) {
+    str += text[index];
+    if (text[index] === "\n") {
+      rows.unshift(str);
+      str = "";
+      row++;
+      lastNewLineIndex = index + 1;
+    }
+    index++;
+  }
+
+  ctx.save();
+  ctx.beginPath();
+  ctx.moveTo(135, 170);
+  ctx.lineTo(164, 170);
+  ctx.lineTo(164, 171);
+  ctx.lineTo(195, 171);
+  ctx.lineTo(195, 215);
+  ctx.lineTo(164, 215);
+  ctx.lineTo(164, 217);
+  ctx.lineTo(135, 217);
+  ctx.closePath();
+  ctx.clip();
+
+  const noMoreText = currentSymbolIndex >= text.length;
+  for (let i = 0; i < rows.length; i++) {
+    ctx.fillText(rows[i], x, y - (noMoreText ? i : i + 1) * 10);
+  }
+  if (!noMoreText) {
+    // Draw current row
+    ctx.fillText(text.slice(lastNewLineIndex, currentSymbolIndex), x, y);
+  }
+
+  ctx.restore();
+}
+
+export function drawDeskScene(
+  ctx: VirtualCanvasContext,
+  generatedEntities: GeneratedEntities,
+  drawingCoordinates: DrawingCoordinates,
+) {
   const deskOffset = Math.max(0, drawingCoordinates.virtualX - DESK_OFFSET_X_THRESHOLD);
   ctx.translate(deskOffset, 0);
 
-  // Draw table
   drawTable(ctx);
-  // Draw PC box
   drawPCBox(ctx);
-  // Draw display
   drawDisplay(ctx);
-  // Draw keyboard
+  drawDisplayGlass(ctx);
+  drawText(ctx, generatedEntities.pcText);
   drawKeyboard(ctx);
 
   ctx.setTransform(1, 0, 0, 1, 0, 0);

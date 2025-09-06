@@ -13,10 +13,19 @@
       color: white;
       overflow: hidden;
     }
+    a {
+      display: block;
+    }
+    .hidden-text a, .hidden-text p {
+      visibility: hidden;
+    }
     </style>
+    <script>
+    setTimeout(() => document.body.classList.remove("hidden-text"), 1000);
+    </script>
   </head>
 
-  <body>
+  <body class="hidden-text">
     <noscript><p>This site is prettier with JavaScript enabled :)</p></noscript>
 
     <p id="loading-disclaimer">Loading UI, please wait a moment...</p>

@@ -1,6 +1,7 @@
 import { MAX_STARS, RESIZE_DELAY, VIRTUAL_CANVAS_X_THRESHOLD } from "./constants";
 import {
   generateAllEntities,
+  generatePCText,
   generateRollingScanlines,
   generateServerBoxes,
   generateServerBoxTexts,
@@ -160,6 +161,7 @@ export function renderLoop(
         elapsedStable,
       );
       generatedEntities.serverBoxTextes = generateServerBoxTexts(generatedEntities.serverBoxTextes, elapsedStable);
+      generatedEntities.pcText = generatePCText(generatedEntities.pcText, elapsedStable);
       drawFrame(mainCanvas, mainCtx, virtualCanvas, virtualCtx, generatedEntities, drawingCoordinates);
       drawDomElements(drawingCoordinates);
     }

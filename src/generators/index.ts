@@ -4,4 +4,4 @@ export { generateBuildings } from "./buildings";
 export { generateRollingScanlines } from "./rolling-scanlines";
 export { generateServerBoxes } from "./server-boxes";
 export { generateStars } from "./stars";
-export { generateServerBoxTexts } from "./text";
+export { generatePCText, generateServerBoxTexts } from "./text";
