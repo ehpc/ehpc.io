@@ -1,3 +1,5 @@
 - Add windows animation
 - Add main text
-- Add hover on links
+- Add airplanes
+- Add wall decorations
+- Add booting up animation

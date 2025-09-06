@@ -16,3 +16,6 @@ export const MAX_STARS = 15;
 
 // Delay in milliseconds for resize events
 export const RESIZE_DELAY = 10;
+
+// Maximum effective distance for the cursor to have any effect on an entity (in virtual px)
+export const MAX_CURSOR_DISTANCE = 100;

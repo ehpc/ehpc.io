@@ -22,3 +22,9 @@ if (!virtualCtx) {
 
 // Fire up the render loop
 renderLoop(mainCanvas, mainCtx, virtualCanvas, virtualCtx);
+
+// Remove loading disclaimer
+const loadingDisclaimer = document.getElementById("loading-disclaimer");
+if (loadingDisclaimer) {
+  loadingDisclaimer.remove();
+}

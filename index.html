@@ -5,10 +5,27 @@
     <link rel="icon" type="image/svg+xml" href="/ehpc.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ehpc</title>
+    <style>
+    body {
+      background-color: #33073d;
+    }
+    body, a {
+      color: white;
+      overflow: hidden;
+    }
+    </style>
   </head>
 
   <body>
-    <canvas id="scene-canvas"></canvas>
+    <noscript><p>This site is prettier with JavaScript enabled :)</p></noscript>
+
+    <p id="loading-disclaimer">Loading UI, please wait a moment...</p>
+
+    <a id="github-link" href="https://github.com/ehpc">GitHub Repository</a>
+    <a id="cv-link" href="https://github.com/ehpc">My CV</a>
+
+    <canvas id="scene-canvas" width="0" height="0"></canvas>
+
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

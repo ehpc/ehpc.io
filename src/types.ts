@@ -74,6 +74,7 @@ export interface RollingScanline {
   currentPosition: number;
   interval: number;
   elapsed: number;
+  opacity: number;
   distortX?: number;
 }
 
@@ -100,7 +101,7 @@ export interface GeneratedEntities {
   serverBoxes: ServerBox[];
   rollingScanlines: RollingScanline[];
   serverBoxTextes: ServerBoxText[];
-  cursorPosition: Point;
+  cursorVirtualPosition: Point;
 }
 
 // Simple point on 2D space.
@@ -108,3 +109,14 @@ export type Point = [number, number];
 
 // Rectangle defined by its corner points.
 export type Rect = [Point, Point, Point, Point]; // [TL, TR, BR, BL]
+
+// Coordinates for drawing elements on the canvas.
+export interface DrawingCoordinates {
+  virtualWidth: number;
+  virtualHeight: number;
+  drawingWidth: number;
+  drawingHeight: number;
+  canvasOffsetX: number;
+  canvasOffsetY: number;
+  virtualX: number;
+}

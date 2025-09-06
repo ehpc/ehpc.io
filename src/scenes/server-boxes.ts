@@ -1,11 +1,11 @@
 import { SERVER_BOXES_OFFSET_X_THRESHOLD } from "../constants";
 import { cube1, rect } from "../primitives";
 import colors from "../styles/colors.module.css";
-import type { GeneratedEntities, Point, VirtualCanvasContext } from "../types";
+import type { DrawingCoordinates, GeneratedEntities, Point, VirtualCanvasContext } from "../types";
 
 function drawScanlines(ctx: VirtualCanvasContext, generatedEntities: GeneratedEntities) {
   for (
-    const { tl, boxWidth, thickness, currentPosition, elapsed, interval, distortX } of generatedEntities
+    const { tl, boxWidth, thickness, currentPosition, elapsed, opacity, interval, distortX } of generatedEntities
       .rollingScanlines
   ) {
     if (interval && elapsed < interval) {
@@ -18,7 +18,7 @@ function drawScanlines(ctx: VirtualCanvasContext, generatedEntities: GeneratedEn
           ctx.canvas,
           tl[0],
           tl[1] + currentPosition + y,
-          boxWidth,
+          boxWidth - distortX,
           1,
           tl[0] + distortX,
           tl[1] + currentPosition + y,
@@ -33,7 +33,7 @@ function drawScanlines(ctx: VirtualCanvasContext, generatedEntities: GeneratedEn
       tl[1] + currentPosition,
       tl[0] + boxWidth,
       tl[1] + currentPosition + thickness,
-      colors.scanlineColor,
+      `rgba(176, 176, 176, ${opacity})`,
     );
   }
 }
@@ -46,8 +46,12 @@ function drawServerBoxesText(ctx: VirtualCanvasContext, generatedEntities: Gener
   }
 }
 
-export function drawServerBoxesScene(ctx: VirtualCanvasContext, generatedEntities: GeneratedEntities, offsetX: number) {
-  const serverBoxesOffset = -Math.max(0, offsetX - SERVER_BOXES_OFFSET_X_THRESHOLD);
+export function drawServerBoxesScene(
+  ctx: VirtualCanvasContext,
+  generatedEntities: GeneratedEntities,
+  drawingCoordinates: DrawingCoordinates,
+) {
+  const serverBoxesOffset = -Math.max(0, drawingCoordinates.virtualX - SERVER_BOXES_OFFSET_X_THRESHOLD);
   ctx.translate(serverBoxesOffset, 0);
 
   const perspectivePoint: Point = [254, 127];

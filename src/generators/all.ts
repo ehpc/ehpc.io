@@ -34,6 +34,6 @@ export function generateAllEntities(): GeneratedEntities {
     serverBoxes: generateServerBoxes(),
     rollingScanlines: generateRollingScanlines(),
     serverBoxTextes: generateServerBoxTexts(),
-    cursorPosition: [0, 0],
+    cursorVirtualPosition: [0, 0],
   };
 }

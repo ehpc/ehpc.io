@@ -1,14 +1,14 @@
-import type { GeneratedEntities, VirtualCanvasContext } from "../types";
-import { drawCrtEffect, drawDeskScene, drawRoomScene, drawServerBoxesScene, drawTextScene, drawWindowScene } from ".";
+import type { DrawingCoordinates, GeneratedEntities, VirtualCanvasContext } from "../types";
+import { drawDeskScene, drawRoomScene, drawServerBoxesScene, drawTextScene, drawWindowScene } from ".";
 
 export function drawMainScene(
   ctx: VirtualCanvasContext,
   generatedEntities: GeneratedEntities,
-  offsetX: number,
+  drawingCoordinates: DrawingCoordinates,
 ) {
   drawWindowScene(ctx, generatedEntities);
   drawRoomScene(ctx);
-  drawServerBoxesScene(ctx, generatedEntities, offsetX);
-  drawDeskScene(ctx, offsetX);
-  drawTextScene(ctx, generatedEntities, offsetX);
+  drawServerBoxesScene(ctx, generatedEntities, drawingCoordinates);
+  drawDeskScene(ctx, drawingCoordinates);
+  drawTextScene(ctx, generatedEntities, drawingCoordinates);
 }

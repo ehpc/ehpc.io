@@ -1,5 +1,6 @@
 export { drawCrtEffect } from "./crt-effect";
 export { drawDeskScene } from "./desk";
+export { drawDomElements } from "./dom";
 export { drawEdges } from "./edges";
 export { drawMainScene } from "./main";
 export { drawRoomScene } from "./room";

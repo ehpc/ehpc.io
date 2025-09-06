@@ -1,3 +1,4 @@
+export { distance, distanceToRectCenter, isPointInsideRect } from "./calculations";
 export { circle } from "./circle";
 export { cube1 } from "./cube";
 export { debugPoint } from "./debug-point";

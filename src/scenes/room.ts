@@ -1,4 +1,4 @@
-import { line, polygon, rect, reverseRect, rightTriangle } from "../primitives";
+import { polygon, rect, reverseRect, rightTriangle } from "../primitives";
 import colors from "../styles/colors.module.css";
 import type { VirtualCanvasContext } from "../types";
 

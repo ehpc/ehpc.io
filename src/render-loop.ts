@@ -6,11 +6,11 @@ import {
   generateServerBoxTexts,
   generateStars,
 } from "./generators";
-import { drawCrtEffect, drawEdges, drawMainScene } from "./scenes";
-import type { GeneratedEntities, VirtualCanvas, VirtualCanvasContext } from "./types";
+import { drawCrtEffect, drawDomElements, drawEdges, drawMainScene } from "./scenes";
+import type { DrawingCoordinates, GeneratedEntities, VirtualCanvas, VirtualCanvasContext } from "./types";
 import { debounce } from "./utils";
 
-function resizeCanvasToDisplaySize(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
+function resizeCanvasToDisplaySize(canvas: HTMLCanvasElement) {
   const dpr = window.devicePixelRatio || 1;
   const rect = canvas.getBoundingClientRect();
   const displayWidth = Math.round(rect.width * dpr);
@@ -19,22 +19,13 @@ function resizeCanvasToDisplaySize(canvas: HTMLCanvasElement, ctx: CanvasRenderi
   canvas.height = displayHeight;
 }
 
-const drawingCoordinates = {
-  virtualWidth: 0,
-  virtualHeight: 0,
-  virtualX: 0,
-  drawingWidth: 0,
-  drawingHeight: 0,
-  canvasOffsetX: 0,
-  canvasOffsetY: 0,
-};
-
 function drawFrame(
   mainCanvas: HTMLCanvasElement,
   mainCtx: CanvasRenderingContext2D,
   virtualCanvas: VirtualCanvas,
   virtualCtx: VirtualCanvasContext,
   generatedEntities: GeneratedEntities,
+  drawingCoordinates: DrawingCoordinates,
 ) {
   virtualCtx.imageSmoothingEnabled = false;
   mainCtx.imageSmoothingEnabled = false;
@@ -67,9 +58,6 @@ function drawFrame(
   const x = (width - drawingWidth) / 2;
   const y = height - drawingHeight;
 
-  // Draw the main scene onto the virtual canvas
-  drawMainScene(virtualCtx, generatedEntities, virtualX);
-
   drawingCoordinates.virtualWidth = virtualWidth;
   drawingCoordinates.virtualHeight = virtualCanvas.height;
   drawingCoordinates.drawingWidth = drawingWidth;
@@ -77,6 +65,9 @@ function drawFrame(
   drawingCoordinates.canvasOffsetX = x;
   drawingCoordinates.canvasOffsetY = y;
   drawingCoordinates.virtualX = virtualX;
+
+  // Draw the main scene onto the virtual canvas
+  drawMainScene(virtualCtx, generatedEntities, drawingCoordinates);
 
   // Apply device pixel ratio
   const dpr = window.devicePixelRatio || 1;
@@ -98,8 +89,21 @@ function drawFrame(
     drawingHeight,
   );
 
-  // Apply retro CRF effect
+  // Apply retro CRT effect
   drawCrtEffect(mainCtx);
+}
+
+function updateVirtualMouseCoordinates(
+  event: MouseEvent,
+  generatedEntities: GeneratedEntities,
+  drawingCoordinates: DrawingCoordinates,
+) {
+  const kX = drawingCoordinates.virtualWidth / drawingCoordinates.drawingWidth;
+  const kY = drawingCoordinates.virtualHeight / drawingCoordinates.drawingHeight;
+  generatedEntities.cursorVirtualPosition = [
+    (event.clientX - drawingCoordinates.canvasOffsetX) * kX + drawingCoordinates.virtualX,
+    (event.clientY - drawingCoordinates.canvasOffsetY) * kY,
+  ];
 }
 
 export function renderLoop(
@@ -108,25 +112,30 @@ export function renderLoop(
   virtualCanvas: OffscreenCanvas | HTMLCanvasElement,
   virtualCtx: OffscreenCanvasRenderingContext2D | CanvasRenderingContext2D,
 ) {
+  const drawingCoordinates: DrawingCoordinates = {
+    virtualWidth: 0,
+    virtualHeight: 0,
+    virtualX: 0,
+    drawingWidth: 0,
+    drawingHeight: 0,
+    canvasOffsetX: 0,
+    canvasOffsetY: 0,
+  };
+
   // Resize main canvas to fit the display size
-  resizeCanvasToDisplaySize(mainCanvas, mainCtx);
+  resizeCanvasToDisplaySize(mainCanvas);
   window.addEventListener(
     "resize",
     debounce(() => {
-      resizeCanvasToDisplaySize(mainCanvas, mainCtx);
-      drawFrame(mainCanvas, mainCtx, virtualCanvas, virtualCtx, generatedEntities);
+      resizeCanvasToDisplaySize(mainCanvas);
+      drawFrame(mainCanvas, mainCtx, virtualCanvas, virtualCtx, generatedEntities, drawingCoordinates);
     }, RESIZE_DELAY),
   );
 
   const generatedEntities = generateAllEntities();
 
   window.addEventListener("mousemove", (event) => {
-    const kX = drawingCoordinates.virtualWidth / drawingCoordinates.drawingWidth;
-    const kY = drawingCoordinates.virtualHeight / drawingCoordinates.drawingHeight;
-    generatedEntities.cursorPosition = [
-      (event.clientX - drawingCoordinates.canvasOffsetX) * kX + drawingCoordinates.virtualX,
-      (event.clientY - drawingCoordinates.canvasOffsetY) * kY,
-    ];
+    updateVirtualMouseCoordinates(event, generatedEntities, drawingCoordinates);
   });
 
   const targetFPS = 24;
@@ -145,9 +154,14 @@ export function renderLoop(
 
       generatedEntities.stars = generateStars(generatedEntities.stars, MAX_STARS, elapsedStable);
       generatedEntities.serverBoxes = generateServerBoxes(generatedEntities.serverBoxes, elapsedStable);
-      generatedEntities.rollingScanlines = generateRollingScanlines(generatedEntities.rollingScanlines, elapsedStable);
+      generatedEntities.rollingScanlines = generateRollingScanlines(
+        generatedEntities.rollingScanlines,
+        generatedEntities.cursorVirtualPosition,
+        elapsedStable,
+      );
       generatedEntities.serverBoxTextes = generateServerBoxTexts(generatedEntities.serverBoxTextes, elapsedStable);
-      drawFrame(mainCanvas, mainCtx, virtualCanvas, virtualCtx, generatedEntities);
+      drawFrame(mainCanvas, mainCtx, virtualCanvas, virtualCtx, generatedEntities, drawingCoordinates);
+      drawDomElements(drawingCoordinates);
     }
     requestAnimationFrame(loop);
   });

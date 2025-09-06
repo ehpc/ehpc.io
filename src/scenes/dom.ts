@@ -1,0 +1,39 @@
+import { SERVER_BOXES_OFFSET_X_THRESHOLD } from "../constants";
+import type { DrawingCoordinates, Point } from "../types";
+
+function relocateDomElement(
+  element: HTMLElement,
+  tl: Point,
+  width: number,
+  height: number,
+  drawingCoordinates: DrawingCoordinates,
+  additionalVirtualOffsetX: number,
+) {
+  const kX = drawingCoordinates.drawingWidth / drawingCoordinates.virtualWidth;
+  const kY = drawingCoordinates.drawingHeight / drawingCoordinates.virtualHeight;
+  const offsetX = tl[0] * kX + drawingCoordinates.canvasOffsetX - drawingCoordinates.virtualX * kX
+    + additionalVirtualOffsetX * kX;
+  const offsetY = tl[1] * kY + drawingCoordinates.canvasOffsetY;
+
+  element.style.setProperty("transform", `translate(${offsetX}px, ${offsetY}px)`);
+  element.style.setProperty("width", `${width * kX}px`);
+  element.style.setProperty("height", `${height * kY}px`);
+}
+
+export function drawDomElements(
+  drawingCoordinates: DrawingCoordinates,
+) {
+  const serverBoxesOffset = -Math.max(0, drawingCoordinates.virtualX - SERVER_BOXES_OFFSET_X_THRESHOLD);
+
+  // Github link
+  const githubLink = document.getElementById("github-link");
+  if (githubLink) {
+    relocateDomElement(githubLink, [363, 154], 27, 27, drawingCoordinates, serverBoxesOffset);
+  }
+
+  // CV link
+  const cvLink = document.getElementById("cv-link");
+  if (cvLink) {
+    relocateDomElement(cvLink, [363, 234], 45, 42, drawingCoordinates, serverBoxesOffset);
+  }
+}

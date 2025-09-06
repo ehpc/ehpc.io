@@ -1,3 +1,5 @@
+import { MAX_CURSOR_DISTANCE } from "../constants";
+import { distanceToRectCenter } from "../primitives";
 import type { Point, RollingScanline } from "../types";
 import { random } from "../utils";
 
@@ -18,30 +20,32 @@ function createScanline(
   speed: number,
   distortX?: number,
   interval: number = 0,
-  elapsed: number = 0
+  elapsed: number = 0,
 ): RollingScanline {
   return {
     tl,
     boxWidth,
     boxHeight,
     thickness,
+    opacity: 0.05,
     currentPosition: 0,
     speed,
     distortX,
     interval,
-    elapsed
+    elapsed,
   };
 }
 
 export function generateRollingScanlines(
   rollingScanlines?: RollingScanline[],
+  cursorVirtualPosition?: Point,
   deltaTime: number = 0,
 ): RollingScanline[] {
   if (!rollingScanlines) {
     const bottomBoxScanline = createScanline([362, 235], 46, 42, 3, 200);
-    const bottomBoxDistortionScanline = createScanline([362, 235], 46, 42, 3, 50, 2, 1000);
+    const bottomBoxDistortionScanline = createScanline([362, 235], 46, 42, 3, 50, 3, 1000);
     const topBoxScanline = createScanline([363, 153], 27, 30, 2, 150);
-    const topBoxDistortionScanline = createScanline([363, 153], 27, 30, 1, 30, 3, 900);
+    const topBoxDistortionScanline = createScanline([363, 153], 27, 30, 1, 30, 2, 900);
     return [bottomBoxScanline, topBoxScanline, bottomBoxDistortionScanline, topBoxDistortionScanline];
   }
 
@@ -54,6 +58,18 @@ export function generateRollingScanlines(
     if (scanline.currentPosition > scanline.boxHeight - scanline.thickness - 1) {
       scanline.currentPosition = random(0, scanline.thickness);
       scanline.elapsed = 0;
+    }
+
+    if (cursorVirtualPosition) {
+      // Adjust opacity based on distance to cursor
+      const distanceToCursor = Math.min(
+        distanceToRectCenter(cursorVirtualPosition, [scanline.tl, [
+          scanline.tl[0] + scanline.boxWidth,
+          scanline.tl[1] + scanline.boxHeight,
+        ]]),
+        MAX_CURSOR_DISTANCE,
+      );
+      scanline.opacity = 0.05 + (MAX_CURSOR_DISTANCE - distanceToCursor) / MAX_CURSOR_DISTANCE * 0.3;
     }
   }
 

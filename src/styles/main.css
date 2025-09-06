@@ -1,7 +1,7 @@
 @import url("./colors.module.css");
 
 @font-face {
-  font-family: "NES";
+  font-family: NES;
   src:
     url("../fonts/nes.woff2") format("woff2"),
     url("../fonts/nes.woff") format("woff"),
@@ -10,26 +10,41 @@
 
 html,
 body {
-  font-family: "NES", monospace;
+  font-family: NES, monospace;
   height: 100%;
   margin: 0;
 }
 
 #scene-canvas {
   display: block;
-  width: 100vw;
   height: 100vh;
+  width: 100vw;
 }
 
 body::before {
+  background: radial-gradient(transparent, 95%, rgb(0 0 0 / 50%));
   content: " ";
   display: block;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background: radial-gradient(transparent, 95%, rgba(0, 0, 0, 0.5));
-  z-index: 2;
+  inset: 0;
   pointer-events: none;
+  position: absolute;
+  z-index: 2;
+}
+
+a {
+  color: transparent;
+  display: block;
+  left: 0;
+  overflow-wrap: break-word;
+  position: fixed;
+  text-align: center;
+  top: 0;
+  z-index: 3;
+}
+
+body.debug {
+  a {
+    background: hsl(128deg 100% 50% / 30%);
+    color: white;
+  }
 }
