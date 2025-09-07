@@ -1,4 +1,4 @@
-import { SERVER_BOXES_OFFSET_X_THRESHOLD } from "../constants";
+import { SERVER_BOX_TEXT_FONT, SERVER_BOXES_OFFSET_X_THRESHOLD } from "../constants";
 import { cube1, rect } from "../primitives";
 import colors from "../styles/colors.module.css";
 import type { DrawingCoordinates, GeneratedEntities, Point, VirtualCanvasContext } from "../types";
@@ -41,7 +41,7 @@ function drawScanlines(ctx: VirtualCanvasContext, generatedEntities: GeneratedEn
 function drawServerBoxesText(ctx: VirtualCanvasContext, generatedEntities: GeneratedEntities) {
   ctx.fillStyle = colors.textColor;
   for (const { text, x, y, size, shift } of generatedEntities.serverBoxTextes) {
-    ctx.font = `${size}px NES`;
+    ctx.font = `${size}px ${SERVER_BOX_TEXT_FONT}`;
     ctx.fillText(text, x + (shift?.currentShift || 0), y);
   }
 }

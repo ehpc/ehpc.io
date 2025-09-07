@@ -1,6 +1,6 @@
 - Add windows animation
-- Add main text
 - Add airplanes
 - Add wall decorations
-- Add booting up animation
-- Make PC text touchable
+- favicon
+- Add a cat
+- Portrait disclaimer

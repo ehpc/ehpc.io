@@ -102,7 +102,10 @@ export interface PCText {
   currentRow: number;
   // Typing speed in characters per second
   typingSpeed: number;
+  // Time elapsed since last character
   elapsed: number;
+  // Whether the typing has stopped
+  stopped: boolean;
 }
 
 // Generated entities in the virtual world.
@@ -133,3 +136,6 @@ export interface DrawingCoordinates {
   canvasOffsetY: number;
   virtualX: number;
 }
+
+// Font family options
+export type FontFamily = "ATARISTOCRAT" | "NESCyrillic";

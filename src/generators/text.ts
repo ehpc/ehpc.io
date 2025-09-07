@@ -9,20 +9,29 @@ export function generatePCText(pcText?: PCText, deltaTime: number = 0): PCText {
       currentRow: 0,
       typingSpeed: PC_TEXT_TYPING_SPEED,
       elapsed: 0,
+      stopped: false,
     };
   }
 
   const symbolInterval = 1000 / pcText.typingSpeed;
   pcText.elapsed += deltaTime;
+  if (pcText.stopped) return pcText;
   if (pcText.elapsed > symbolInterval) {
+    // If we are at the end of the text
     if (pcText.currentSymbolIndex >= pcText.text.length) {
+      pcText.currentSymbolIndex = 0;
       return pcText;
     }
     pcText.currentSymbolIndex++;
 
     if (pcText.text[pcText.currentSymbolIndex] === "\n") {
-      pcText.currentRow++;
-      pcText.currentSymbolIndex++;
+      // Two new lines in a row means we stop typing
+      if (pcText.text[pcText.currentSymbolIndex + 1] === "\n") {
+        pcText.stopped = true;
+      } else {
+        pcText.currentRow++;
+        pcText.currentSymbolIndex++;
+      }
     }
     pcText.elapsed = 0;
   }

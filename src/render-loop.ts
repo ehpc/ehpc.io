@@ -1,4 +1,5 @@
 import { MAX_STARS, RESIZE_DELAY, VIRTUAL_CANVAS_X_THRESHOLD } from "./constants";
+import { setupCursorTracking } from "./cursor";
 import {
   generateAllEntities,
   generatePCText,
@@ -94,19 +95,6 @@ function drawFrame(
   drawCrtEffect(mainCtx);
 }
 
-function updateVirtualMouseCoordinates(
-  event: MouseEvent,
-  generatedEntities: GeneratedEntities,
-  drawingCoordinates: DrawingCoordinates,
-) {
-  const kX = drawingCoordinates.virtualWidth / drawingCoordinates.drawingWidth;
-  const kY = drawingCoordinates.virtualHeight / drawingCoordinates.drawingHeight;
-  generatedEntities.cursorVirtualPosition = [
-    (event.clientX - drawingCoordinates.canvasOffsetX) * kX + drawingCoordinates.virtualX,
-    (event.clientY - drawingCoordinates.canvasOffsetY) * kY,
-  ];
-}
-
 export function renderLoop(
   mainCanvas: HTMLCanvasElement,
   mainCtx: CanvasRenderingContext2D,
@@ -135,9 +123,7 @@ export function renderLoop(
 
   const generatedEntities = generateAllEntities();
 
-  window.addEventListener("mousemove", (event) => {
-    updateVirtualMouseCoordinates(event, generatedEntities, drawingCoordinates);
-  });
+  setupCursorTracking(generatedEntities, drawingCoordinates);
 
   const targetFPS = 24;
   const frameDuration = 1000 / targetFPS;

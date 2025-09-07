@@ -1,4 +1,4 @@
-import { DESK_OFFSET_X_THRESHOLD } from "../constants";
+import { DESK_OFFSET_X_THRESHOLD, PC_TEXT_FONT, PC_TEXT_LINE_HEIGHT, PC_TEXT_SIZE } from "../constants";
 import { polygon, rect } from "../primitives";
 import colors from "../styles/colors.module.css";
 import type { DrawingCoordinates, GeneratedEntities, PCText, VirtualCanvasContext } from "../types";
@@ -68,7 +68,7 @@ function drawText(ctx: VirtualCanvasContext, pcText: PCText) {
   const y = 211;
   const { text, currentSymbolIndex } = pcText;
   ctx.fillStyle = colors.textColor;
-  ctx.font = "11px NES";
+  ctx.font = `${PC_TEXT_SIZE}px ${PC_TEXT_FONT}`;
   // Draw previous rows
   let row = 0;
   let index = 0;
@@ -101,7 +101,7 @@ function drawText(ctx: VirtualCanvasContext, pcText: PCText) {
 
   const noMoreText = currentSymbolIndex >= text.length;
   for (let i = 0; i < rows.length; i++) {
-    ctx.fillText(rows[i], x, y - (noMoreText ? i : i + 1) * 10);
+    ctx.fillText(rows[i], x, y - ((noMoreText ? i : i + 1) * (PC_TEXT_SIZE + PC_TEXT_LINE_HEIGHT)));
   }
   if (!noMoreText) {
     // Draw current row
