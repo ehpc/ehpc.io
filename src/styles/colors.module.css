@@ -2,8 +2,10 @@
   backgroundBuildingColor: hsl(11deg 87% 39%);
   boxFrontColor: #400c35;
   boxSideColor: #631253;
-  boxTopColor: #931c7b;
+  boxTopColor: #180715;
+  catColor: black;
   ceilingColor: #280530;
+  debugColor: hsla(110, 100%, 50%, 0.3);
   displayButtonColor: hsl(296deg 70% 3%);
   displayFrameColor: #f48803;
   displayGlassColor: #050520;

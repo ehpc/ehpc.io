@@ -122,6 +122,7 @@ export interface GeneratedEntities {
   serverBoxTextes: ServerBoxText[];
   pcText: PCText;
   cursorVirtualPosition: Point;
+  catTail: CatTail;
 }
 
 // Simple point on 2D space.
@@ -143,3 +144,15 @@ export interface DrawingCoordinates {
 
 // Font family options
 export type FontFamily = "ATARISTOCRAT" | "NESCyrillic";
+
+// Cat tail animation state
+export interface CatTail {
+  // Current animation frame
+  currentFrame: number;
+  // Point offset defining the cat's tail shape (relative to one another)
+  points: Point[];
+  // Time elapsed since the last update
+  elapsed: number;
+  // Duration of each frame in the animation
+  frameDuration: number;
+}

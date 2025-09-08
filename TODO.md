@@ -1,4 +1,3 @@
-- Add windows animation
 - Add airplanes
 - Add wall decorations
 - favicon

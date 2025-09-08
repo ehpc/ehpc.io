@@ -3,6 +3,7 @@ import { setupCursorTracking } from "./cursor";
 import {
   generateAllEntities,
   generateBuildings,
+  generateCatTail,
   generatePCText,
   generateRollingScanlines,
   generateServerBoxes,
@@ -161,6 +162,7 @@ export function renderLoop(
       );
       generatedEntities.serverBoxTextes = generateServerBoxTexts(generatedEntities.serverBoxTextes, elapsedStable);
       generatedEntities.pcText = generatePCText(generatedEntities.pcText, elapsedStable);
+      generatedEntities.catTail = generateCatTail(generatedEntities.catTail, elapsedStable);
       drawFrame(mainCanvas, mainCtx, virtualCanvas, virtualCtx, generatedEntities, drawingCoordinates);
       drawDomElements(drawingCoordinates);
     }

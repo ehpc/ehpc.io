@@ -2,6 +2,7 @@ import { MAX_STARS } from "../constants";
 import colors from "../styles/colors.module.css";
 import type { GeneratedEntities } from "../types";
 import { generateBuildings } from "./buildings";
+import { generateCatTail } from "./cat-tail";
 import { generateRollingScanlines } from "./rolling-scanlines";
 import { generateServerBoxes } from "./server-boxes";
 import { generateStars } from "./stars";
@@ -36,5 +37,6 @@ export function generateAllEntities(): GeneratedEntities {
     serverBoxTextes: generateServerBoxTexts(),
     pcText: generatePCText(),
     cursorVirtualPosition: [0, 0],
+    catTail: generateCatTail(),
   };
 }

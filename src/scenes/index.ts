@@ -1,3 +1,4 @@
+export { drawCatScene } from "./cat";
 export { drawCrtEffect } from "./crt-effect";
 export { drawDeskScene } from "./desk";
 export { drawDomElements } from "./dom";
