@@ -153,6 +153,8 @@ export interface CatTail {
   points: Point[];
   // Time elapsed since the last update
   elapsed: number;
-  // Duration of each frame in the animation
-  frameDuration: number;
+  // Duration of the full tail swing animation
+  fullSwingDuration: number;
+  // Direction of the animation (1 for forward, -1 for backward)
+  animationDirection: -1 | 1;
 }

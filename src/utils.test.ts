@@ -1,7 +1,9 @@
 import { describe, expect, it } from "vitest";
+import type { Point } from "./types";
 import {
   debounce,
   flipOneRandomBitInsideNibble,
+  mapMatrixElements,
   random,
   reverse4BitsCompressedTable,
   reverse4BitsSimple,
@@ -540,6 +542,32 @@ describe("utils", () => {
 
       await new Promise(resolve => setTimeout(resolve, 40));
       expect(receivedArgs).toEqual([["c", 3]]);
+    });
+  });
+
+  describe("mapMatrixElements", () => {
+    it("should map all elements in a 2D matrix", () => {
+      const matrix = [[1, 2], [3, 4]];
+      const result = mapMatrixElements(matrix, x => x * 2);
+      expect(result).toEqual([[2, 4], [6, 8]]);
+    });
+
+    it("should not modify the original matrix", () => {
+      const matrix = [[1, 2], [3, 4]];
+      const original = matrix.map(row => [...row]);
+      mapMatrixElements(matrix, x => x * 2);
+      expect(matrix).toEqual(original);
+    });
+
+    it("should handle empty matrix", () => {
+      const result = mapMatrixElements([], x => x);
+      expect(result).toEqual([]);
+    });
+
+    it("should handle matrix with empty rows", () => {
+      const matrix = [[], []];
+      const result = mapMatrixElements(matrix, x => x);
+      expect(result).toEqual([[], []]);
     });
   });
 });

@@ -1,3 +1,5 @@
+import type { Point } from "./types";
+
 /**
  * Shuffles the elements of an array randomly.
  * @param arr The array to shuffle.
@@ -129,4 +131,14 @@ export function debounce<T extends (...args: any[]) => any>(
 export function flipOneRandomBitInsideNibble(nibble: number): number {
   const bitToFlip = Math.floor(Math.random() * 4);
   return nibble ^ (1 << bitToFlip);
+}
+
+/**
+ * Maps the elements of a 2D matrix using a mapping function.
+ * @param matrix The 2D matrix to map.
+ * @param mapFunc The function to apply to each element.
+ * @returns A new 2D matrix with mapped values.
+ */
+export function mapMatrixElements<T = any>(matrix: T[][], mapFunc: (value: T) => T): T[][] {
+  return matrix.map(row => row.map(mapFunc));
 }
