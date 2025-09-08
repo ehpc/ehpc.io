@@ -67,8 +67,6 @@ function drawWindowFrame(ctx: VirtualCanvasContext) {
 
 export function drawRoomScene(ctx: VirtualCanvasContext) {
   drawBackground(ctx);
-  // Draw wall artefacts
-  // Draw god-rays
   drawWindowFrame(ctx);
-  // Draw lamp
+  // TODO: God rays
 }

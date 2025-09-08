@@ -39,7 +39,7 @@ export function setupCursorTracking(
   window.addEventListener("mousemove", (event) => {
     updateVirtualMouseCoordinates(event, generatedEntities, drawingCoordinates);
   });
-  window.addEventListener("mousedown", (event) => {
+  window.addEventListener("mousedown", () => {
     processPointOfInterestClick(generatedEntities);
   });
 }

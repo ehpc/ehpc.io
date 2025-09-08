@@ -16,6 +16,10 @@ export interface Building {
   width: number;
   color: string;
   options: BuildingOptions;
+  // Time elapsed since the last modification
+  windowFlipElapsed: number;
+  // Frequency of window flipping (in ms)
+  windowFlipFrequency: number;
 }
 
 // Interval for generating buildings with specific constraints.

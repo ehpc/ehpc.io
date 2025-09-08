@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   debounce,
+  flipOneRandomBitInsideNibble,
   random,
   reverse4BitsCompressedTable,
   reverse4BitsSimple,
@@ -282,6 +283,110 @@ describe("utils", () => {
       // Both functions should be equivalent
       for (let i = 0; i < 16; i++) {
         expect(reverse4BitsCompressedTable(i)).toBe(reverse4BitsSimple(i));
+      }
+    });
+  });
+
+  describe("flipOneRandomBitInsideNibble", () => {
+    // Helper function to count set bits
+    const countSetBits = (n: number): number => {
+      let count = 0;
+      while (n > 0) {
+        count += n & 1;
+        n >>= 1;
+      }
+      return count;
+    };
+
+    it("should flip exactly one bit in the nibble", () => {
+      for (let input = 0; input <= 15; input++) {
+        const result = flipOneRandomBitInsideNibble(input);
+        const diff = input ^ result;
+
+        // Check that exactly one bit is different
+        expect(countSetBits(diff)).toBe(1);
+      }
+    });
+
+    it("should only affect the lower 4 bits", () => {
+      for (let input = 0; input <= 255; input++) {
+        const result = flipOneRandomBitInsideNibble(input);
+        const diff = input ^ result;
+
+        // The difference should only be in bits 0-3
+        expect(diff & 0xF0).toBe(0);
+      }
+    });
+
+    it("should preserve upper bits when input has them", () => {
+      const testCases = [0x10, 0x20, 0x34, 0x45, 0x56, 0x67, 0x78, 0x89, 0x9A, 0xAB, 0xBC, 0xCD, 0xDE, 0xEF, 0xFF];
+
+      for (const input of testCases) {
+        const result = flipOneRandomBitInsideNibble(input);
+
+        // Upper 4 bits should remain unchanged
+        expect(result & 0xF0).toBe(input & 0xF0);
+      }
+    });
+
+    it("should produce different results over multiple calls (statistically)", () => {
+      const input = 0b1010;
+      const results = new Set<number>();
+
+      // Call many times to collect different results
+      for (let i = 0; i < 100; i++) {
+        results.add(flipOneRandomBitInsideNibble(input));
+      }
+
+      // Should get multiple different results since it's random
+      expect(results.size).toBeGreaterThan(1);
+    });
+
+    it("should be able to flip any of the 4 bits", () => {
+      const input = 0b0000;
+      const possibleResults = new Set<number>();
+
+      // Try many times to see all possible bit flips
+      for (let i = 0; i < 1000; i++) {
+        possibleResults.add(flipOneRandomBitInsideNibble(input));
+      }
+
+      // Should be able to flip any of the 4 bits: 0001, 0010, 0100, 1000
+      expect(possibleResults.size).toBeGreaterThanOrEqual(3); // At least 3 different results
+      expect(possibleResults.has(0b0001)).toBe(true);
+      expect(possibleResults.has(0b0010)).toBe(true);
+      expect(possibleResults.has(0b0100)).toBe(true);
+      expect(possibleResults.has(0b1000)).toBe(true);
+    });
+
+    it("should handle edge cases correctly", () => {
+      // Test with all zeros
+      const result0 = flipOneRandomBitInsideNibble(0b0000);
+      expect([0b0001, 0b0010, 0b0100, 0b1000]).toContain(result0);
+
+      // Test with all ones (in nibble)
+      const result15 = flipOneRandomBitInsideNibble(0b1111);
+      expect([0b1110, 0b1101, 0b1011, 0b0111]).toContain(result15);
+    });
+
+    it("should return different value than input", () => {
+      for (let input = 0; input <= 15; input++) {
+        const result = flipOneRandomBitInsideNibble(input);
+        expect(result).not.toBe(input);
+      }
+    });
+
+    it("should work with nibble values consistently", () => {
+      // Test that function works with typical nibble values
+      const nibbleValues = [0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9, 0xA, 0xB, 0xC, 0xD, 0xE, 0xF];
+
+      for (const nibble of nibbleValues) {
+        const result = flipOneRandomBitInsideNibble(nibble);
+
+        // Result should be a valid nibble (0-15) with one bit flipped
+        expect(result).toBeGreaterThanOrEqual(0);
+        expect(result).toBeLessThanOrEqual(15);
+        expect(countSetBits(nibble ^ result)).toBe(1);
       }
     });
   });

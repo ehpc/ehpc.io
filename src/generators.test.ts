@@ -20,7 +20,7 @@ describe("generators", () => {
       ];
       const color = "red";
 
-      const buildings = generateBuildings(intervals, color);
+      const buildings = generateBuildings(undefined, intervals, color);
 
       expect(buildings.length).toBeGreaterThan(0);
       buildings.forEach(building => {
@@ -40,7 +40,7 @@ describe("generators", () => {
       ];
       const color = "blue";
 
-      const buildings = generateBuildings(intervals, color);
+      const buildings = generateBuildings(undefined, intervals, color);
 
       // Calculate total width of all buildings
       const totalWidth = buildings.reduce((sum, building) => sum + building.width, 0);
@@ -55,7 +55,7 @@ describe("generators", () => {
       ];
       const color = "green";
 
-      const buildings = generateBuildings(intervals, color);
+      const buildings = generateBuildings(undefined, intervals, color);
 
       buildings.forEach(building => {
         expect(building.width).toBeGreaterThanOrEqual(15);
@@ -71,7 +71,7 @@ describe("generators", () => {
       ];
       const color = "purple";
 
-      const buildings = generateBuildings(intervals, color);
+      const buildings = generateBuildings(undefined, intervals, color);
 
       buildings.forEach(building => {
         expect(building.y).toBeGreaterThanOrEqual(80);
@@ -86,7 +86,7 @@ describe("generators", () => {
       ];
       const color = "orange";
 
-      const buildings = generateBuildings(intervals, color);
+      const buildings = generateBuildings(undefined, intervals, color);
 
       // Check that we have buildings in both intervals
       const buildingsInFirstInterval = buildings.filter(b => b.x < 50);
@@ -115,7 +115,7 @@ describe("generators", () => {
       ];
       const color = "cyan";
 
-      const buildings = generateBuildings(intervals, color);
+      const buildings = generateBuildings(undefined, intervals, color);
 
       buildings.forEach(building => {
         expect(building.options.windowsBitmask).toBeGreaterThan(0);
@@ -131,7 +131,7 @@ describe("generators", () => {
       ];
       const color = "magenta";
 
-      const buildings = generateBuildings(intervals, color);
+      const buildings = generateBuildings(undefined, intervals, color);
 
       buildings.forEach(building => {
         expect(building.options.windowsBitmask).toBe(0);
@@ -151,7 +151,7 @@ describe("generators", () => {
       ];
       const color = "yellow";
 
-      const buildings = generateBuildings(intervals, color);
+      const buildings = generateBuildings(undefined, intervals, color);
 
       // Test basic structure regardless of option handling bugs
       buildings.forEach(building => {
@@ -182,7 +182,7 @@ describe("generators", () => {
       ];
       const color = "blue";
 
-      const buildings = generateBuildings(intervals, color);
+      const buildings = generateBuildings(undefined, intervals, color);
 
       buildings.forEach(building => {
         expect(building.options.antennaLength).toBe(0);
@@ -220,7 +220,7 @@ describe("generators", () => {
       ];
       const color = "red";
 
-      const buildings = generateBuildings(intervals, color);
+      const buildings = generateBuildings(undefined, intervals, color);
 
       // With our carefully mocked sequence, the second building should have an antenna
       // because: buildingY(55) < prevY(95) and Math.random()(0.05) < antennasGap(1) * 0.1
@@ -228,7 +228,7 @@ describe("generators", () => {
     });
 
     it("should handle empty intervals gracefully", () => {
-      expect(generateBuildings([], "black")).toEqual([]);
+      expect(generateBuildings(undefined, [], "black")).toEqual([]);
     });
 
     it("should handle single interval correctly", () => {
@@ -237,7 +237,7 @@ describe("generators", () => {
       ];
       const color = "white";
 
-      const buildings = generateBuildings(intervals, color);
+      const buildings = generateBuildings(undefined, intervals, color);
 
       expect(buildings.length).toBeGreaterThan(0);
       expect(buildings[0].x).toBe(10);
@@ -252,7 +252,7 @@ describe("generators", () => {
       ];
       const color = "black";
 
-      const buildings = generateBuildings(intervals, color);
+      const buildings = generateBuildings(undefined, intervals, color);
 
       expect(buildings.length).toBeGreaterThan(0);
       buildings.forEach(building => {

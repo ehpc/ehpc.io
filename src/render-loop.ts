@@ -2,6 +2,7 @@ import { MAX_STARS, RESIZE_DELAY, VIRTUAL_CANVAS_X_THRESHOLD } from "./constants
 import { setupCursorTracking } from "./cursor";
 import {
   generateAllEntities,
+  generateBuildings,
   generatePCText,
   generateRollingScanlines,
   generateServerBoxes,
@@ -139,6 +140,18 @@ export function renderLoop(
       const elapsedStable = frames * frameDuration;
       lastFrameTime += elapsedStable;
 
+      generatedEntities.foregroundBuildings = generateBuildings(
+        generatedEntities.foregroundBuildings,
+        undefined,
+        undefined,
+        elapsedStable,
+      );
+      generatedEntities.backgroundBuildings = generateBuildings(
+        generatedEntities.backgroundBuildings,
+        undefined,
+        undefined,
+        elapsedStable,
+      );
       generatedEntities.stars = generateStars(generatedEntities.stars, MAX_STARS, elapsedStable);
       generatedEntities.serverBoxes = generateServerBoxes(generatedEntities.serverBoxes, elapsedStable);
       generatedEntities.rollingScanlines = generateRollingScanlines(

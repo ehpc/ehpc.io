@@ -19,9 +19,7 @@
     "test": "pnpm wasm:test && vitest run",
     "coverage": "vitest run --coverage",
     "wasm:test": "cd wasm && cargo test",
-    "wasm:build": "pnpm wasm:build:reverse4bits",
-    "wasm:build:reverse4bits": "wasm-pack build ./wasm --target bundler --release -- --no-default-features --features reverse4bits",
-    "wasm:build:dummy": "wasm-pack build ./wasm --target bundler --release -- --no-default-features --features dummy",
+    "wasm:build": "wasm-pack build ./wasm --target bundler --release",
     "prepare": "husky"
   },
   "devDependencies": {

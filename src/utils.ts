@@ -120,3 +120,13 @@ export function debounce<T extends (...args: any[]) => any>(
     }, delay);
   };
 }
+
+/**
+ * Flips one random bit in a 4-bit unsigned integer.
+ * @param nibble The 4-bit unsigned integer to modify.
+ * @returns The modified 4-bit unsigned integer with one bit flipped.
+ */
+export function flipOneRandomBitInsideNibble(nibble: number): number {
+  const bitToFlip = Math.floor(Math.random() * 4);
+  return nibble ^ (1 << bitToFlip);
+}
