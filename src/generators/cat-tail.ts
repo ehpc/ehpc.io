@@ -32,6 +32,7 @@ export function generateCatTail(
 
   tail.elapsed += deltaTime;
   const frameDuration = tail.fullSwingDuration / (tailFrames.length * 2 - 1);
+  
   if (tail.elapsed >= frameDuration) {
     tail.elapsed = 0;
     tail.currentFrame = Math.min(tailFrames.length - 1, Math.max(0, tail.currentFrame + tail.animationDirection));
@@ -41,7 +42,7 @@ export function generateCatTail(
       tail.animationDirection = 1;
     }
 
-    if (Math.random() < 0.1) {
+    if (Math.random() < 0.05) {
       const { currentFrame, animationDirection } = tail;
       if (
         (animationDirection === 1 && currentFrame > baseFramesCount + 3)
@@ -51,8 +52,8 @@ export function generateCatTail(
       }
     }
 
-    if (Math.random() < 0.05) {
-      tail.fullSwingDuration = random(1000, 1500);
+    if (Math.random() < 0.1) {
+      tail.fullSwingDuration = random(1000, 2000);
     }
   }
 

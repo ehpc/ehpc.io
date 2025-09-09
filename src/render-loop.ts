@@ -127,7 +127,7 @@ export function renderLoop(
 
   setupCursorTracking(generatedEntities, drawingCoordinates);
 
-  const targetFPS = 24;
+  const targetFPS = 60;
   const frameDuration = 1000 / targetFPS;
   let lastFrameTime = 0;
 
@@ -162,7 +162,7 @@ export function renderLoop(
       );
       generatedEntities.serverBoxTextes = generateServerBoxTexts(generatedEntities.serverBoxTextes, elapsedStable);
       generatedEntities.pcText = generatePCText(generatedEntities.pcText, elapsedStable);
-      generatedEntities.catTail = generateCatTail(generatedEntities.catTail, elapsedStable);
+      generatedEntities.catTail = generateCatTail(generatedEntities.catTail, deltaTime);
       drawFrame(mainCanvas, mainCtx, virtualCanvas, virtualCtx, generatedEntities, drawingCoordinates);
       drawDomElements(drawingCoordinates);
     }
