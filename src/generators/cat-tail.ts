@@ -32,7 +32,7 @@ export function generateCatTail(
 
   tail.elapsed += deltaTime;
   const frameDuration = tail.fullSwingDuration / (tailFrames.length * 2 - 1);
-  
+
   if (tail.elapsed >= frameDuration) {
     tail.elapsed = 0;
     tail.currentFrame = Math.min(tailFrames.length - 1, Math.max(0, tail.currentFrame + tail.animationDirection));
