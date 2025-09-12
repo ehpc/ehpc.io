@@ -20,3 +20,4 @@
 
 - `src/` – frontend code
 - `wasm/` – WebAssembly modules
+- `public/` – static assets
