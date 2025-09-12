@@ -70,7 +70,6 @@ function drawText(ctx: VirtualCanvasContext, pcText: PCText) {
   ctx.fillStyle = colors.textColor;
   ctx.font = `${PC_TEXT_SIZE}px ${PC_TEXT_FONT}`;
   // Draw previous rows
-  let row = 0;
   let index = 0;
   let lastNewLineIndex = 0;
   let str = "";
@@ -80,7 +79,6 @@ function drawText(ctx: VirtualCanvasContext, pcText: PCText) {
     if (text[index] === "\n") {
       rows.unshift(str);
       str = "";
-      row++;
       lastNewLineIndex = index + 1;
     }
     index++;

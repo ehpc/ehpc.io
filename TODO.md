@@ -1,5 +1,9 @@
 - Add airplanes
 - Add wall decorations
-- favicon
-- Add a cat
+
+# Top priority
+
 - Portrait disclaimer
+- README
+- Contacts
+- PC font

@@ -1,5 +1,3 @@
-import type { Point } from "./types";
-
 /**
  * Shuffles the elements of an array randomly.
  * @param arr The array to shuffle.

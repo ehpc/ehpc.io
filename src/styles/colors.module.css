@@ -5,7 +5,7 @@
   boxTopColor: #180715;
   catColor: black;
   ceilingColor: #280530;
-  debugColor: hsla(110, 100%, 50%, 0.3);
+  debugColor: hsl(110deg 100% 50% / 30%);
   displayButtonColor: hsl(296deg 70% 3%);
   displayFrameColor: #f48803;
   displayGlassColor: #050520;
