@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "bun:test";
 import {
   debounce,
   flipOneRandomBitInsideNibble,
@@ -77,7 +77,7 @@ describe("utils", () => {
     });
 
     it("should return one of the elements from the array", () => {
-      const input = [1, 2, 3, 4, 5];
+      const input = [1, 2, 3, 4, 5] as const;
       const result = sampleOne(input);
       expect(input).toContain(result);
     });
@@ -103,7 +103,7 @@ describe("utils", () => {
     });
 
     it("should handle arrays with duplicate values", () => {
-      const input = [1, 1, 2, 2, 3];
+      const input = [1, 1, 2, 2, 3] as const;
       const result = sampleOne(input);
       expect([1, 2, 3]).toContain(result);
     });

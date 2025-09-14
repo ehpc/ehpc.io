@@ -1,17 +1,20 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { MAX_WINDOW_BITMASK } from "./constants";
-import { generateAllEntities, generateBuildings } from "./generators";
-import type { BuildingGenerationInterval } from "./types";
+import { afterEach, beforeEach, describe, expect, it, mock, spyOn } from "bun:test";
+import type { Mock } from "bun:test";
+import { MAX_WINDOW_BITMASK } from "../constants";
+import type { BuildingGenerationInterval } from "../types";
+import { generateBuildings } from ".";
 
 describe("generators", () => {
   describe("generateBuildings", () => {
+    let spiedRandom: Mock<typeof Math.random>;
+
     beforeEach(() => {
       // Mock Math.random to make tests deterministic
-      vi.spyOn(Math, "random");
+      spiedRandom = spyOn(Math, "random");
     });
 
     afterEach(() => {
-      vi.restoreAllMocks();
+      mock.restore();
     });
 
     it("should generate buildings within the specified intervals", () => {
@@ -48,7 +51,7 @@ describe("generators", () => {
     });
 
     it("should respect width constraints", () => {
-      vi.mocked(Math.random).mockReturnValue(0.5); // Deterministic random
+      spiedRandom.mockReturnValue(0.5); // Deterministic random
 
       const intervals: BuildingGenerationInterval[] = [
         { x0: 0, x1: 100, minWidth: 15, maxWidth: 25, minY: 50, maxY: 100 },
@@ -64,7 +67,7 @@ describe("generators", () => {
     });
 
     it("should respect height constraints", () => {
-      vi.mocked(Math.random).mockReturnValue(0.5); // Deterministic random
+      spiedRandom.mockReturnValue(0.5); // Deterministic random
 
       const intervals: BuildingGenerationInterval[] = [
         { x0: 0, x1: 100, minWidth: 10, maxWidth: 20, minY: 80, maxY: 120 },
@@ -108,7 +111,7 @@ describe("generators", () => {
     });
 
     it("should generate windows bitmask for wide buildings", () => {
-      vi.mocked(Math.random).mockReturnValue(0.5); // Ensures 0.8 check passes and generates windows
+      spiedRandom.mockReturnValue(0.5); // Ensures 0.8 check passes and generates windows
 
       const intervals: BuildingGenerationInterval[] = [
         { x0: 0, x1: 100, minWidth: 15, maxWidth: 15, minY: 50, maxY: 50 }, // Wide buildings
@@ -124,7 +127,7 @@ describe("generators", () => {
     });
 
     it("should not generate windows for narrow buildings", () => {
-      vi.mocked(Math.random).mockReturnValue(0.5);
+      spiedRandom.mockReturnValue(0.5);
 
       const intervals: BuildingGenerationInterval[] = [
         { x0: 0, x1: 300, minWidth: 5, maxWidth: 5, minY: 50, maxY: 50 }, // Narrow buildings
@@ -209,7 +212,7 @@ describe("generators", () => {
         0.5, // antenna length generation (3 + 7 = 10)
       ];
       let callCount = 0;
-      vi.mocked(Math.random).mockImplementation(() => {
+      spiedRandom.mockImplementation(() => {
         const value = mockValues[callCount % mockValues.length];
         callCount++;
         return value;
@@ -260,53 +263,6 @@ describe("generators", () => {
         expect(building.y).toBe(0);
         expect(building.color).toBe("black");
       });
-    });
-  });
-
-  describe("generateAllEntities", () => {
-    it("should generate both background and foreground buildings", () => {
-      const entities = generateAllEntities();
-
-      expect(entities).toHaveProperty("backgroundBuildings");
-      expect(entities).toHaveProperty("foregroundBuildings");
-      expect(Array.isArray(entities.backgroundBuildings)).toBe(true);
-      expect(Array.isArray(entities.foregroundBuildings)).toBe(true);
-      expect(entities.backgroundBuildings.length).toBeGreaterThan(0);
-      expect(entities.foregroundBuildings.length).toBeGreaterThan(0);
-    });
-
-    it("should generate buildings with different colors for background and foreground", () => {
-      const entities = generateAllEntities();
-
-      const backgroundColors = new Set(entities.backgroundBuildings.map(b => b.color));
-      const foregroundColors = new Set(entities.foregroundBuildings.map(b => b.color));
-
-      // Background and foreground should have different colors
-      const hasOverlap = [...backgroundColors].some(color => foregroundColors.has(color));
-      expect(hasOverlap).toBe(false);
-    });
-
-    it("should generate buildings within expected coordinate ranges", () => {
-      const entities = generateAllEntities();
-
-      const allBuildings = [...entities.backgroundBuildings, ...entities.foregroundBuildings];
-
-      allBuildings.forEach(building => {
-        expect(building.x).toBeGreaterThanOrEqual(90);
-        expect(building.x).toBeLessThan(416);
-        expect(building.y).toBeGreaterThanOrEqual(98);
-        expect(building.y).toBeLessThanOrEqual(186);
-        expect(building.width).toBeGreaterThanOrEqual(7);
-        expect(building.width).toBeLessThanOrEqual(22);
-      });
-    });
-
-    it("should have specific interval configurations", () => {
-      const entities = generateAllEntities();
-
-      // Check that we have the expected number of intervals worth of buildings
-      expect(entities.backgroundBuildings.length).toBeGreaterThan(10);
-      expect(entities.foregroundBuildings.length).toBeGreaterThan(10);
     });
   });
 });

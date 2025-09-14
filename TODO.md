@@ -7,4 +7,3 @@
 - README
 - Contacts
 - PC font
-- Bun

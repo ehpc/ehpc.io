@@ -12,7 +12,7 @@
 
 ## Prerequisites
 
-- Node.js 18+ and [pnpm](https://pnpm.io/)
+- Node.js 24+ and [bun](https://bun.sh/)
 - Rust toolchain ([rustup](https://rustup.rs/)) and wasm32 target
   (`rustup target add wasm32-unknown-unknown`)
 
