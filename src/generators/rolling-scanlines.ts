@@ -46,7 +46,16 @@ export function generateRollingScanlines(
     const bottomBoxDistortionScanline = createScanline([362, 235], 46, 42, 3, 50, 3, 1000);
     const topBoxScanline = createScanline([363, 153], 27, 30, 2, 150);
     const topBoxDistortionScanline = createScanline([363, 153], 27, 30, 1, 30, 2, 900);
-    return [bottomBoxScanline, topBoxScanline, bottomBoxDistortionScanline, topBoxDistortionScanline];
+    const slimBoxScanline = createScanline([308, 215], 33, 16, 1, 100);
+    const slimBoxDistortionScanline = createScanline([308, 215], 33, 16, 1, 20, 2, 800);
+    return [
+      bottomBoxScanline,
+      topBoxScanline,
+      bottomBoxDistortionScanline,
+      topBoxDistortionScanline,
+      slimBoxScanline,
+      slimBoxDistortionScanline,
+    ];
   }
 
   for (const scanline of rollingScanlines) {
@@ -69,7 +78,7 @@ export function generateRollingScanlines(
         ]]),
         MAX_CURSOR_DISTANCE,
       );
-      scanline.opacity = 0.05 + (MAX_CURSOR_DISTANCE - distanceToCursor) / MAX_CURSOR_DISTANCE * 0.3;
+      scanline.opacity = 0.05 + (MAX_CURSOR_DISTANCE - distanceToCursor) / MAX_CURSOR_DISTANCE * 0.15;
     }
   }
 

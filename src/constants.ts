@@ -32,6 +32,16 @@ to my
 personal
 website!
 
+I'm open to
+job offers
+and collab
+proposals
+
+Write me
+an email at
+ehpc@
+ehpc.io
+
 This scene
 is drawn
 program-
@@ -59,6 +69,11 @@ sheep?
 The answer
 is 42
 
+I like LISP,
+Haskell,
+Rust and
+other langs
+
 Have a 
 wonderful
 day!
@@ -82,6 +97,9 @@ export const PC_TEXT_TYPING_SPEED = 15;
 
 // Text displayed on the bottom server box
 export const BOTTOM_SERVER_BOX_TEXT = "CV";
+
+// Text displayed on the slim server box
+export const SLIM_SERVER_BOX_TEXT = "Email";
 
 // Text displayed on the top server box
 export const TOP_SERVER_BOX_TEXT = ["git", "hub"];

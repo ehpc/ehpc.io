@@ -1,4 +1,10 @@
-import { BOTTOM_SERVER_BOX_TEXT, PC_TEXT, PC_TEXT_TYPING_SPEED, TOP_SERVER_BOX_TEXT } from "../constants";
+import {
+  BOTTOM_SERVER_BOX_TEXT,
+  PC_TEXT,
+  PC_TEXT_TYPING_SPEED,
+  SLIM_SERVER_BOX_TEXT,
+  TOP_SERVER_BOX_TEXT,
+} from "../constants";
 import type { PCText, ServerBoxText } from "../types";
 
 export function generatePCText(pcText?: PCText, deltaTime: number = 0): PCText {
@@ -62,6 +68,12 @@ export function generateServerBoxTexts(
         x: 368,
         y: 177,
         size: 13,
+      },
+      {
+        text: SLIM_SERVER_BOX_TEXT,
+        x: 312,
+        y: 225,
+        size: 11,
       },
     ];
   }

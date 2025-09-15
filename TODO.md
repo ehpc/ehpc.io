@@ -5,4 +5,3 @@
 
 - Portrait disclaimer
 - README
-- Contacts

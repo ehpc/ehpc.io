@@ -36,4 +36,10 @@ export function drawDomElements(
   if (cvLink) {
     relocateDomElement(cvLink, [363, 234], 45, 42, drawingCoordinates, serverBoxesOffset);
   }
+
+  // Email link
+  const emailLink = document.getElementById("email-link");
+  if (emailLink) {
+    relocateDomElement(emailLink, [308, 215], 33, 16, drawingCoordinates, serverBoxesOffset);
+  }
 }

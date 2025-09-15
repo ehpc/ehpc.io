@@ -15,7 +15,7 @@ const INDICATOR_COLORS = [
 const INDICATOR_MAX_LITUP_TIME = 500;
 const INDICATOR_SIZE = 3;
 const SERVER_BOX_DISPLAY_PADDING_FACTOR = 0.15;
-const SERVER_BOX_DISPLAY_MIN_PADDING = 5;
+const SERVER_BOX_DISPLAY_MIN_PADDING = 2;
 
 function createServerBoxWithDisplay(tl: Point, br: Point, depth: number): ServerBox {
   const box: ServerBox = {
@@ -103,6 +103,7 @@ export function generateServerBoxes(oldServerBoxes?: ServerBox[], deltaTime: num
   const bigBox = createServerBoxWithDisplay([353, 226], [418, 284], 13);
   const smartBox = createSmartServerBox([357, 148], [397, 223], 6);
   const smallBox = createServerBoxWithDisplay([306, 252], [335, 281], 9);
-  const smallSmartBox = createSmartServerBox([313, 234], [340, 248], 5, 2, 3);
-  return [bigBox, smartBox, smallBox, smallSmartBox];
+  const smallSmartBox = createSmartServerBox([313, 234], [340, 249], 5, 2, 3);
+  const slimBox = createServerBoxWithDisplay([302, 213], [348, 232], 4);
+  return [bigBox, smartBox, smallBox, smallSmartBox, slimBox];
 }
