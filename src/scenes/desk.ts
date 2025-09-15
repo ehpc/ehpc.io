@@ -1,7 +1,7 @@
-import { DESK_OFFSET_X_THRESHOLD, PC_TEXT_FONT, PC_TEXT_LINE_HEIGHT, PC_TEXT_SIZE } from "../constants";
+import { DESK_OFFSET_X_THRESHOLD } from "../constants";
 import { polygon, rect } from "../primitives";
 import colors from "../styles/colors.module.css";
-import type { DrawingCoordinates, GeneratedEntities, PCText, VirtualCanvasContext } from "../types";
+import type { DrawingCoordinates, VirtualCanvasContext } from "../types";
 
 function drawTable(ctx: VirtualCanvasContext) {
   // Bottom front legs
@@ -63,55 +63,8 @@ function drawKeyboard(ctx: VirtualCanvasContext) {
   polygon(ctx, [[221, 257], [225, 257], [232, 265], [231, 265]], colors.keyboardKeypadColor);
 }
 
-function drawText(ctx: VirtualCanvasContext, pcText: PCText) {
-  const x = 139;
-  const y = 211;
-  const { text, currentSymbolIndex } = pcText;
-  ctx.fillStyle = colors.textColor;
-  ctx.font = `${PC_TEXT_SIZE}px ${PC_TEXT_FONT}`;
-  // Draw previous rows
-  let index = 0;
-  let lastNewLineIndex = 0;
-  let str = "";
-  const rows: string[] = [];
-  while (index < currentSymbolIndex) {
-    str += text[index];
-    if (text[index] === "\n") {
-      rows.unshift(str);
-      str = "";
-      lastNewLineIndex = index + 1;
-    }
-    index++;
-  }
-
-  ctx.save();
-  ctx.beginPath();
-  ctx.moveTo(135, 170);
-  ctx.lineTo(164, 170);
-  ctx.lineTo(164, 171);
-  ctx.lineTo(195, 171);
-  ctx.lineTo(195, 215);
-  ctx.lineTo(164, 215);
-  ctx.lineTo(164, 217);
-  ctx.lineTo(135, 217);
-  ctx.closePath();
-  ctx.clip();
-
-  const noMoreText = currentSymbolIndex >= text.length;
-  for (let i = 0; i < rows.length; i++) {
-    ctx.fillText(rows[i], x, y - ((noMoreText ? i : i + 1) * (PC_TEXT_SIZE + PC_TEXT_LINE_HEIGHT)));
-  }
-  if (!noMoreText) {
-    // Draw current row
-    ctx.fillText(text.slice(lastNewLineIndex, currentSymbolIndex), x, y);
-  }
-
-  ctx.restore();
-}
-
 export function drawDeskScene(
   ctx: VirtualCanvasContext,
-  generatedEntities: GeneratedEntities,
   drawingCoordinates: DrawingCoordinates,
 ) {
   const deskOffset = Math.max(0, drawingCoordinates.virtualX - DESK_OFFSET_X_THRESHOLD);
@@ -121,7 +74,6 @@ export function drawDeskScene(
   drawPCBox(ctx);
   drawDisplay(ctx);
   drawDisplayGlass(ctx);
-  drawText(ctx, generatedEntities.pcText);
   drawKeyboard(ctx);
 
   ctx.setTransform(1, 0, 0, 1, 0, 0);

@@ -6,4 +6,5 @@ export { drawEdges } from "./edges";
 export { drawMainScene } from "./main";
 export { drawRoomScene } from "./room";
 export { drawServerBoxesScene } from "./server-boxes";
+export { drawUnscaledScene } from "./unscaled";
 export { drawWindowScene } from "./window";

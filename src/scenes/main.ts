@@ -10,5 +10,5 @@ export function drawMainScene(
   drawRoomScene(ctx);
   drawServerBoxesScene(ctx, generatedEntities, drawingCoordinates);
   drawCatScene(ctx, generatedEntities);
-  drawDeskScene(ctx, generatedEntities, drawingCoordinates);
+  drawDeskScene(ctx, drawingCoordinates);
 }

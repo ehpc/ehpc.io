@@ -6,4 +6,3 @@
 - Portrait disclaimer
 - README
 - Contacts
-- PC font

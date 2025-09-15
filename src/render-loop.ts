@@ -10,7 +10,7 @@ import {
   generateServerBoxTexts,
   generateStars,
 } from "./generators";
-import { drawCrtEffect, drawDomElements, drawEdges, drawMainScene } from "./scenes";
+import { drawCrtEffect, drawDomElements, drawEdges, drawMainScene, drawUnscaledScene } from "./scenes";
 import type { DrawingCoordinates, GeneratedEntities, VirtualCanvas, VirtualCanvasContext } from "./types";
 import { debounce } from "./utils";
 
@@ -92,6 +92,7 @@ function drawFrame(
     drawingWidth,
     drawingHeight,
   );
+  drawUnscaledScene(mainCtx, generatedEntities, drawingCoordinates);
 
   // Apply retro CRT effect
   drawCrtEffect(mainCtx);

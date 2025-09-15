@@ -12,7 +12,7 @@
     "build": "bun fmt && bun lint && bun wasm:build && tsc && vite build",
     "preview": "vite preview",
     "lint": "bun lint:css && bun lint:ts",
-    "lint:ts": "oxlint --fix",
+    "lint:ts": "oxlint --fix --deny-warnings",
     "lint:css": "stylelint --fix 'src/**/*.css'",
     "fmt": "dprint fmt",
     "test:all": "bun wasm:test && bun test",

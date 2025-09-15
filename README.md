@@ -2,11 +2,12 @@
 
 ## Frontend Stack
 
+- Package manager: [Bun](https://bun.sh)
 - Build tool: [Vite](https://vite.dev/)
 - Formatter: [dprint](https://dprint.dev/)
 - JS/TS linter: [Oxlint](https://oxc.rs/)
 - CSS: [PostCSS](https://postcss.org/) + [Stylelint](https://stylelint.io/)
-- Testing framework: [Vitest](https://vitest.dev/)
+- Testing framework: [bun:test](https://bun.com/docs/cli/test)
 - Git hooks: [husky](https://typicode.github.io/husky/)
 - WASM: [wasm-bindgen](https://wasm-bindgen.github.io/wasm-bindgen/)
 
