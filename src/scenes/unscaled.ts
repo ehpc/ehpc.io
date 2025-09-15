@@ -23,6 +23,34 @@ function virtualPointToRealPoint(virtualPoint: Point, transformFactors: Transfor
   return [virtualXtoRealX(virtualX, transformFactors), virtualYtoRealY(virtualY, transformFactors)];
 }
 
+function setNormalFont(ctx: CanvasRenderingContext2D, transformFactors: TransformFactors) {
+  const textSize = PC_TEXT_SIZE * (transformFactors.kY);
+  ctx.font = `${textSize}px ${PC_TEXT_FONT}`;
+}
+
+function setSmallerFont(ctx: CanvasRenderingContext2D, transformFactors: TransformFactors) {
+  const textSize = (PC_TEXT_SIZE - 2) * (transformFactors.kY);
+  ctx.font = `${textSize}px ${PC_TEXT_FONT}`;
+}
+
+function writeText(
+  ctx: CanvasRenderingContext2D,
+  text: string,
+  x: number,
+  y: number,
+  transformFactors: TransformFactors,
+) {
+  const isSmallText = text.startsWith("[SMALL]");
+  if (isSmallText) {
+    setSmallerFont(ctx, transformFactors);
+    text = text.slice(7);
+  }
+  ctx.fillText(text, x, y);
+  if (isSmallText) {
+    setNormalFont(ctx, transformFactors);
+  }
+}
+
 function drawPCText(ctx: CanvasRenderingContext2D, pcText: PCText, transformFactors: TransformFactors) {
   const [x, y] = virtualPointToRealPoint([139, 211], transformFactors);
   const textSize = PC_TEXT_SIZE * (transformFactors.kY);
@@ -30,7 +58,8 @@ function drawPCText(ctx: CanvasRenderingContext2D, pcText: PCText, transformFact
 
   const { text, currentSymbolIndex } = pcText;
   ctx.fillStyle = colors.textColor;
-  ctx.font = `${textSize}px ${PC_TEXT_FONT}`;
+  setNormalFont(ctx, transformFactors);
+
   // Draw previous rows
   let index = 0;
   let lastNewLineIndex = 0;
@@ -61,11 +90,12 @@ function drawPCText(ctx: CanvasRenderingContext2D, pcText: PCText, transformFact
 
   const noMoreText = currentSymbolIndex >= text.length;
   for (let i = 0; i < rows.length; i++) {
-    ctx.fillText(rows[i], x, y - ((noMoreText ? i : i + 1) * (textSize + lineHeight)));
+    writeText(ctx, rows[i], x, y - ((noMoreText ? i : i + 1) * (textSize + lineHeight)), transformFactors);
   }
   if (!noMoreText) {
+    const partialText = text.slice(lastNewLineIndex, currentSymbolIndex);
     // Draw current row
-    ctx.fillText(text.slice(lastNewLineIndex, currentSymbolIndex), x, y);
+    writeText(ctx, partialText, x, y, transformFactors);
   }
 
   ctx.restore();

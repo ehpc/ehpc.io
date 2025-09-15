@@ -39,8 +39,7 @@ proposals
 
 Write me
 an email at
-ehpc@
-ehpc.io
+[SMALL]ehpc@ehpc.io
 
 This scene
 is drawn
@@ -69,10 +68,10 @@ sheep?
 The answer
 is 42
 
-I like LISP,
-Haskell,
-Rust and
-other langs
+[SMALL]I like LISP,
+[SMALL]Haskell, Rust
+[SMALL]and other fun
+[SMALL]languages
 
 Have a 
 wonderful

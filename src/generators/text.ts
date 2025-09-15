@@ -39,6 +39,12 @@ export function generatePCText(pcText?: PCText, deltaTime: number = 0): PCText {
         pcText.currentSymbolIndex++;
       }
     }
+
+    // Skip the [SMALL] tag
+    if (pcText.text.slice(pcText.currentSymbolIndex, pcText.currentSymbolIndex + 7) === "[SMALL]") {
+      pcText.currentSymbolIndex += 7;
+    }
+
     pcText.elapsed = 0;
   }
 
