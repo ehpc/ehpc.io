@@ -9,6 +9,21 @@ interface ShearParams {
 }
 
 /**
+ * Maps the points of a rectangle using a mapping function.
+ * @param rect The points of the rectangle [TL, TR, BR, BL].
+ * @param mapFn The mapping function to apply to each point.
+ * @returns The transformed rectangle.
+ */
+function mapRect(rect: Rect, mapFn: (point: Point) => Point): Rect {
+  return [
+    mapFn(rect[0]),
+    mapFn(rect[1]),
+    mapFn(rect[2]),
+    mapFn(rect[3]),
+  ];
+}
+
+/**
  * Linearly interpolates a point towards a perspective point.
  * @param p The original point.
  * @param perspective The perspective point to interpolate towards.
@@ -31,10 +46,10 @@ export function scaleRectPoints(points: Rect, scaleX: number, scaleY: number = s
   const centerX = (points[0][0] + points[1][0]) / 2;
   const centerY = (points[0][1] + points[3][1]) / 2;
 
-  return points.map(([x, y]) => [
+  return mapRect(points, ([x, y]) => [
     centerX + (x - centerX) * scaleX,
     centerY + (y - centerY) * scaleY,
-  ]) as Rect;
+  ]);
 }
 
 /**
@@ -85,7 +100,7 @@ function shearPoint(point: Point, shearParams: ShearParams): Point {
  * @returns The sheared points of the rectangle [TL, TR, BR, BL].
  */
 export function shearRectRightSideVertical(rect: Rect, shearParams: ShearParams): Rect {
-  return rect.map(point => shearPoint(point, shearParams)) as Rect;
+  return mapRect(rect, point => shearPoint(point, shearParams));
 }
 
 /**

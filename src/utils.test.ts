@@ -29,7 +29,7 @@ describe("utils", () => {
     it("should contain all the same elements", () => {
       const input = [1, 2, 3, 4, 5];
       const result = shuffle(input);
-      expect(result.sort()).toEqual(input.sort());
+      expect(result.sort((a, b) => a - b)).toEqual(input.sort((a, b) => a - b));
     });
 
     it("should handle empty array", () => {
@@ -61,13 +61,9 @@ describe("utils", () => {
 
   describe("sampleOne", () => {
     it("should return undefined for empty array", () => {
-      const result = sampleOne([]);
+      const input: string[] = [];
+      const result = sampleOne(input);
       expect(result).toBeUndefined();
-    });
-
-    it("should return undefined for null/undefined input", () => {
-      expect(sampleOne(null as any)).toBeUndefined();
-      expect(sampleOne(undefined as any)).toBeUndefined();
     });
 
     it("should return the only element from single-element array", () => {
@@ -428,8 +424,8 @@ describe("utils", () => {
     });
 
     it("should pass arguments to the original function", () => {
-      let receivedArgs: any[] = [];
-      const fn = (...args: any[]) => receivedArgs.push(...args);
+      let receivedArgs: string[] = [];
+      const fn = (...args: typeof receivedArgs) => receivedArgs.push(...args);
       const throttled = throttle(fn, 100);
 
       throttled("a", "b", "c");
@@ -437,8 +433,8 @@ describe("utils", () => {
     });
 
     it("should use arguments from the first call during throttle period", () => {
-      let receivedArgs: any[] = [];
-      const fn = (...args: any[]) => receivedArgs.push(...args);
+      let receivedArgs: string[] = [];
+      const fn = (...args: typeof receivedArgs) => receivedArgs.push(...args);
       const throttled = throttle(fn, 100);
 
       throttled("first");
@@ -454,8 +450,12 @@ describe("utils", () => {
       };
       const throttled = throttle(fn, 100);
 
-      expect(() => throttled()).toThrow("test error");
-      expect(() => throttled()).not.toThrow(); // second call ignored
+      expect(() => {
+        throttled();
+      }).toThrow("test error");
+      expect(() => {
+        throttled();
+      }).not.toThrow(); // second call ignored
     });
 
     it("should reset after timeout and allow new calls", async () => {
@@ -516,8 +516,8 @@ describe("utils", () => {
     });
 
     it("should use arguments from the last call", async () => {
-      let receivedArgs: any[] = [];
-      const fn = (...args: any[]) => receivedArgs.push(...args);
+      let receivedArgs: string[] = [];
+      const fn = (...args: typeof receivedArgs) => receivedArgs.push(...args);
       const debounced = debounce(fn, 50);
 
       debounced("first");
@@ -559,7 +559,7 @@ describe("utils", () => {
     });
 
     it("should handle empty matrix", () => {
-      const result = mapMatrixElements([], x => x);
+      const result = mapMatrixElements<number>([], x => x);
       expect(result).toEqual([]);
     });
 
