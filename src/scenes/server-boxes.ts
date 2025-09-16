@@ -3,7 +3,7 @@ import { cube1, rect } from "../primitives";
 import colors from "../styles/colors.module.css";
 import type { DrawingCoordinates, GeneratedEntities, Point, VirtualCanvasContext } from "../types";
 
-function drawScanlines(ctx: VirtualCanvasContext, generatedEntities: GeneratedEntities) {
+function drawScanlines(ctx: VirtualCanvasContext, generatedEntities: GeneratedEntities, serverBoxesOffset: number) {
   for (
     const { tl, boxWidth, thickness, currentPosition, elapsed, opacity, interval, distortX } of generatedEntities
       .rollingScanlines
@@ -16,7 +16,7 @@ function drawScanlines(ctx: VirtualCanvasContext, generatedEntities: GeneratedEn
       for (let y = 0; y < thickness; y++) {
         ctx.drawImage(
           ctx.canvas,
-          tl[0],
+          tl[0] + serverBoxesOffset,
           tl[1] + currentPosition + y,
           boxWidth - distortX,
           1,
@@ -70,7 +70,7 @@ export function drawServerBoxesScene(
   }
 
   drawServerBoxesText(ctx, generatedEntities);
-  drawScanlines(ctx, generatedEntities);
+  drawScanlines(ctx, generatedEntities, serverBoxesOffset);
 
   ctx.setTransform(1, 0, 0, 1, 0, 0);
 }
