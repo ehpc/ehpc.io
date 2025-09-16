@@ -63,19 +63,47 @@
     body.no-ui a {
       margin-bottom: 0.75rem;
     }
+
+    #portrait-disclaimer {
+      display: none;
+    }
+
+    .sr-only {
+      border: 0;
+      clip: rect(0, 0, 0, 0);
+      height: 1px;
+      margin: -1px;
+      overflow: hidden;
+      padding: 0;
+      position: absolute !important;
+      white-space: nowrap;
+      width: 1px;
+    }
     </style>
   </head>
 
   <body class="no-ui">
     <noscript><p>This site is prettier with JavaScript enabled :)</p></noscript>
 
-    <p id="loading-disclaimer">Loading UI, please wait a moment...</p>
+    <main role="main" aria-label="Main content">
+      <p class="sr-only" aria-label="Welcome message">Welcome to ehpc's personal website!</p>
+      <p id="loading-disclaimer" role="status" aria-live="polite" aria-atomic="true">
+        Loading UI, please wait a moment...
+      </p>
 
-    <a id="github-link" href="https://github.com/ehpc/ehpc.io">GitHub Repository</a>
-    <a id="cv-link" href="https://ehpc.io/Eugene_Maslovich_CV.pdf">My CV</a>
-    <a id="email-link" href="mailto:ehpc@ehpc.io">Email Me</a>
+      <div id="portrait-disclaimer" role="status" aria-live="polite" aria-atomic="true">
+        <p>Please flip your device to portrait mode :)</p>
+        <p>It's far better this way!</p>
+      </div>
 
-    <canvas id="scene-canvas" width="0" height="0"></canvas>
+      <nav aria-label="Main navigation">
+        <a id="github-link" href="https://github.com/ehpc/ehpc.io">GitHub Repository</a>
+        <a id="cv-link" href="https://ehpc.io/Eugene_Maslovich_CV.pdf">My CV</a>
+        <a id="email-link" href="mailto:ehpc@ehpc.io">Email Me</a>
+      </nav>
+    </main>
+
+    <canvas id="scene-canvas" width="0" height="0" aria-hidden="true"></canvas>
 
     <script type="module" src="/src/main.ts"></script>
   </body>

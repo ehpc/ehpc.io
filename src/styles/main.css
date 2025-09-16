@@ -33,3 +33,19 @@ body.debug {
     color: white;
   }
 }
+
+#portrait-disclaimer {
+  display: none;
+  font-size: 6vw;
+  left: 0;
+  overflow-wrap: break-word;
+  padding: 2rem;
+  position: fixed;
+  right: 0;
+  text-align: center;
+
+  p {
+    margin: 0;
+    margin-bottom: 1rem;
+  }
+}

@@ -40,6 +40,21 @@ export function drawDomElements(
   // Email link
   const emailLink = document.getElementById("email-link");
   if (emailLink) {
-    relocateDomElement(emailLink, [308, 215], 33, 16, drawingCoordinates, serverBoxesOffset);
+    relocateDomElement(emailLink, [308, 215], 33, 15, drawingCoordinates, serverBoxesOffset);
+  }
+
+  // Portrait mode disclaimer
+  const portraitDisclaimer = document.getElementById("portrait-disclaimer");
+  if (portraitDisclaimer && window.innerHeight / window.innerWidth > 1.2) {
+    portraitDisclaimer.style.setProperty("display", "block");
+    const disclaimerHeight = portraitDisclaimer.getBoundingClientRect().height;
+    const top = (drawingCoordinates.canvasOffsetY - disclaimerHeight) / 2;
+    if (top > 0) {
+      portraitDisclaimer.style.setProperty("top", `${top}px`);
+    } else {
+      portraitDisclaimer.style.removeProperty("top");
+    }
+  } else if (portraitDisclaimer) {
+    portraitDisclaimer.style.setProperty("display", "none");
   }
 }
