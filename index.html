@@ -16,20 +16,57 @@
 
     <title>ehpc</title>
     <style>
+    @font-face {
+      font-display: swap;
+      font-family: NESCyrillic;
+      src:
+        url("/fonts/NESCyrillic.woff2") format("woff2"),
+        url("/fonts/NESCyrillic.woff") format("woff"),
+        url("/fonts/NESCyrillic.ttf") format("truetype");
+    }
+
+    @font-face {
+      font-display: block;
+      font-family: ATARISTOCRAT;
+      src:
+        url("/fonts/ATARISTOCRAT-lat.woff2") format("woff2"),
+        url("/fonts/ATARISTOCRAT-lat.woff") format("woff"),
+        url("/fonts/ATARISTOCRAT-lat.ttf") format("truetype");
+    }
+
+    html,
+    body {
+      font-family: NESCyrillic, monospace;
+      height: 100%;
+      margin: 0;
+    }
+
     body {
       background-color: #33073d;
     }
+
+    body.no-ui {
+      padding: 1rem;
+    }
+
     body, a {
       color: rgba(255, 255, 255, 0.618);
       overflow: hidden;
     }
+
     a {
       display: block;
+      font-family: ATARISTOCRAT, monospace;
+      text-decoration: none;
+    }
+
+    body.no-ui a {
+      margin-bottom: 0.75rem;
     }
     </style>
   </head>
 
-  <body class="hidden-text">
+  <body class="no-ui">
     <noscript><p>This site is prettier with JavaScript enabled :)</p></noscript>
 
     <p id="loading-disclaimer">Loading UI, please wait a moment...</p>

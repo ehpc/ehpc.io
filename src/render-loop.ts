@@ -92,6 +92,8 @@ function drawFrame(
     drawingWidth,
     drawingHeight,
   );
+
+  // Draw unscaled elements on top of the main canvas
   drawUnscaledScene(mainCtx, generatedEntities, drawingCoordinates);
 
   // Apply retro CRT effect

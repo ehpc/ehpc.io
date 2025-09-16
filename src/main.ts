@@ -28,3 +28,4 @@ const loadingDisclaimer = document.getElementById("loading-disclaimer");
 if (loadingDisclaimer) {
   loadingDisclaimer.remove();
 }
+document.body.classList.remove("no-ui");

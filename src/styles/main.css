@@ -1,28 +1,5 @@
 @import url("./colors.module.css");
 
-@font-face {
-  font-family: NESCyrillic;
-  src:
-    url("../fonts/NESCyrillic.woff2") format("woff2"),
-    url("../fonts/NESCyrillic.woff") format("woff"),
-    url("../fonts/NESCyrillic.ttf") format("truetype");
-}
-
-@font-face {
-  font-family: ATARISTOCRAT;
-  src:
-    url("../fonts/ATARISTOCRAT-lat.woff2") format("woff2"),
-    url("../fonts/ATARISTOCRAT-lat.woff") format("woff"),
-    url("../fonts/ATARISTOCRAT-lat.ttf") format("truetype");
-}
-
-html,
-body {
-  font-family: NESCyrillic, monospace;
-  height: 100%;
-  margin: 0;
-}
-
 #scene-canvas {
   display: block;
   height: 100vh;
