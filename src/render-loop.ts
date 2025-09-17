@@ -1,15 +1,6 @@
-import { MAX_STARS, RESIZE_DELAY, VIRTUAL_CANVAS_X_THRESHOLD } from "./constants";
+import { RESIZE_DELAY, VIRTUAL_CANVAS_X_THRESHOLD } from "./constants";
 import { setupCursorTracking } from "./cursor";
-import {
-  generateAllEntities,
-  generateBuildings,
-  generateCatTail,
-  generatePCText,
-  generateRollingScanlines,
-  generateServerBoxes,
-  generateServerBoxTexts,
-  generateStars,
-} from "./generators";
+import { generateAllEntities, updateAllEntities } from "./generators";
 import { drawCrtEffect, drawDomElements, drawEdges, drawMainScene, drawUnscaledScene } from "./scenes";
 import type { DrawingCoordinates, GeneratedEntities, VirtualCanvas, VirtualCanvasContext } from "./types";
 import { debounce } from "./utils";
@@ -144,28 +135,7 @@ export function renderLoop(
       const elapsedStable = frames * frameDuration;
       lastFrameTime += elapsedStable;
 
-      generatedEntities.foregroundBuildings = generateBuildings(
-        generatedEntities.foregroundBuildings,
-        undefined,
-        undefined,
-        elapsedStable,
-      );
-      generatedEntities.backgroundBuildings = generateBuildings(
-        generatedEntities.backgroundBuildings,
-        undefined,
-        undefined,
-        elapsedStable,
-      );
-      generatedEntities.stars = generateStars(generatedEntities.stars, MAX_STARS, elapsedStable);
-      generatedEntities.serverBoxes = generateServerBoxes(generatedEntities.serverBoxes, elapsedStable);
-      generatedEntities.rollingScanlines = generateRollingScanlines(
-        generatedEntities.rollingScanlines,
-        generatedEntities.cursorVirtualPosition,
-        elapsedStable,
-      );
-      generatedEntities.serverBoxTextes = generateServerBoxTexts(generatedEntities.serverBoxTextes, elapsedStable);
-      generatedEntities.pcText = generatePCText(generatedEntities.pcText, elapsedStable);
-      generatedEntities.catTail = generateCatTail(generatedEntities.catTail, deltaTime);
+      updateAllEntities(generatedEntities, elapsedStable, deltaTime);
       drawFrame(mainCanvas, mainCtx, virtualCanvas, virtualCtx, generatedEntities, drawingCoordinates);
       drawDomElements(drawingCoordinates);
     }

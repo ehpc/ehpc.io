@@ -1,4 +1,5 @@
 :export {
+  airplaneColor: rgb(0 0 0 / 90%);
   backgroundBuildingColor: hsl(11deg 87% 39%);
   boxFrontColor: #400c35;
   boxSideColor: #631253;

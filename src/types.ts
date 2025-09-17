@@ -123,6 +123,7 @@ export interface GeneratedEntities {
   pcText: PCText;
   cursorVirtualPosition: Point;
   catTail: CatTail;
+  airplanes: Airplane[];
 }
 
 // Simple point on 2D space.
@@ -157,4 +158,12 @@ export interface CatTail {
   fullSwingDuration: number;
   // Direction of the animation (1 for forward, -1 for backward)
   animationDirection: -1 | 1;
+}
+
+// Airplane entity
+export interface Airplane {
+  x: number;
+  y: number;
+  size: number;
+  speed: number;
 }

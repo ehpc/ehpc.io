@@ -1,6 +1,7 @@
 import { MAX_STARS } from "../constants";
 import colors from "../styles/colors.module.css";
 import type { GeneratedEntities } from "../types";
+import { generateAirplanes } from "./airplanes";
 import { generateBuildings } from "./buildings";
 import { generateCatTail } from "./cat-tail";
 import { generateRollingScanlines } from "./rolling-scanlines";
@@ -38,5 +39,37 @@ export function generateAllEntities(): GeneratedEntities {
     pcText: generatePCText(),
     cursorVirtualPosition: [0, 0],
     catTail: generateCatTail(),
+    airplanes: generateAirplanes(),
   };
+}
+
+export function updateAllEntities(
+  entities: GeneratedEntities,
+  elapsedStable: number,
+  deltaTime: number,
+): GeneratedEntities {
+  entities.foregroundBuildings = generateBuildings(
+    entities.foregroundBuildings,
+    undefined,
+    undefined,
+    elapsedStable,
+  );
+  entities.backgroundBuildings = generateBuildings(
+    entities.backgroundBuildings,
+    undefined,
+    undefined,
+    elapsedStable,
+  );
+  entities.stars = generateStars(entities.stars, MAX_STARS, elapsedStable);
+  entities.serverBoxes = generateServerBoxes(entities.serverBoxes, elapsedStable);
+  entities.rollingScanlines = generateRollingScanlines(
+    entities.rollingScanlines,
+    entities.cursorVirtualPosition,
+    elapsedStable,
+  );
+  entities.serverBoxTextes = generateServerBoxTexts(entities.serverBoxTextes, elapsedStable);
+  entities.pcText = generatePCText(entities.pcText, elapsedStable);
+  entities.catTail = generateCatTail(entities.catTail, deltaTime);
+  entities.airplanes = generateAirplanes(entities.airplanes, deltaTime);
+  return entities;
 }

@@ -1,8 +1,9 @@
 import { reverse4bits } from "../../wasm/pkg/";
 import { MAX_WINDOW_BITMASK } from "../constants";
-import { circle, rect } from "../primitives";
+import { circle, line, pixel, rect } from "../primitives";
 import colors from "../styles/colors.module.css";
-import type { Building, BuildingOptions, GeneratedEntities, Star, VirtualCanvasContext } from "../types";
+import type { Airplane, Building, BuildingOptions, GeneratedEntities, Star, VirtualCanvasContext } from "../types";
+import { random } from "../utils";
 
 function drawSky(ctx: VirtualCanvasContext) {
   rect(ctx, 0, 0, ctx.canvas.width, 74, colors.skyGradient1);
@@ -80,10 +81,38 @@ function drawBuildings(ctx: VirtualCanvasContext, buildings: Building[]) {
   }
 }
 
+function drawAirplanes(ctx: VirtualCanvasContext, airplanes: Airplane[]) {
+  for (const airplane of airplanes) {
+    const length = 8 + airplane.size * 2;
+
+    // Trail
+    const trailDotsCount = random(2, 5);
+    const baseDotsOpacity = random(20, 40) / 100;
+    const trailOffsetX = airplane.size;
+    for (let i = 0; i < trailDotsCount; i++) {
+      // pixel(ctx, airplane.x - 3 - i * 2, airplane.y + 1, `rgb(0 0 0 / ${baseDotsOpacity - i * 0.04})`);
+      pixel(ctx, airplane.x + 1 + trailOffsetX - i * 2, airplane.y + 3, `rgb(0 0 0 / ${baseDotsOpacity - i * 0.04})`);
+      pixel(ctx, airplane.x + 1 + trailOffsetX - i * 2, airplane.y - 1, `rgb(0 0 0 / ${baseDotsOpacity - i * 0.04})`);
+    }
+
+    // Body
+    line(ctx, airplane.x, airplane.y, airplane.x + length, airplane.y, colors.airplaneColor);
+    line(ctx, airplane.x - 1, airplane.y + 1, airplane.x + length + 1, airplane.y + 1, colors.airplaneColor);
+    line(ctx, airplane.x, airplane.y - 1, airplane.x, airplane.y - 2, colors.airplaneColor);
+    line(ctx, airplane.x + 1, airplane.y - 1, airplane.x, airplane.y - 1, colors.airplaneColor);
+    // Wings
+    const wingX = airplane.x - 1 + (length / 2) | 0;
+    line(ctx, wingX, airplane.y - 2, wingX, airplane.y + 4, colors.airplaneColor);
+    line(ctx, wingX + 1, airplane.y - 1, wingX + 1, airplane.y + 3, colors.airplaneColor);
+    line(ctx, wingX + 2, airplane.y + 1, wingX + 2, airplane.y + 2, colors.airplaneColor);
+  }
+}
+
 export function drawWindowScene(ctx: VirtualCanvasContext, generatedEntities: GeneratedEntities) {
   drawSky(ctx);
   drawStars(ctx, generatedEntities.stars);
   drawSun(ctx);
+  drawAirplanes(ctx, generatedEntities.airplanes);
   drawBuildings(ctx, generatedEntities.backgroundBuildings);
   drawBuildings(ctx, generatedEntities.foregroundBuildings);
 }

@@ -1,5 +1,6 @@
 // Re-export all generator functions
-export { generateAllEntities } from "./all";
+export { generateAirplanes } from "./airplanes";
+export { generateAllEntities, updateAllEntities } from "./all";
 export { generateBuildings } from "./buildings";
 export { generateCatTail } from "./cat-tail";
 export { generateRollingScanlines } from "./rolling-scanlines";
