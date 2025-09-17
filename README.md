@@ -1,5 +1,9 @@
 # ehpc.io
 
+Hi there! This is the repo for my personal website. :cat:
+
+Hope you find something interesting! :dog:
+
 ## Frontend Stack
 
 - Package manager: [Bun](https://bun.sh)
@@ -19,6 +23,6 @@
 
 ## Project Structure
 
-- `src/` – frontend code
-- `wasm/` – WebAssembly modules
-- `public/` – static assets
+- `src/` – frontend code :baby_chick:
+- `wasm/` – WebAssembly modules :crab:
+- `public/` – static assets :penguin:
