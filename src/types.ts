@@ -166,4 +166,6 @@ export interface Airplane {
   y: number;
   size: number;
   speed: number;
+  // Movement direction (1 for right, -1 for left)
+  direction: 1 | -1;
 }

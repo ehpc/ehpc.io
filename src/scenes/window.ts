@@ -83,28 +83,45 @@ function drawBuildings(ctx: VirtualCanvasContext, buildings: Building[]) {
 
 function drawAirplanes(ctx: VirtualCanvasContext, airplanes: Airplane[]) {
   for (const airplane of airplanes) {
+    const dir = airplane.direction;
     const length = 8 + airplane.size * 2;
 
     // Trail
     const trailDotsCount = random(2, 5);
     const baseDotsOpacity = random(20, 40) / 100;
-    const trailOffsetX = airplane.size;
+    const trailOffsetX = airplane.size * dir;
     for (let i = 0; i < trailDotsCount; i++) {
-      // pixel(ctx, airplane.x - 3 - i * 2, airplane.y + 1, `rgb(0 0 0 / ${baseDotsOpacity - i * 0.04})`);
-      pixel(ctx, airplane.x + 1 + trailOffsetX - i * 2, airplane.y + 3, `rgb(0 0 0 / ${baseDotsOpacity - i * 0.04})`);
-      pixel(ctx, airplane.x + 1 + trailOffsetX - i * 2, airplane.y - 1, `rgb(0 0 0 / ${baseDotsOpacity - i * 0.04})`);
+      pixel(
+        ctx,
+        airplane.x + 1 * dir + trailOffsetX - i * 2 * dir,
+        airplane.y + 3,
+        `rgb(0 0 0 / ${baseDotsOpacity - i * 0.04})`,
+      );
+      pixel(
+        ctx,
+        airplane.x + 1 * dir + trailOffsetX - i * 2 * dir,
+        airplane.y - 1,
+        `rgb(0 0 0 / ${baseDotsOpacity - i * 0.04})`,
+      );
     }
 
     // Body
-    line(ctx, airplane.x, airplane.y, airplane.x + length, airplane.y, colors.airplaneColor);
-    line(ctx, airplane.x - 1, airplane.y + 1, airplane.x + length + 1, airplane.y + 1, colors.airplaneColor);
+    line(ctx, airplane.x, airplane.y, airplane.x + length * dir, airplane.y, colors.airplaneColor);
+    line(
+      ctx,
+      airplane.x - 1 * dir,
+      airplane.y + 1,
+      airplane.x + (length + 1) * dir,
+      airplane.y + 1,
+      colors.airplaneColor,
+    );
     line(ctx, airplane.x, airplane.y - 1, airplane.x, airplane.y - 2, colors.airplaneColor);
-    line(ctx, airplane.x + 1, airplane.y - 1, airplane.x, airplane.y - 1, colors.airplaneColor);
+    line(ctx, airplane.x + 1 * dir, airplane.y - 1, airplane.x, airplane.y - 1, colors.airplaneColor);
     // Wings
-    const wingX = airplane.x - 1 + (length / 2) | 0;
+    const wingX = airplane.x - 1 * dir + (length / 2) * dir | 0;
     line(ctx, wingX, airplane.y - 2, wingX, airplane.y + 4, colors.airplaneColor);
-    line(ctx, wingX + 1, airplane.y - 1, wingX + 1, airplane.y + 3, colors.airplaneColor);
-    line(ctx, wingX + 2, airplane.y + 1, wingX + 2, airplane.y + 2, colors.airplaneColor);
+    line(ctx, wingX + 1 * dir, airplane.y - 1, wingX + 1 * dir, airplane.y + 3, colors.airplaneColor);
+    line(ctx, wingX + 2 * dir, airplane.y + 1, wingX + 2 * dir, airplane.y + 2, colors.airplaneColor);
   }
 }
 
