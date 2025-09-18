@@ -1,0 +1,15 @@
+:80 {
+    root * /srv
+    file_server
+    encode zstd gzip
+
+    @hashed {
+        path_regexp \.(?:[a-z0-9]{12}\.)(?:js|css|mjs|woff2?|ttf|eot|svg|png|jpe?g|webp|avif|mp4|webm)$
+    }
+    header @hashed Cache-Control "public, max-age=31536000, immutable"
+
+    @html {
+        path_regexp \.html$
+    }
+    header @html Cache-Control "no-cache"
+}

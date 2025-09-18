@@ -18,7 +18,8 @@ Hope you find something interesting! :dog:
 ## Prerequisites
 
 - Node.js 24+ and [bun](https://bun.sh/)
-- Rust toolchain ([rustup](https://rustup.rs/)) and wasm32 target
+- Rust toolchain ([rustup](https://rustup.rs/)),
+  [wasm-pack](https://drager.github.io/wasm-pack/) and wasm32 target
   (`rustup target add wasm32-unknown-unknown`)
 
 ## Project Structure

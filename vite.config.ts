@@ -5,4 +5,14 @@ export default defineConfig({
   plugins: [
     wasm(),
   ],
+  build: {
+    rollupOptions: {
+      output: {
+        assetFileNames: "assets/[name].[hash:12][extname]",
+        chunkFileNames: "assets/[name].[hash:12].js",
+        entryFileNames: "assets/[name].[hash:12].js",
+        hashCharacters: "base36",
+      },
+    },
+  },
 });
