@@ -61,7 +61,7 @@ jobs:
             cargo-${{ runner.os }}-
 
       - name: Install WASM deps
-        run: curl https://drager.github.io/wasm-pack/installer/init.sh -sSf | sh -s -- -y
+        run: curl https://drager.github.io/wasm-pack/installer/init.sh -sSf | bash -s -- -y
 
       - name: Run WASM tests
         run: bun test:wasm
