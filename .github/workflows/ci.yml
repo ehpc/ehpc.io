@@ -94,10 +94,15 @@ jobs:
           password: ${{ env.REGISTRY_PASSWORD }}
           registry: ${{ env.IMAGE_REGISTRY }}
 
+      - name: Read package.json version
+        id: version
+        run: echo "version=v$(jq -r .version package.json)" >> "$GITHUB_OUTPUT"
+
       - name: Build image
         run: |
           podman build \
             --pull=always \
+            --build-arg APP_VERSION="${{ steps.version.outputs.version }}" \
             --tag $IMAGE:sha-${{ github.sha }} \
             .
 

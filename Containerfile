@@ -1,3 +1,4 @@
+ARG APP_VERSION=dev
 ARG BUN_VERSION=1.2.22
 ARG RUST_TOOLCHAIN_VERSION=1.89
 ARG WASM_PACK_VERSION=0.13.1
@@ -70,13 +71,14 @@ RUN bun build:vite
 # Run app with Caddy
 
 FROM docker.io/caddy:${CADDY_VERSION}-alpine AS runtime
+ARG APP_VERSION
 LABEL io.containers.autoupdate=registry
 LABEL org.opencontainers.image.title="ehpc's personal website" \
       org.opencontainers.image.description="My personal website" \
       org.opencontainers.image.source="https://github.com/ehpc/ehpc.io" \
       org.opencontainers.image.url="https://ehpc.io" \
       org.opencontainers.image.vendor="ehpc" \
-      org.opencontainers.image.version="v2.0.0" \
+      org.opencontainers.image.version="${APP_VERSION}" \
       org.opencontainers.image.licenses="MIT"
 
 COPY Caddyfile /etc/caddy/Caddyfile
