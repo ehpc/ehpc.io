@@ -61,11 +61,9 @@ jobs:
             cargo-${{ runner.os }}-
 
       - name: Install WASM deps
-        working-directory: wasm
-        run: cargo install wasm-pack wasm-bindgen-cli wasm-opt
+        run: curl https://drager.github.io/wasm-pack/installer/init.sh -sSf | sh
 
       - name: Run WASM tests
-        working-directory: wasm
         run: bun test:wasm
 
       - name: Build WASM
