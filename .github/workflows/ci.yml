@@ -41,13 +41,6 @@ jobs:
       - name: Install JS deps
         run: bun install --frozen-lockfile
 
-      - name: Lint js
-        run: |
-          bun run lint
-
-      - name: Run js tests
-        run: bun test
-
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@stable
         with:
@@ -62,6 +55,20 @@ jobs:
             wasm/target
           key: cargo-${{ runner.os }}-${{ hashFiles('**/Cargo.lock') }}
 
+      - name: Install WASM deps
+        working-directory: wasm
+        run: cargo install wasm-pack wasm-bindgen-cli wasm-opt
+
       - name: Run WASM tests
         working-directory: wasm
-        run: cargo test
+        run: bun test:wasm
+
+      - name: Build WASM
+        run: bun build:wasm
+
+      - name: Lint js
+        run: |
+          bun run lint
+
+      - name: Run js tests
+        run: bun test
