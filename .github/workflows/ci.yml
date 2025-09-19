@@ -16,7 +16,11 @@ concurrency:
   cancel-in-progress: true
 
 env:
+  IMAGE: ghcr.io/${{ github.repository }}
   CARGO_TERM_COLOR: always
+  REGISTRY_USER: ${{ github.actor }}
+  REGISTRY_PASSWORD: ${{ github.token }}
+  IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
 
 jobs:
   lint_and_test:
@@ -75,3 +79,36 @@ jobs:
 
       - name: Run js tests
         run: bun test
+
+  build_and_push:
+    if: github.event_name == 'push'
+    needs: [lint_and_test]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to ghcr.io
+        uses: redhat-actions/podman-login@v1
+        with:
+          username: ${{ env.REGISTRY_USER }}
+          password: ${{ env.REGISTRY_PASSWORD }}
+          registry: ${{ env.IMAGE_REGISTRY }}
+
+      - name: Build image
+        run: |
+          podman build \
+            --pull=always \
+            --tag $IMAGE:sha-${{ github.sha }} \
+            .
+
+      - name: Push sha image
+        run: podman push $IMAGE:sha-${{ github.sha }}
+
+      - name: Push prod image
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          podman tag $IMAGE:sha-${{ github.sha }} $IMAGE:${{ github.ref_name }}
+          podman push $IMAGE:${{ github.ref_name }}
+
+          podman tag $IMAGE:${{ github.ref_name }} $IMAGE:prod
+          podman push $IMAGE:prod
