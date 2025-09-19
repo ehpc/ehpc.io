@@ -106,6 +106,9 @@ jobs:
             --tag $IMAGE:sha-${{ github.sha }} \
             .
 
+      - name: Inspect image
+        run: podman image inspect $IMAGE:sha-${{ github.sha }}
+
       - name: Push sha image
         run: podman push $IMAGE:sha-${{ github.sha }}
 
