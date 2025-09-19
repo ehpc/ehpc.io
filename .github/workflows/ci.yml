@@ -37,6 +37,8 @@ jobs:
             ~/.bun/install/cache
             node_modules
           key: bun-${{ runner.os }}-${{ hashFiles('bun.lock') }}
+          restore-keys: |
+            bun-${{ runner.os }}-
 
       - name: Install JS deps
         run: bun install --frozen-lockfile
@@ -50,10 +52,13 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
+            ~/.cargo/bin/
             ~/.cargo/registry
             ~/.cargo/git
             wasm/target
           key: cargo-${{ runner.os }}-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            cargo-${{ runner.os }}-
 
       - name: Install WASM deps
         working-directory: wasm
