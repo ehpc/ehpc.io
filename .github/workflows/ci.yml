@@ -135,6 +135,7 @@ jobs:
             --label org.opencontainers.image.licenses="${{ steps.meta.outputs.license }}" \
             --label org.opencontainers.image.created="${{ steps.meta.outputs.created }}" \
             --label org.opencontainers.image.version="${{ steps.meta.outputs.version }}" \
+            --label org.opencontainers.image.revision="${{ github.sha }}" \
             --annotation org.opencontainers.image.title="${{ steps.meta.outputs.name }}" \
             --annotation org.opencontainers.image.description="${{ steps.meta.outputs.description }}" \
             --annotation org.opencontainers.image.source="${{ steps.meta.outputs.repository }}" \
@@ -144,6 +145,7 @@ jobs:
             --annotation org.opencontainers.image.licenses="${{ steps.meta.outputs.license }}" \
             --annotation org.opencontainers.image.created="${{ steps.meta.outputs.created }}" \
             --annotation org.opencontainers.image.version="${{ steps.meta.outputs.version }}" \
+            --annotation org.opencontainers.image.revision="${{ github.sha }}" \
             .
 
       - name: Inspect image
