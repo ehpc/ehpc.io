@@ -1,6 +1,13 @@
 {
   "name": "ehpc.io",
   "description": "ehpc's personal website",
+  "repository": "https://github.com/ehpc/ehpc.io",
+  "homepage": "https://ehpc.io",
+  "author": {
+    "name": "Eugene Maslovich",
+    "url": "https://ehpc.io",
+    "email": "ehpc@ehpc.io"
+  },
   "private": true,
   "version": "2.0.3",
   "license": "MIT",

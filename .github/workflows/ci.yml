@@ -94,16 +94,56 @@ jobs:
           password: ${{ env.REGISTRY_PASSWORD }}
           registry: ${{ env.IMAGE_REGISTRY }}
 
-      - name: Read package.json version
-        id: version
-        run: echo "version=v$(jq -r .version package.json)" >> "$GITHUB_OUTPUT"
+      - name: Read package.json metadata
+        id: meta
+        shell: bash
+        run: |
+          NAME=$(jq -r '.name // "app"' package.json)
+          VERSION=v$(jq -r '.version // "0.0.0"' package.json)
+          DESCRIPTION=$(jq -r '.description // "No description"' package.json)
+          AUTHOR_NAME=$(jq -r '.author.name // "Unknown"' package.json)
+          AUTHOR_URL=$(jq -r '.author.url // ""' package.json)
+          AUTHOR_EMAIL=$(jq -r '.author.email // ""' package.json)
+          LICENSE=$(jq -r '.license // "UNLICENSED"' package.json)
+          HOMEPAGE=$(jq -r '.homepage // ""' package.json)
+          REPOSITORY=$(jq -r '.repository | if type == "object" then .url else . end // ""' package.json)
+          VENDOR="ehpc"
+          DATE=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+
+          echo "name=$NAME" >> "$GITHUB_OUTPUT"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "description=$DESCRIPTION" >> "$GITHUB_OUTPUT"
+          echo "author=$AUTHOR_NAME <$AUTHOR_EMAIL> ($AUTHOR_URL)" >> "$GITHUB_OUTPUT"
+          echo "license=$LICENSE" >> "$GITHUB_OUTPUT"
+          echo "homepage=$HOMEPAGE" >> "$GITHUB_OUTPUT"
+          echo "repository=$REPOSITORY" >> "$GITHUB_OUTPUT"
+          echo "vendor=$VENDOR" >> "$GITHUB_OUTPUT"
+          echo "created=$DATE" >> "$GITHUB_OUTPUT"
 
       - name: Build image
         run: |
           podman build \
             --pull=always \
-            --build-arg APP_VERSION="${{ steps.version.outputs.version }}" \
+            --build-arg APP_VERSION="${{ steps.meta.outputs.version }}" \
             --tag $IMAGE:sha-${{ github.sha }} \
+            --label org.opencontainers.image.title="${{ steps.meta.outputs.name }}" \
+            --label org.opencontainers.image.description="${{ steps.meta.outputs.description }}" \
+            --label org.opencontainers.image.source="${{ steps.meta.outputs.repository }}" \
+            --label org.opencontainers.image.url="${{ steps.meta.outputs.homepage }}" \
+            --label org.opencontainers.image.vendor="${{ steps.meta.outputs.vendor }}" \
+            --label org.opencontainers.image.authors="${{ steps.meta.outputs.author }}" \
+            --label org.opencontainers.image.licenses="${{ steps.meta.outputs.license }}" \
+            --label org.opencontainers.image.created="${{ steps.meta.outputs.created }}" \
+            --label org.opencontainers.image.version="${{ steps.meta.outputs.version }}"
+            --annotation org.opencontainers.image.title="${{ steps.meta.outputs.name }}" \
+            --annotation org.opencontainers.image.description="${{ steps.meta.outputs.description }}" \
+            --annotation org.opencontainers.image.source="${{ steps.meta.outputs.repository }}" \
+            --annotation org.opencontainers.image.url="${{ steps.meta.outputs.homepage }}" \
+            --annotation org.opencontainers.image.vendor="${{ steps.meta.outputs.vendor }}" \
+            --annotation org.opencontainers.image.authors="${{ steps.meta.outputs.author }}" \
+            --annotation org.opencontainers.image.licenses="${{ steps.meta.outputs.license }}" \
+            --annotation org.opencontainers.image.created="${{ steps.meta.outputs.created }}" \
+            --annotation org.opencontainers.image.version="${{ steps.meta.outputs.version }}"
             .
 
       - name: Inspect image
