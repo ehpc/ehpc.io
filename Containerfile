@@ -73,13 +73,13 @@ RUN bun build:vite
 FROM docker.io/caddy:${CADDY_VERSION}-alpine AS runtime
 ARG APP_VERSION
 LABEL io.containers.autoupdate=registry
-LABEL org.opencontainers.image.title="ehpc's personal website" \
-      org.opencontainers.image.description="My personal website" \
-      org.opencontainers.image.source="https://github.com/ehpc/ehpc.io" \
-      org.opencontainers.image.url="https://ehpc.io" \
-      org.opencontainers.image.vendor="ehpc" \
-      org.opencontainers.image.version="${APP_VERSION}" \
-      org.opencontainers.image.licenses="MIT"
+LABEL org.opencontainers.image.title="ehpc's personal website"
+LABEL org.opencontainers.image.description="My personal website"
+LABEL org.opencontainers.image.source="https://github.com/ehpc/ehpc.io"
+LABEL org.opencontainers.image.url="https://ehpc.io"
+LABEL org.opencontainers.image.vendor="ehpc"
+LABEL org.opencontainers.image.licenses="MIT"
+LABEL org.opencontainers.image.version="${APP_VERSION}"
 
 COPY Caddyfile /etc/caddy/Caddyfile
 COPY --from=build /app/dist /srv
