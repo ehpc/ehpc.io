@@ -1,5 +1,8 @@
 import { defineConfig } from "vite";
 import wasm from "vite-plugin-wasm";
+import pkg from "./package.json";
+
+process.env.VITE_APP_VERSION = pkg.version;
 
 export default defineConfig({
   plugins: [
