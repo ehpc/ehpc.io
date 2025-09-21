@@ -2,7 +2,7 @@
 	admin off
 }
 
-:80 {
+:8080 {
 	handle /main-health {
 		respond "ok" 200
 	}
