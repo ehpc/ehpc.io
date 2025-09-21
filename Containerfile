@@ -77,4 +77,4 @@ LABEL io.containers.autoupdate=registry
 COPY Caddyfile /etc/caddy/Caddyfile
 COPY --from=build /app/dist /srv
 
-EXPOSE 8080
+EXPOSE 80
