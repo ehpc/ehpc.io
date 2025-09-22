@@ -8,8 +8,8 @@ import { debounce } from "./utils";
 function resizeCanvasToDisplaySize(canvas: HTMLCanvasElement) {
   const cssH = window.visualViewport?.height || window.innerHeight;
   const cssW = window.visualViewport?.width || window.innerWidth;
-  canvas.style.height = cssH + 'px';
-  canvas.style.width  = cssW + 'px';
+  canvas.style.height = cssH + "px";
+  canvas.style.width = cssW + "px";
 
   const dpr = window.devicePixelRatio || 1;
   const rect = canvas.getBoundingClientRect();
