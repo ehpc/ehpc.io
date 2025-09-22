@@ -36,10 +36,13 @@ export function setupCursorTracking(
   generatedEntities: GeneratedEntities,
   drawingCoordinates: DrawingCoordinates,
 ) {
-  window.addEventListener("mousemove", (event) => {
+  document.getElementById("scene-canvas")?.addEventListener("pointermove", (event) => {
     updateVirtualMouseCoordinates(event, generatedEntities, drawingCoordinates);
-  });
-  window.addEventListener("mousedown", () => {
+    event.preventDefault();
+  }, { passive: false });
+  document.getElementById("scene-canvas")?.addEventListener("pointerdown", (event) => {
+    updateVirtualMouseCoordinates(event, generatedEntities, drawingCoordinates);
     processPointOfInterestClick(generatedEntities);
-  });
+    event.preventDefault();
+  }, { passive: false });
 }

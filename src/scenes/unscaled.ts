@@ -28,8 +28,13 @@ function setNormalFont(ctx: CanvasRenderingContext2D, transformFactors: Transfor
   ctx.font = `${textSize}px ${PC_TEXT_FONT}`;
 }
 
-function setSmallerFont(ctx: CanvasRenderingContext2D, transformFactors: TransformFactors) {
+function setSmallFont(ctx: CanvasRenderingContext2D, transformFactors: TransformFactors) {
   const textSize = (PC_TEXT_SIZE - 2) * (transformFactors.kY);
+  ctx.font = `${textSize}px ${PC_TEXT_FONT}`;
+}
+
+function setSmallerFont(ctx: CanvasRenderingContext2D, transformFactors: TransformFactors) {
+  const textSize = (PC_TEXT_SIZE - 3) * (transformFactors.kY);
   ctx.font = `${textSize}px ${PC_TEXT_FONT}`;
 }
 
@@ -41,9 +46,13 @@ function writeText(
   transformFactors: TransformFactors,
 ) {
   const isSmallText = text.startsWith("[SMALL]");
+  const isSmallerText = text.startsWith("[SMALLER]");
   if (isSmallText) {
-    setSmallerFont(ctx, transformFactors);
+    setSmallFont(ctx, transformFactors);
     text = text.slice(7);
+  } else if (isSmallerText) {
+    setSmallerFont(ctx, transformFactors);
+    text = text.slice(9);
   }
   ctx.fillText(text, x, y);
   if (isSmallText) {
@@ -118,5 +127,6 @@ export function drawUnscaledScene(
   const deskOffset = Math.max(0, drawingCoordinates.virtualX - DESK_OFFSET_X_THRESHOLD) * kX;
   ctx.translate(deskOffset, 0);
   drawPCText(ctx, generatedEntities.pcText, transformFactors);
-  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  const dpr = window.devicePixelRatio || 1;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 }

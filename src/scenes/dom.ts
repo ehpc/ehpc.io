@@ -45,10 +45,10 @@ export function drawDomElements(
 
   // Portrait mode disclaimer
   const portraitDisclaimer = document.getElementById("portrait-disclaimer");
-  if (portraitDisclaimer && window.innerHeight / window.innerWidth > 1.2) {
+  if (portraitDisclaimer && window.innerHeight / window.innerWidth > 1.3) {
     portraitDisclaimer.style.setProperty("display", "block");
     const disclaimerHeight = portraitDisclaimer.getBoundingClientRect().height;
-    const top = (drawingCoordinates.canvasOffsetY - disclaimerHeight) / 2;
+    const top = (drawingCoordinates.canvasOffsetY - disclaimerHeight) / 1.5;
     if (top > 0) {
       portraitDisclaimer.style.setProperty("top", `${top}px`);
     } else {

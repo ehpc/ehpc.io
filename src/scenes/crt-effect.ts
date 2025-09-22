@@ -1,10 +1,11 @@
 export function drawCrtEffect(ctx: CanvasRenderingContext2D) {
   const { width, height } = ctx.canvas;
   const previousTransform = ctx.getTransform();
-  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  const dpr = window.devicePixelRatio || 1;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
   // Draw RGB vertical lines
-  const rgbIntensity = 0.1;
+  const rgbIntensity = 0.03;
   for (let i = 0; i < width; i += 3) {
     ctx.fillStyle = `rgb(255, 0, 0, ${rgbIntensity})`;
     ctx.fillRect(i, 0, 1, height);
@@ -16,7 +17,7 @@ export function drawCrtEffect(ctx: CanvasRenderingContext2D) {
 
   // Draw scanlines
   const scanlineHeight = 3;
-  const scanlineIntensity = 0.1;
+  const scanlineIntensity = 0.03;
   for (let i = 0; i < height; i += scanlineHeight * 2) {
     ctx.fillStyle = `rgba(0, 0, 0, ${scanlineIntensity})`;
     ctx.fillRect(0, i, width, scanlineHeight);

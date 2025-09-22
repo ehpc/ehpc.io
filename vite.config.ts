@@ -1,3 +1,4 @@
+import fs from "node:fs";
 import { defineConfig } from "vite";
 import wasm from "vite-plugin-wasm";
 import pkg from "./package.json";
@@ -16,6 +17,15 @@ export default defineConfig({
         entryFileNames: "assets/[name].[hash:12].js",
         hashCharacters: "base36",
       },
+    },
+  },
+  server: {
+    allowedHosts: ["www.localhost.com"],
+    host: true,
+    port: 5173,
+    https: {
+      key: fs.readFileSync("./localhost+3-key.pem"),
+      cert: fs.readFileSync("./localhost+3.pem"),
     },
   },
 });

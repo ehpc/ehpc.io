@@ -68,10 +68,10 @@ sheep?
 The answer
 is 42
 
-[SMALL]I like LISP,
-[SMALL]Haskell, Rust
-[SMALL]and other fun
-[SMALL]languages
+[SMALLER]I like LISP,
+[SMALLER]Haskell, Rust
+[SMALLER]NixOS, k8s and
+[SMALLER]other fun stuff
 
 Have a 
 wonderful
