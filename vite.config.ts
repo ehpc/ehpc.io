@@ -4,6 +4,7 @@ import wasm from "vite-plugin-wasm";
 import pkg from "./package.json";
 
 process.env.VITE_APP_VERSION = pkg.version;
+const isDevWithCerts = fs.existsSync("./localhost+3.pem") && fs.existsSync("./localhost+3-key.pem");
 
 export default defineConfig({
   plugins: [
@@ -20,12 +21,16 @@ export default defineConfig({
     },
   },
   server: {
-    allowedHosts: ["www.localhost.com"],
-    host: true,
+    allowedHosts: [
+      "www.localhost.com", // browserstack local
+    ],
+    host: isDevWithCerts,
     port: 5173,
-    https: {
-      key: fs.readFileSync("./localhost+3-key.pem"),
-      cert: fs.readFileSync("./localhost+3.pem"),
-    },
+    https: isDevWithCerts
+      ? {
+        key: fs.readFileSync("./localhost+3-key.pem"),
+        cert: fs.readFileSync("./localhost+3.pem"),
+      }
+      : undefined,
   },
 });
