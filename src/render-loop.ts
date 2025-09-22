@@ -1,7 +1,7 @@
 import { RESIZE_DELAY, VIRTUAL_CANVAS_X_THRESHOLD } from "./constants";
-import { setupCursorTracking } from "./cursor";
 import { generateAllEntities, updateAllEntities } from "./generators";
 import { drawCrtEffect, drawDomElements, drawEdges, drawMainScene, drawUnscaledScene } from "./scenes";
+import { registerDOMEvents } from "./scenes/dom";
 import type { DrawingCoordinates, GeneratedEntities, VirtualCanvas, VirtualCanvasContext } from "./types";
 import { debounce } from "./utils";
 
@@ -124,7 +124,7 @@ export function renderLoop(
 
   const generatedEntities = generateAllEntities();
 
-  setupCursorTracking(generatedEntities, drawingCoordinates);
+  registerDOMEvents(generatedEntities);
 
   const targetFPS = 60;
   const frameDuration = 1000 / targetFPS;

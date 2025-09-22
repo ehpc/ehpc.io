@@ -51,10 +51,6 @@ here is
 in 2D
 (^_^)
 
-You can see
-the code
-on GitHub
-
 You can
 also touch
 other stuff

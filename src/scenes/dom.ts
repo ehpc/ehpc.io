@@ -1,5 +1,5 @@
-import { SERVER_BOXES_OFFSET_X_THRESHOLD } from "../constants";
-import type { DrawingCoordinates, Point } from "../types";
+import { DESK_OFFSET_X_THRESHOLD, SERVER_BOXES_OFFSET_X_THRESHOLD } from "../constants";
+import type { DrawingCoordinates, GeneratedEntities, Point } from "../types";
 
 function relocateDomElement(
   element: HTMLElement,
@@ -24,6 +24,7 @@ export function drawDomElements(
   drawingCoordinates: DrawingCoordinates,
 ) {
   const serverBoxesOffset = -Math.max(0, drawingCoordinates.virtualX - SERVER_BOXES_OFFSET_X_THRESHOLD);
+  const deskOffset = Math.max(0, drawingCoordinates.virtualX - DESK_OFFSET_X_THRESHOLD);
 
   // Github link
   const githubLink = document.getElementById("github-link");
@@ -43,6 +44,12 @@ export function drawDomElements(
     relocateDomElement(emailLink, [308, 215], 33, 15, drawingCoordinates, serverBoxesOffset);
   }
 
+  // PC link
+  const pcLink = document.getElementById("pc-link");
+  if (pcLink) {
+    relocateDomElement(pcLink, [135, 170], 61, 46, drawingCoordinates, deskOffset);
+  }
+
   // Portrait mode disclaimer
   const portraitDisclaimer = document.getElementById("portrait-disclaimer");
   if (portraitDisclaimer && window.innerHeight / window.innerWidth > 1.3) {
@@ -57,4 +64,10 @@ export function drawDomElements(
   } else if (portraitDisclaimer) {
     portraitDisclaimer.style.setProperty("display", "none");
   }
+}
+
+export function registerDOMEvents(generatedEntities: GeneratedEntities) {
+  document.getElementById("pc-link")?.addEventListener("click", () => {
+    generatedEntities.pcText.stopped = false;
+  });
 }

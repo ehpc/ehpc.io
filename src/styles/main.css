@@ -18,7 +18,8 @@ body::before {
 
 a {
   color: transparent;
-  display: block;
+  cursor: pointer;
+  display: block !important;
   left: 0;
   overflow-wrap: break-word;
   position: fixed;
