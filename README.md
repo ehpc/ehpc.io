@@ -4,6 +4,8 @@ Hi there! This is the repo for my personal website. :cat:
 
 Hope you find something interesting! :dog:
 
+Also, feel free to check out my [LaTeX resume](https://github.com/ehpc/resume). 
+
 ## Frontend Stack
 
 - Package manager: [Bun](https://bun.sh)
